@@ -1,0 +1,58 @@
+<app-header-style-two></app-header-style-two>
+
+<div class="page-title-area item-bg1">
+    <div class="container">
+        <div class="page-title-content">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li>My Dashboard</li>
+                <li>Edit</li>
+            </ul>
+            <h2>My Dashboard</h2>
+        </div>
+    </div>
+</div>
+
+<div class="my-dashboard-area ptb-100">
+    <div class="container">
+        <div class="myDashboard-navigation">
+            <ul>
+                <li><a routerLink="/my-dashboard"><i class='bx bxs-dashboard'></i> Dashboard</a></li>
+                <li><a routerLink="/orders"><i class='bx bx-cart'></i> Orders</a></li>
+                <li><a routerLink="/downloads"><i class='bx bx-download'></i> Downloads</a></li>
+                <li><a routerLink="/edit-address" class="active"><i class='bx bx-home-alt'></i> Addresses</a></li>
+                <li><a routerLink="/edit-account"><i class='bx bx-edit'></i> Account Details</a></li>
+                <li><a routerLink="/"><i class='bx bx-log-out'></i> Logout</a></li>
+            </ul>
+        </div>
+        <div class="myDashboard-content">
+            <p>The following addresses will be used on the checkout page by default.</p>
+            <div class="myAccount-addresses">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="addresses-title">
+                            <h3>Billing address</h3>
+                            <a routerLink="/edit-billing-address" class="edit">Edit</a>
+                        </div>
+                        <address>
+                            James Anderson
+                            <br>
+                            ET
+                            <br>
+                            3774 Joy Lane
+                            <br>
+                            Los Angeles, CA 90071
+                        </address>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="addresses-title">
+                            <h3>Shipping address</h3>
+                            <a routerLink="/edit-shipping-address" class="edit">Add</a>
+                        </div>
+                        <address>You have not set up this type of address yet.</address>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

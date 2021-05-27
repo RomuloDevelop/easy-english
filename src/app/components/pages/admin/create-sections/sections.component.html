@@ -1,0 +1,94 @@
+<div class="create-course-section">
+    <div class="new-section">
+
+  <ng-container *ngIf="edit else actualSection">
+
+    <h3 class="h6">New Section:</h3>
+    <div class="p-section-field">
+        <small id="title-help">Enter a title for the section.</small>
+      <input placeholder="Title" id="title" class="p-inputtext-sm" type="text" aria-describedby="title-help" pInputText [(ngModel)]="title" />
+    </div>
+    <div class="p-section-field">
+        <small id="description-help">Enter a full description to summarize the actual content.</small>
+      <input placeholder="Description" id="description" class="p-inputtext-sm" type="text" aria-describedby="description-help" pInputText [(ngModel)]="description" />
+    </div>
+    <div class="d-flex justify-content-end">
+        <button (click)="emitEvent()" pButton pRipple type="button" label="Accept" class="p-button--sm p-button-outlined"></button>
+        <button (click)="emitEvent('cancel')" pButton pRipple type="button" label="Cancel" class="p-button--sm p-button-outlined p-button-secondary cancel-btn"></button>
+    </div>
+
+</ng-container>
+
+  <ng-template #actualSection>
+    <h3 class="h6" style="display: inline;">Section {{id}}: </h3>
+    <span>{{title}}</span>
+        <div class="edit-buttons" style="display: inline;">
+        <i class="pi pi-pencil" (click)="edit = true"></i>
+        <i class="ml-1 pi pi-trash" (click)="deleteDialog()"></i>
+    </div>
+    <p>{{description}}</p>
+    <p-accordion [multiple]="true" *ngIf="lectures.length" class="lecture-group">
+        <p-accordionTab *ngFor="let lecture of lectures">
+            <ng-template pTemplate="header">
+                <div class="w-100">
+                    <h4 class="h6 d-inline">{{lecture.id + ' ' + lecture.type}}</h4>
+                    <div class="edit-buttons float-end">
+                        <i class="pi pi-pencil" (click)="updateLecture(lecture)"></i>
+                        <i class="ml-1 pi pi-trash" (click)="deleteLecture(lecture)"></i>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-container *ngIf="lecture.type === 'Video'">
+                <div [innerHtml]="lecture.data.detail"></div>
+            </ng-container>
+            <ng-container *ngIf="lecture.type === 'Article'">
+                <span class="h5">{{lecture.data.title}}</span>
+                <div [innerHtml]="lecture.data.detail"></div>
+            </ng-container>
+            <ng-container *ngIf="lecture.type === 'Quiz'">
+                <div>Empty</div>
+            </ng-container>
+        </p-accordionTab>
+    </p-accordion>
+    <div class="d-flex justify-content-end mt-2">
+        <button (click)="displayVideo = true" pButton pRipple type="button" icon="pi pi-plus" label="Video" class="p-button--sm p-button-outlined p-button-danger"></button>
+        <button (click)="displayArticle = true" pButton pRipple type="button" icon="pi pi-plus" label="Article" class="p-button--sm p-button-outlined p-button-danger"></button>
+        <button (click)="displayQuiz = true" pButton pRipple type="button" icon="pi pi-plus" label="Quiz" class="p-button--sm p-button-outlined p-button-danger"></button>
+    </div>
+  </ng-template>
+</div>
+
+<!-- Delete Dialog -->
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>
+
+<!-- Article Dialog -->
+<p-dialog header="New Article" [(visible)]="displayArticle" [style]="{width: '50vw'}" [baseZIndex]="10000">
+    <p>
+        <i class="pi pi-exclamation-circle"></i> Add a title and a description with all the informatión you need.
+    </p>
+    <input placeholder="Title" class="p-inputtext-sm mb-3 w-100" type="text" pInputText [(ngModel)]="articleTitle" />
+    <p-editor [(ngModel)]="articleDetail" [style]="{'height':'150px'}"></p-editor>
+    <ng-template pTemplate="footer">
+        <p-button (click)="createArticle()" label="Accept" styleClass="p-button--sm p-button-outlined"></p-button>
+        <p-button (click)="displayArticle = false" label="Cancel" styleClass="p-button--sm p-button-outlined p-button-secondary cancel-btn"></p-button>
+    </ng-template>
+</p-dialog>
+
+<!-- Video dialog -->
+<p-dialog header="New Video" [(visible)]="displayVideo" [style]="{width: '50vw'}" [baseZIndex]="10000">
+    <div class="p-4">
+
+    <p>
+        <i class="pi pi-exclamation-circle"></i> Add the url of the video that will be shown in this part of the section course plus a description that will be shown below.
+    </p>
+    <input placeholder="Video url" class="p-inputtext-sm mb-3 w-100" type="text" pInputText [(ngModel)]="videoUrl" />
+    <p-editor [(ngModel)]="videoDetail" [style]="{'height':'150px'}"></p-editor>
+</div>
+
+    <ng-template pTemplate="footer">
+        <p-button (click)="createVideo()" label="Accept" styleClass="p-button--sm p-button-outlined"></p-button>
+        <p-button (click)="displayVideo = false" label="Cancel" styleClass="p-button--sm p-button-outlined p-button-secondary cancel-btn"></p-button>
+    </ng-template>
+</p-dialog>
+</div>
+
