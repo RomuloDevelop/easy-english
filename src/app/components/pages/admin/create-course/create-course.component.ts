@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { Section, SectionAction } from '../product.service';
+import { Section, SectionAction } from '../admin.service';
 import memoize from '../../../../decorators/memoize'
 
 @Component({

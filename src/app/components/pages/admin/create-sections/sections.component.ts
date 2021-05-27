@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { SectionAction, Section, Lecture, VideoLectue, Article, Quiz } from '../product.service';
+import { SectionAction, Section, Lecture, VideoLectue, Article, Quiz, Answer } from '../admin.service';
 import {ConfirmationService, PrimeNGConfig, Message} from 'primeng/api';
 
 @Component({
@@ -32,6 +32,11 @@ export class SectionsComponent implements OnInit, OnChanges {
   // Article variables
   articleTitle = ''
   articleDetail = ''
+
+  //Quiz
+  quizTitle = ''
+  question = ''
+  answers: Answer[] = []
 
   lectureId: number = undefined
 

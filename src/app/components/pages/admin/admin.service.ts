@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 
 export type SectionAction = 'update' | 'cancel' | 'delete'
 
+export interface Answer {
+    text: string,
+    correct: boolean
+}
 export interface Quiz {
     title: string,
     question: string,
-    answer: {
-        text: string,
-        correct: boolean
-    }
+    answers: Answer[]
 }
 
 export interface Article {

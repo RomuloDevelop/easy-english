@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductService, Product } from './product.service';
+import { ProductService, Product } from './admin.service';
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
