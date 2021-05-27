@@ -147,10 +147,10 @@ img {
         }
     }
     &:disabled {
-        background-color: blue;
-        border-color: blue;
+        background-color: mix(white, #ff1949, 50%);
+        border-color: mix(white, #ff1949, 50%);
     }
-    &:hover, &:focus {
+    &:hover:not(&:disabled), &:focus:not(&:disabled) {
         background-color: var(--optionalColor);
         color: var(--whiteColor);
         border-color: var(--optionalColor);

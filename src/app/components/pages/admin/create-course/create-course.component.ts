@@ -3,11 +3,11 @@ import { Section, SectionAction } from '../product.service';
 import memoize from '../../../../decorators/memoize'
 
 @Component({
-  selector: 'app-create-section',
-  templateUrl: './create-section.component.html',
-  styleUrls: ['./create-section.component.scss']
+  selector: 'app-create-course',
+  templateUrl: './create-course.component.html',
+  styleUrls: ['./create-course.component.scss']
 })
-export class CreateSectionComponent implements OnInit {
+export class CreateCourseComponent implements OnInit {
 
   title = ''
   subtitle = ''

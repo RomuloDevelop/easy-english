@@ -5,7 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminComponent } from './admin.component'
 import { CoursesComponent } from './courses/courses.component';
-import { CreateSectionComponent } from './create-course/create-section.component';
+import { CreateCourseComponent } from './create-course/create-course.component';
 import { SectionsComponent } from './create-sections/sections.component';
 
 import {SharedModule} from '../../../shared.module'
@@ -25,7 +25,7 @@ import {ConfirmationService, MessageService} from 'primeng/api';
   declarations: [
     AdminComponent,
     CoursesComponent,
-    CreateSectionComponent,
+    CreateCourseComponent,
     SectionsComponent
   ],
   imports: [
