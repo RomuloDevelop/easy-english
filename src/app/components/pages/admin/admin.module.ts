@@ -18,6 +18,8 @@ import {CardModule} from 'primeng/card';
 import {DialogModule} from 'primeng/dialog';
 import {AccordionModule} from 'primeng/accordion';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {RadioButtonModule} from 'primeng/radiobutton';
+import {InputTextareaModule} from 'primeng/inputtextarea';
 
 import {ConfirmationService, MessageService} from 'primeng/api';
 
@@ -41,7 +43,9 @@ import {ConfirmationService, MessageService} from 'primeng/api';
     CardModule,
     DialogModule,
     AccordionModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    RadioButtonModule,
+    InputTextareaModule
   ],
   providers: [ConfirmationService, MessageService]
 })

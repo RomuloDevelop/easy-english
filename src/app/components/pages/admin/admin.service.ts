@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 export type SectionAction = 'update' | 'cancel' | 'delete'
 
 export interface Answer {
+    id: number,
     text: string,
     correct: boolean
 }

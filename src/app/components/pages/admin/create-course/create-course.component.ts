@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Section, SectionAction } from '../admin.service';
 import memoize from '../../../../decorators/memoize'
 
@@ -14,7 +14,7 @@ export class CreateCourseComponent implements OnInit {
   description = ''
   sections: Section[] = []
 
-  constructor(private cdr: ChangeDetectorRef) { }
+  constructor() { }
 
   ngOnInit(): void {
   }

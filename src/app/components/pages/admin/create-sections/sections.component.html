@@ -62,7 +62,7 @@
 <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>
 
 <!-- Article Dialog -->
-<p-dialog header="New Article" [(visible)]="displayArticle" [style]="{width: '50vw'}" [baseZIndex]="10000">
+<p-dialog header="New Article" [modal]="true" [(visible)]="displayArticle" [style]="{width: '50vw'}" [baseZIndex]="10000">
     <p>
         <i class="pi pi-exclamation-circle"></i> Add a title and a description with all the informatión you need.
     </p>
@@ -75,7 +75,7 @@
 </p-dialog>
 
 <!-- Video dialog -->
-<p-dialog header="New Video" [(visible)]="displayVideo" [style]="{width: '50vw'}" [baseZIndex]="10000">
+<p-dialog header="New Video" [modal]="true" [(visible)]="displayVideo" [style]="{width: '50vw'}" [baseZIndex]="10000">
     <div class="p-4">
 
     <p>
@@ -88,6 +88,63 @@
     <ng-template pTemplate="footer">
         <p-button (click)="createVideo()" label="Accept" styleClass="p-button--sm p-button-outlined"></p-button>
         <p-button (click)="displayVideo = false" label="Cancel" styleClass="p-button--sm p-button-outlined p-button-secondary cancel-btn"></p-button>
+    </ng-template>
+</p-dialog>
+
+<!-- Quiz Dialog -->
+<p-dialog header="New Quiz" [modal]="true" [(visible)]="displayQuiz" [style]="{width: '50vw'}" [baseZIndex]="10000">
+    <p>
+        <i class="pi pi-exclamation-circle"></i> Add a title and a question for the quiz.
+        Create as many answers as you want and don't forget to select the correct answer before you're done.
+    </p>
+    <input placeholder="Title" class="p-inputtext-sm mb-3 w-100" type="text" pInputText [(ngModel)]="quizTitle" />
+    <div class="p-section-field">
+        <h2 class="h6 mt-4 mb-3">Question</h2>
+      <p-editor [(ngModel)]="question" [style]="{'height':'150px'}"></p-editor>
+    </div>
+    <div *ngIf="answers.length">
+        <h2 class="h6 mt-4 mb-3">Answers</h2>
+        <div class="answer-item" *ngFor="let answer of answers">
+            <div class="delete-btn" (click)="deleteaAnswer(answer.id)">
+                <i class="pi pi-times"></i>
+            </div>
+            <p-radioButton
+            [inputId]="answer.id"
+            name="answer"
+            [value]="answer.id"
+            [(ngModel)]="correctAnswer"
+            ></p-radioButton>
+            <div class="w-100">
+                <small
+                    class="d-block"
+                    style="color: var(--green-500); transition: all 0.2s"
+                    [style]="{'opacity': correctAnswer === answer.id ? 1 : 0}"
+                    >
+                    Correct Answer!
+                </small>
+                <textarea pInputTextarea placeholder="Add answer" [(ngModel)]="answer.text"
+                    [style]="{'height': '50px', 'border-color': correctAnswer === answer.id ? 'var(--green-500)': ''}">
+                </textarea>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end">
+        <button
+            pButton
+            pRipple
+            type="button"
+            icon="pi pi-plus"
+            class="p-button-rounded p-button-danger"
+            [disabled] ="disableAddAnswer(question)"
+            (click)="addAnswer()">
+        </button>
+    </div>
+    <ng-template pTemplate="footer">
+
+        <button pButton
+        [disabled]="disabledCreateQuiz(answers, correctAnswer)"
+        (click)="createQuiz()" label="Accept" styleClass="p-button--sm p-button-outlined"></button>
+        <button pButton (click)="displayQuiz= false" label="Cancel" styleClass="p-button--sm p-button-outlined p-button-secondary cancel-btn"></button>
     </ng-template>
 </p-dialog>
 </div>

@@ -31,3 +31,48 @@
     }
 }
 
+:host ::ng-deep .answer-item {
+    position: relative;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    padding: 0 10px;
+    margin-bottom: 1rem;
+    .delete-btn {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        border-radius: 50%;
+        background-color: rgb(200, 200, 200);
+        width: 20px;
+        height: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.2s;
+        color: white;
+    }
+    .delete-btn i {
+        font-size: 0.8rem;
+    }
+    &:hover .delete-btn {
+        opacity: 1;
+    }
+    .p-inputtextarea {
+        width: 100%;
+    }
+
+    .p-radiobutton {
+        margin-right: 1rem;
+        &.p-radiobutton-focused {
+            outline-color: var(--green-500);
+        }
+        .p-radiobutton-box.p-highlight {
+            background-color: var(--green-500);
+            border-color: var(--green-500);
+        }
+    }
+
+}

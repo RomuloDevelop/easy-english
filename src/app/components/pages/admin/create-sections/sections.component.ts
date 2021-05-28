@@ -1,6 +1,7 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { SectionAction, Section, Lecture, VideoLectue, Article, Quiz, Answer } from '../admin.service';
 import {ConfirmationService, PrimeNGConfig, Message} from 'primeng/api';
+import memoize from '../../../../decorators/memoize'
 
 @Component({
   selector: 'app-sections',
@@ -17,6 +18,7 @@ export class SectionsComponent implements OnInit, OnChanges {
   title = ''
   description = ''
   lectures: Lecture[] = []
+  lectureId: number = undefined
 
   // Modals
   displayDelete = false
@@ -37,10 +39,13 @@ export class SectionsComponent implements OnInit, OnChanges {
   quizTitle = ''
   question = ''
   answers: Answer[] = []
+  correctAnswer: number = null
 
-  lectureId: number = undefined
-
-  constructor(private confirmationService: ConfirmationService, private primengConfig: PrimeNGConfig) { }
+  constructor(
+      private confirmationService: ConfirmationService,
+      private primengConfig: PrimeNGConfig,
+      private cdr: ChangeDetectorRef
+    ) { }
 
   ngOnInit() {
     this.primengConfig.ripple = true;
@@ -79,6 +84,10 @@ export class SectionsComponent implements OnInit, OnChanges {
         this.lectureId = item.id
         this.displayArticle = true
     } else if (item.type === 'Quiz') {
+        const data = item.data as Quiz
+        this.quizTitle = data.title
+        this.question = data.question
+        this.answers = data.answers
         this.displayQuiz = true
     } else if (item.type === 'Video') {
         const data = item.data as VideoLectue
@@ -120,6 +129,63 @@ export class SectionsComponent implements OnInit, OnChanges {
     this.articleDetail = ''
     this.articleTitle = ''
     this.lectureId = undefined
+  }
+
+  // Quiz methods
+
+  createQuiz() {
+    console.log('answers', this.answers)
+    const id = this.lectureId
+    const data: Quiz = {
+        title: this.quizTitle,
+        question: this.question,
+        answers: this.answers.map(answer => ({...answer, correct: this.correctAnswer === answer.id}))
+    }
+    this.addLectureOrEdit({id, data, type: 'Quiz'})
+    this.displayQuiz = false
+    this.quizTitle = ''
+    this.question = ''
+    this.answers = []
+    this.lectureId = undefined
+  }
+
+  addAnswer() {
+      let id = 0
+      if (this.answers.length) id = this.answers[this.answers.length - 1].id + 1
+      this.answers.push({
+          id,
+          text: '',
+          correct: false
+      })
+  }
+
+  deleteaAnswer(id: number) {
+      const index = this.answers.findIndex(item => item.id === id)
+      this.answers.splice(index, 1)
+  }
+
+  @memoize()
+  disableAddAnswer(question: string) {
+      return question.length <= 0
+  }
+
+  @memoize({
+    normalizer: function(args) {
+        return JSON.stringify(args);
+    }
+  })
+  disabledCreateQuiz(answers: Answer[], id: number) {
+      let result = true
+      for(let answer of answers) {
+        if(answer.id === id) {
+            result = false
+        }
+        if(answer.text === '') {
+            result = true
+            break
+          }
+      }
+      return result
   }
 
   addLectureOrEdit(lecture: Lecture) {
