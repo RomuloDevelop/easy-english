@@ -1,5 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { StoreModule } from '@ngrx/store'
+import { AppState } from './state/admin/models'
+import { reducer as CourseReducer } from './state/admin/courses/course.reducers'
+import { reducer as SectionReducer } from './state/admin/sections/section.reducers'
+import { reducer as LectureReducer } from './state/admin/lectures/lecture.reducers'
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CountUpModule } from 'ngx-countup';
@@ -113,6 +118,12 @@ import { EditBillingAddressPageComponent } from './components/pages/edit-billing
 import { EditShippingAddressPageComponent } from './components/pages/edit-shipping-address-page/edit-shipping-address-page.component';
 import { AdminModule } from './components/pages/admin/admin.module';
 import { SharedModule } from './shared.module'
+
+const store = {
+    courses: CourseReducer,
+    sections: SectionReducer,
+    lectures: LectureReducer
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -229,7 +240,8 @@ import { SharedModule } from './shared.module'
     FormsModule,
     HttpClientModule,
     AdminModule,
-    SharedModule
+    SharedModule,
+    StoreModule.forRoot(store)
   ],
   providers: [],
   bootstrap: [AppComponent]
