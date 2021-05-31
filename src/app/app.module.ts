@@ -51,7 +51,6 @@ import { HomethreeCoursesComponent } from './components/pages/home-page-three/ho
 import { HomethreeAboutComponent } from './components/pages/home-page-three/homethree-about/homethree-about.component';
 import { FeedbackFormComponent } from './components/common/feedback-form/feedback-form.component';
 import { HomethreeMainBannerComponent } from './components/pages/home-page-three/homethree-main-banner/homethree-main-banner.component';
-import { HeaderStyleThreeComponent } from './components/common/header-style-three/header-style-three.component';
 import { HomefourMainBannerComponent } from './components/pages/home-page-four/homefour-main-banner/homefour-main-banner.component';
 import { HomefourCoursesComponent } from './components/pages/home-page-four/homefour-courses/homefour-courses.component';
 import { BoxesComponent } from './components/common/boxes/boxes.component';
@@ -63,7 +62,6 @@ import { FeaturesComponent } from './components/common/features/features.compone
 import { HomesixCoursesComponent } from './components/pages/home-page-six/homesix-courses/homesix-courses.component';
 import { CategoriesStyleThreeComponent } from './components/common/categories-style-three/categories-style-three.component';
 import { HomesixMainBannerComponent } from './components/pages/home-page-six/homesix-main-banner/homesix-main-banner.component';
-import { HeaderStyleFourComponent } from './components/common/header-style-four/header-style-four.component';
 import { HomesevenMainBannerComponent } from './components/pages/home-page-seven/homeseven-main-banner/homeseven-main-banner.component';
 import { HomesevenCoursesComponent } from './components/pages/home-page-seven/homeseven-courses/homeseven-courses.component';
 import { HowItWorksComponent } from './components/common/how-it-works/how-it-works.component';
@@ -161,7 +159,6 @@ const store = {
     HomethreeAboutComponent,
     FeedbackFormComponent,
     HomethreeMainBannerComponent,
-    HeaderStyleThreeComponent,
     HomefourMainBannerComponent,
     HomefourCoursesComponent,
     BoxesComponent,
@@ -173,7 +170,6 @@ const store = {
     HomesixCoursesComponent,
     CategoriesStyleThreeComponent,
     HomesixMainBannerComponent,
-    HeaderStyleFourComponent,
     HomesevenMainBannerComponent,
     HomesevenCoursesComponent,
     HowItWorksComponent,

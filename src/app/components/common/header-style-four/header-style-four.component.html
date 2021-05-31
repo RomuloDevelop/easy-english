@@ -2,7 +2,7 @@
     <div class="navbar-area navbar-style-four" ngStickyNav stickyClass="sticky-box-shadow" ngStickyNav>
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-light bg-light" [class.active]="classApplied">
-                <a class="navbar-brand" routerLink="/"><img src="assets/img/black-logo.png" alt="logo"></a>
+                <a class="navbar-brand" routerLink="/"><img style="height: 70px;" src="assets/img/english-logo.png" alt="logo"></a>
                 <button class="navbar-toggler" type="button" (click)="toggleClass()">
                     <span class="burger-menu">
                         <span class="top-bar"></span>
@@ -109,6 +109,7 @@
                             </ul>
                         </li>
                         <li class="nav-item"><a routerLink="/contact" class="nav-link" routerLinkActive="active"[routerLinkActiveOptions]="{exact: true}">Contact</a></li>
+                        <li class="nav-item"><a routerLink="/admin" class="nav-link" routerLinkActive="active"[routerLinkActiveOptions]="{exact: true}">Admin</a></li>
                     </ul>
                 </div>
                 <div class="others-option">
