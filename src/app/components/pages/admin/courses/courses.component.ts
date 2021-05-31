@@ -21,12 +21,14 @@ export class CoursesComponent implements OnInit {
     'Id',
     'Title',
     'Subtitle',
+    'Sections',
     'Status'
   ]
   sectionCols = [
     'Id',
     'Title',
-    'Description'
+    'Description',
+    'Lectures'
   ]
 
   courseRows = []
@@ -42,11 +44,11 @@ export class CoursesComponent implements OnInit {
   ngOnInit() {
     this.primengConfig.ripple = true;
     const rename = col => col.toLowerCase()
-      this.courseRows = this.courseCols.map(rename)
-      this.sectionRows = this.sectionCols.map(rename)
-      this.store.pipe(select(selectCoursesTable)).subscribe(data => {
-          this.courses = data
-      })
+    this.courseRows = this.courseCols.map(rename)
+    this.sectionRows = this.sectionCols.map(rename)
+    this.store.pipe(select(selectCoursesTable)).subscribe(data => {
+        this.courses = data
+    })
   }
 
   toCreatePage() {

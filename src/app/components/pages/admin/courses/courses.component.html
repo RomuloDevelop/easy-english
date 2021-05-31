@@ -18,16 +18,23 @@
       </ng-template>
       <ng-template pTemplate="body" let-course let-expanded="expanded">
           <tr>
-            <td>
-                <button type="button" pButton pRipple [pRowToggler]="course" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+            <td style="width: 3rem">
             </td>
               <td *ngFor="let row of courseRows">
-                <ng-container *ngIf="row !== 'status' else statusTemp">
+                <ng-container *ngIf="row !== 'status' && row !== 'sections'">
                     {{course[row]}}
                 </ng-container>
-                <ng-template #statusTemp>
+                <ng-container *ngIf="row === 'sections'">
+                    <div class="d-flex justify-content-around align-items-center" style="max-width: 100px;">
+                        <span style="vertical-align: center;">
+                            {{course[row].length}}
+                        </span>
+                        <button type="button" pButton pRipple [pRowToggler]="course" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="row === 'status'">
                     {{course[row] ? 'Active' : 'Inactive' }}
-                </ng-template>
+                </ng-container>
             </td>
             <td>
                 <p-inputSwitch (onChange)="changeStatus($event, course)" [(ngModel)]="course.status"></p-inputSwitch>
@@ -40,19 +47,26 @@
       </ng-template>
       <ng-template pTemplate="rowexpansion" let-course>
         <tr>
-            <td colspan="6">
-                <div class="p-p-3">
+            <td colspan="8">
+                <div class="p-p-1">
+                    <h2 class="h5 mb-3">Sections:</h2>
                     <p-table [value]="course.sections" dataKey="id">
                         <ng-template pTemplate="header">
                             <tr>
                                 <th *ngFor="let col of sectionCols">{{col}}</th>
-                                <th style="width: 4rem"></th>
+                                <!-- <th style="width: 4rem"></th> -->
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-section>
                             <tr>
-                                <td *ngFor="let row of sectionRows">{{section[row]}}</td>
-                                <td><p-button type="button" icon="pi pi-search"></p-button></td>
+                                <td *ngFor="let row of sectionRows" [class]="{'p-pl-5': row === 'lectures'}">
+                                    <ng-container *ngIf="row !== 'lectures'">
+                                        {{section[row]}}
+                                    </ng-container>
+                                    <ng-container *ngIf="row === 'lectures'">
+                                        {{section[row].length }}
+                                    </ng-container>
+                                </td>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="emptymessage">

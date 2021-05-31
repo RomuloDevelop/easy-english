@@ -16,19 +16,7 @@ export const selectLectures = createSelector(
     (lectures: Array<Lecture>) => lectures
 );
 
-const cbCoursesTable =   (courses: Array<Course>, sections: Array<Section>) => {
-    return courses.map(course => ({
-        ...course,
-        sections: sections.filter((section) => section.courseId === course.id)
-    }))
-  }
 
-export const selectCoursesTable = createSelector(
-  selectCourses,
-  selectSections,
-  selectLectures,
-  cbCoursesTable
-);
 
 const cbSectionData = (sections: Array<Section>, lectures: Array<Lecture>) => {
     return sections.map(section => ({
@@ -43,5 +31,19 @@ export const selectSectionsData = createSelector(
   cbSectionData
 );
 
-export type CoursesTableRow = ArrayElement<ReturnType<typeof cbCoursesTable>>
 export type SectionData = ArrayElement<ReturnType<typeof cbSectionData>>
+
+const cbCoursesTable =   (courses: Array<Course>, sections: Array<SectionData>) => {
+    return courses.map(course => ({
+        ...course,
+        sections: sections.filter((section) => section.courseId === course.id)
+    }))
+  }
+
+export const selectCoursesTable = createSelector(
+  selectCourses,
+  selectSectionsData,
+  cbCoursesTable
+);
+
+export type CoursesTableRow = ArrayElement<ReturnType<typeof cbCoursesTable>>
