@@ -4,7 +4,7 @@
             <li><a routerLink="../admin">Admin</a></li>
             <li>Courses</li>
         </ul>
-        <h2>Create Courses</h2>
+        <h2>Courses List</h2>
     </div>
   <ng-container *ngIf="courses.length else noData">
     <p-table [value]="courses" dataKey="name">
@@ -40,8 +40,9 @@
                 <p-inputSwitch (onChange)="changeStatus($event, course)" [(ngModel)]="course.status"></p-inputSwitch>
             </td>
             <td>
-                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary p-mr-2" (click)="editCourse(course)"></button>
-                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="confirmDeleteCourse(course)"></button>
+                <button pButton pRipple type="button" icon="pi pi-eye" class="p-button-rounded p-button-secondary p-button-outlined"></button>
+                <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-outlined p-mr-2 p-ml-2" (click)="editCourse(course)"></button>
+                <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-outlined" (click)="confirmDeleteCourse(course)"></button>
             </td>
           </tr>
       </ng-template>
