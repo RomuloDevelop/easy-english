@@ -1,53 +1,63 @@
-  <h2 class="mb-5">Course list</h2>
-    <p-table [value]="products" dataKey="name">
+<div class="container">
+    <div class="page-title-content p-mb-5">
+        <ul>
+            <li><a routerLink="../admin">Admin</a></li>
+            <li>Courses</li>
+        </ul>
+        <h2>Create Courses</h2>
+    </div>
+  <ng-container *ngIf="courses.length else noData">
+    <p-table [value]="courses" dataKey="name">
       <ng-template pTemplate="header">
           <tr>
             <th style="width: 3rem"></th>
-              <th>Code</th>
-              <th>Name</th>
-              <th>Category</th>
-              <th>Quantity</th>
+            <th *ngFor="let col of courseCols">{{col}}</th>
+            <th>Activate</th>
+            <th>Actions</th>
           </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-product let-expanded="expanded">
+      <ng-template pTemplate="body" let-course let-expanded="expanded">
           <tr>
             <td>
-                <button type="button" pButton pRipple [pRowToggler]="product" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                <button type="button" pButton pRipple [pRowToggler]="course" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
             </td>
-              <td>{{product.code}}</td>
-              <td>{{product.name}}</td>
-              <td>{{product.category}}</td>
-              <td>{{product.quantity}}</td>
+              <td *ngFor="let row of courseRows">
+                <ng-container *ngIf="row !== 'status' else statusTemp">
+                    {{course[row]}}
+                </ng-container>
+                <ng-template #statusTemp>
+                    {{course[row] ? 'Active' : 'Inactive' }}
+                </ng-template>
+            </td>
+            <td>
+                <p-inputSwitch (onChange)="changeStatus($event, course)" [(ngModel)]="course.status"></p-inputSwitch>
+            </td>
+            <td>
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-primary p-mr-2" (click)="editCourse(course)"></button>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="confirmDeleteCourse(course)"></button>
+            </td>
           </tr>
       </ng-template>
-      <ng-template pTemplate="rowexpansion" let-product>
+      <ng-template pTemplate="rowexpansion" let-course>
         <tr>
-            <td colspan="5">
+            <td colspan="6">
                 <div class="p-p-3">
-                    <p-table [value]="product.orders" dataKey="id">
+                    <p-table [value]="course.sections" dataKey="id">
                         <ng-template pTemplate="header">
                             <tr>
-                                <th>Id</th>
-                                <th>Customer</th>
-                                <th>Date</th>
-                                <th>Amount</th>
-                                <th>Status</th>
+                                <th *ngFor="let col of sectionCols">{{col}}</th>
                                 <th style="width: 4rem"></th>
                             </tr>
                         </ng-template>
-                        <ng-template pTemplate="body" let-order>
+                        <ng-template pTemplate="body" let-section>
                             <tr>
-                                <td>{{order.id}}</td>
-                                <td>{{order.customer}}</td>
-                                <td>{{order.id}}</td>
-                                <td>{{order.amount | currency:'USD'}}</td>
-                                <td><span [class]="'order-badge order-' + order.status.toLowerCase()">{{order.status}}</span></td>
+                                <td *ngFor="let row of sectionRows">{{section[row]}}</td>
                                 <td><p-button type="button" icon="pi pi-search"></p-button></td>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="emptymessage">
                             <tr>
-                                <td colspan="6">There are no order for this product yet.</td>
+                                <td colspan="4">There are no sections for this course yet.</td>
                             </tr>
                         </ng-template>
                     </p-table>
@@ -56,7 +66,16 @@
         </tr>
     </ng-template>
   </p-table>
+</ng-container>
+<ng-template #noData>
+    <div class="d-flex justify-content-center align-items-center w-100" style="height: 200px">
+      <span class="h1">No data available</span>
+    </div>
+</ng-template>
   <div class="d-flex justify-content-end mt-3">
-      <a routerLink="create-course" class="default-btn"><i class='bx bx-plus-circle icon-arrow before'></i><span class="label">Create Course</span><i class="bx bx-plus-circle icon-arrow after"></i></a>
+      <a (click)="toCreatePage()" class="default-btn"><i class='bx bx-plus-circle icon-arrow before'></i><span class="label">Create Course</span><i class="bx bx-plus-circle icon-arrow after"></i></a>
   </div>
+</div>
 
+<!-- Delete Dialog -->
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>

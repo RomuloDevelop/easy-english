@@ -20,9 +20,11 @@ import {AccordionModule} from 'primeng/accordion';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import {InputTextareaModule} from 'primeng/inputtextarea';
+import {InputSwitchModule} from 'primeng/inputswitch';
+import {ToastModule} from 'primeng/toast';
 
+import {AdminService} from './admin.service'
 import {ConfirmationService, MessageService} from 'primeng/api';
-
 @NgModule({
   declarations: [
     AdminComponent,
@@ -45,8 +47,10 @@ import {ConfirmationService, MessageService} from 'primeng/api';
     AccordionModule,
     ConfirmDialogModule,
     RadioButtonModule,
-    InputTextareaModule
+    InputTextareaModule,
+    InputSwitchModule,
+    ToastModule
   ],
-  providers: [ConfirmationService, MessageService]
+  providers: [AdminService, ConfirmationService, MessageService]
 })
 export class AdminModule { }

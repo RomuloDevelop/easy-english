@@ -1,7 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { StoreModule } from '@ngrx/store'
-import { AppState } from './state/admin/models'
+import { storageSyncMetaReducer } from 'ngrx-store-persist';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools'
 import { reducer as CourseReducer } from './state/admin/courses/course.reducers'
 import { reducer as SectionReducer } from './state/admin/sections/section.reducers'
 import { reducer as LectureReducer } from './state/admin/lectures/lecture.reducers'
@@ -241,7 +242,10 @@ const store = {
     HttpClientModule,
     AdminModule,
     SharedModule,
-    StoreModule.forRoot(store)
+    StoreModule.forRoot(store, { metaReducers: [storageSyncMetaReducer] }),
+    StoreDevtoolsModule.instrument({
+        maxAge: 25
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

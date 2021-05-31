@@ -1,7 +1,11 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
-import { SectionAction, Section, Lecture, VideoLectue, Article, Quiz, Answer } from '../admin.service';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { AdminService, SectionAction } from '../admin.service';
 import {ConfirmationService, PrimeNGConfig, Message} from 'primeng/api';
+import { select, Store } from '@ngrx/store';
+import { Section, Lecture, VideoLectue, Article, Quiz, Answer } from '../../../../state/admin/models';
+import { SectionData, selectLectures } from '../../../../state/admin/admin.selectores';
 import memoize from '../../../../decorators/memoize'
+import { setLecture, updateLecture, deleteLecture } from 'src/app/state/admin/lectures/lecture.actions';
 
 @Component({
   selector: 'app-sections',
@@ -9,12 +13,12 @@ import memoize from '../../../../decorators/memoize'
   styleUrls: ['./sections.component.scss'],
   providers: [ConfirmationService]
 })
-export class SectionsComponent implements OnInit, OnChanges {
+export class SectionsComponent implements OnInit, OnChanges, OnDestroy {
 
   @Output('save') saveEvent = new EventEmitter<{section: Section, type: SectionAction}>();
-  @Input('data') data: Section = null
+  @Input('data') data: SectionData = null
+  @Input('course') courseId: number = null
   edit = false
-  id = 1
   title = ''
   description = ''
   lectures: Lecture[] = []
@@ -30,6 +34,8 @@ export class SectionsComponent implements OnInit, OnChanges {
   // Video variables
   videoUrl = ''
   videoDetail = ''
+  videoHeight = 250
+  videoWidth = 500
 
   // Article variables
   articleTitle = ''
@@ -41,22 +47,39 @@ export class SectionsComponent implements OnInit, OnChanges {
   answers: Answer[] = []
   correctAnswer: number = null
 
+  //All lectures
+  allLectures: Lecture[]
+
   constructor(
+      public adminService: AdminService,
       private confirmationService: ConfirmationService,
       private primengConfig: PrimeNGConfig,
+      private store: Store,
       private cdr: ChangeDetectorRef
     ) { }
 
   ngOnInit() {
     this.primengConfig.ripple = true;
+    this.store.pipe(select(selectLectures)).subscribe(lectures => this.allLectures = lectures)
+
+    // Add Youtube script
+    const tag = document.createElement('script');
+
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.body.appendChild(tag);
+
+    // Logic for resize video
+    window.addEventListener('resize', this.resizeWindow.bind(this))
+  }
+
+  ngOnDestroy() {
+    window.removeEventListener('resize', this.resizeWindow.bind(this));
   }
 
   ngOnChanges(changes: SimpleChanges) {
     for(const name in changes) {
         if (name === 'data') {
-            const section = changes[name].currentValue as Section
-            this.edit = section.edit
-            this.id = section.id
+            const section = changes[name].currentValue as SectionData
             this.title = section.title
             this.description = section.description
             this.lectures = section.lectures
@@ -64,67 +87,94 @@ export class SectionsComponent implements OnInit, OnChanges {
     }
   }
 
+  resizeWindow() {
+    const YTContainer: HTMLDivElement = document.querySelector('#youtube-container') as HTMLDivElement
+    this.videoWidth = YTContainer.clientWidth
+    this.videoHeight = this.videoWidth / 2
+    console.log(this.videoWidth, this.videoHeight)
+  }
+
+  onOpen() {
+      setTimeout(this.resizeWindow.bind(this), 300)
+  }
+
   emitEvent(type: SectionAction = 'update') {
     const section: Section = {
-        edit: false,
-        id: this.id,
+        id: this.data.id,
+        courseId: this.courseId,
         title: this.title,
-        description: this.description,
-        lectures: this.lectures
+        description: this.description
     }
     this.saveEvent.emit({section, type})
   }
 
   // Lectures methods
-  updateLecture(item: Lecture) {
+  updateLecture($event, item: Lecture) {
+    $event.stopPropagation()
     if (item.type === 'Article') {
         const data = item.data as Article
         this.articleDetail = data.detail
         this.articleTitle = data.title
-        this.lectureId = item.id
         this.displayArticle = true
     } else if (item.type === 'Quiz') {
         const data = item.data as Quiz
         this.quizTitle = data.title
         this.question = data.question
         this.answers = data.answers
+        this.correctAnswer = this.answers.find(item => item.correct).id
         this.displayQuiz = true
     } else if (item.type === 'Video') {
         const data = item.data as VideoLectue
         this.videoDetail = data.detail
         this.videoUrl = data.url
-        this.lectureId = item.id
         this.displayVideo = true
     }
+    this.lectureId = item.id
   }
 
-  deleteLecture(lecture: Lecture) {
+  deleteLecture($event, lecture: Lecture) {
+    $event.stopPropagation()
     this.deleteDialog(() => {
-        const index = this.lectures.findIndex(item => item.id === lecture.id)
-        this.lectures.splice(index, 1)
+        const { id } = this.lectures.find(item => item.id === lecture.id)
+        this.store.dispatch(deleteLecture({id}))
     })
   }
 
   createVideo() {
     const id = this.lectureId
+    const sectionId = this.data.id
     const video: VideoLectue = {
         url: this.videoUrl,
         detail: this.videoDetail
     }
-    this.addLectureOrEdit({id, data: video, type: 'Video'})
+    this.addLectureOrEdit({sectionId, id, data: video, type: 'Video'})
+    this.clearVideoModal()
+  }
+
+  clearVideoModal() {
     this.displayVideo = false
     this.videoDetail = ''
     this.videoUrl = ''
     this.lectureId = undefined
   }
 
+  @memoize()
+  disableCreateVideo(url: string) {
+    return url === ''
+  }
+
   createArticle() {
     const id = this.lectureId
+    const sectionId = this.data.id
     const data: Article = {
         title: this.articleTitle,
         detail: this.articleDetail
     }
-    this.addLectureOrEdit({id, data, type: 'Article'})
+    this.addLectureOrEdit({sectionId, id, data, type: 'Article'})
+    this.clearArticleModal()
+  }
+
+  clearArticleModal() {
     this.displayArticle = false
     this.articleDetail = ''
     this.articleTitle = ''
@@ -132,20 +182,24 @@ export class SectionsComponent implements OnInit, OnChanges {
   }
 
   // Quiz methods
-
   createQuiz() {
-    console.log('answers', this.answers)
     const id = this.lectureId
+    const sectionId = this.data.id
     const data: Quiz = {
         title: this.quizTitle,
         question: this.question,
         answers: this.answers.map(answer => ({...answer, correct: this.correctAnswer === answer.id}))
     }
-    this.addLectureOrEdit({id, data, type: 'Quiz'})
+    this.addLectureOrEdit({sectionId, id, data, type: 'Quiz'})
+    this.clearQuizModal()
+  }
+
+  clearQuizModal() {
     this.displayQuiz = false
     this.quizTitle = ''
     this.question = ''
     this.answers = []
+    this.correctAnswer = null
     this.lectureId = undefined
   }
 
@@ -160,8 +214,7 @@ export class SectionsComponent implements OnInit, OnChanges {
   }
 
   deleteaAnswer(id: number) {
-      const index = this.answers.findIndex(item => item.id === id)
-      this.answers.splice(index, 1)
+    this.answers = this.answers.filter(item => item.id !== id)
   }
 
   @memoize()
@@ -191,12 +244,16 @@ export class SectionsComponent implements OnInit, OnChanges {
   addLectureOrEdit(lecture: Lecture) {
     const index = this.lectures.findIndex(item => item.id === lecture.id)
     if (index > -1) {
-        this.lectures[index] = lecture
+        this.store.dispatch(updateLecture({lecture}))
     } else {
-        const newId = this.lectures.length ? this.lectures[this.lectures.length - 1].id + 1 : 1
-        this.lectures.push({...lecture, id: newId})
+        const id = this.allLectures.length ? this.allLectures[this.allLectures.length - 1].id + 1 : 1
+        this.store.dispatch(setLecture({lecture: {...lecture, id}}))
     }
-    this.emitEvent()
+    //this.emitEvent()
+  }
+
+  setEdit() {
+    this.adminService.sectionEdit = this.data.id
   }
 
   deleteDialog(cb: () => void = null) {

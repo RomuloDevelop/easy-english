@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductService, Product } from './admin.service';
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
@@ -7,12 +6,9 @@ import { ProductService, Product } from './admin.service';
 })
 export class AdminComponent implements OnInit {
 
-    products: Product[];
-
-    constructor(private productService: ProductService) { }
+    constructor() { }
 
     ngOnInit() {
-        this.productService.getProductsSmall().then(data => this.products = data);
     }
 
 }

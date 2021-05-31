@@ -29,6 +29,12 @@
         padding-top: 7px !important;
         padding-bottom: 7px !important;
     }
+
+    .innerHtml {
+        p {
+            word-wrap: break-word;
+        }
+    }
 }
 
 :host ::ng-deep .answer-item {

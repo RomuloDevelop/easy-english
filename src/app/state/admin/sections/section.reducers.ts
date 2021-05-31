@@ -15,7 +15,8 @@ const courseReducers = createReducer(initialState,
             return item
         })
     ),
-    on(SectionActions.deleteSection, (state, { id }) => state.filter(item => item.id === id))
+    on(SectionActions.deleteSection, (state, { id }) => state.filter(item => item.id !== id)),
+    on(SectionActions.deleteCourseSection, (state, { courseId }) => state.filter(item => item.courseId !== courseId))
 )
 
 export function reducer(state: SectionState | undefined, action: Action) {

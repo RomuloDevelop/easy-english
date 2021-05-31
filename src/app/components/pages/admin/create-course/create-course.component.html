@@ -1,17 +1,33 @@
-<h2>Create Course</h2>
-<div class="container mt-5" style="max-width: 1200px;">
-  <p-card header="Course home page" styleClass="admin-card">
+<div class="container">
+    <div class="page-title-content">
+        <ul>
+            <li><a routerLink="../../../admin">Admin</a></li>
+            <li>Courses</li>
+        </ul>
+        <h2>Create Courses</h2>
+    </div>
+  <p-card header="Course home page" styleClass="admin-card p-mt-5">
       <div class="p-field">
           <small id="title-help">Enter a title for the course.</small>
           <input placeholder="Title" id="title" class="p-inputtext-sm" type="text" aria-describedby="title-help" pInputText [(ngModel)]="title" />
         </div>
           <div class="p-field">
           <small id="title-help">Enter a subtitle for the course.</small>
-          <input placeholder="Subtitle" id="title" class="p-inputtext-sm" type="text" aria-describedby="title-help" pInputText [(ngModel)]="title" />
+          <input placeholder="Subtitle" id="title" class="p-inputtext-sm" type="text" aria-describedby="title-help" pInputText [(ngModel)]="subtitle" />
         </div>
         <div class="p-field">
             <small id="title-help">Enter a full description for the course.</small>
             <p-editor [(ngModel)]="description" [style]="{'height':'200px'}"></p-editor>
+        </div>
+        <div class="d-flex justify-content-center mt-3">
+            <button class="default-btn"
+            (click)="updateCourse()"
+            [disabled]="disableUpdate(title, subtitle, description)"
+            >
+                <i class="pi pi-pencil icon-arrow before"></i>
+                <span class="label">Update Course</span>
+                <i class="pi pi-pencil icon-arrow after"></i>
+          </button>
         </div>
   </p-card>
   <p-card header="Create Sections" class="create-section">
@@ -23,11 +39,12 @@
       <app-sections
         *ngFor="let section of sections"
         [data]="section"
+        [course]="courseId"
         (save)="updateSection($event)">
     </app-sections>
       <div class="d-flex justify-content-center mt-3">
         <button class="default-btn"
-        (click)="add()"
+        (click)="addSection()"
         [disabled]="disableAdd(sections)"
         >
             <i class='bx bx-plus-circle icon-arrow before'></i>
@@ -37,3 +54,5 @@
       </div>
   </p-card>
 </div>
+
+<p-toast></p-toast>

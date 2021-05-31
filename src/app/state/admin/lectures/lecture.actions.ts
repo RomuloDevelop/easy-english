@@ -4,3 +4,4 @@ import {createAction, props} from '@ngrx/store'
 export const setLecture = createAction('[Lecture] Set Lecture', props<{lecture: Lecture}>())
 export const updateLecture = createAction('[Lecture] Update Lecture', props<{lecture: Lecture}>())
 export const deleteLecture = createAction('[Lecture] Delete Lecture', props<{id: number}>())
+export const deleteSectionLecture = createAction('[Lecture] Delete Lecture By Section', props<{sectionId: number}>())

@@ -15,7 +15,14 @@ const courseReducers = createReducer(initialState,
             return item
         })
     ),
-    on(CourseActions.deleteCourse, (state, { id }) => state.filter(item => item.id === id))
+    on(CourseActions.deleteCourse, (state, { id }) => state.filter(item => item.id !== id)),
+    on(CourseActions.updateStatus, (state, { id, status }) => state.map(
+        item => {
+            if(item.id === id) {
+                return {...item, status: status}
+            }
+        }
+    ))
 )
 
 export function reducer(state: CourseState | undefined, action: Action) {

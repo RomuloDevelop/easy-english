@@ -13,7 +13,7 @@ const routes: Routes = [
           component: CoursesComponent
         },
         {
-          path: 'create-course',
+          path: 'create-course/:id',
           component: CreateCourseComponent
         }
       ]
