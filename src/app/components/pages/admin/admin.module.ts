@@ -22,6 +22,8 @@ import {RadioButtonModule} from 'primeng/radiobutton';
 import {InputTextareaModule} from 'primeng/inputtextarea';
 import {InputSwitchModule} from 'primeng/inputswitch';
 import {ToastModule} from 'primeng/toast';
+import {TooltipModule} from 'primeng/tooltip';
+import {FileUploadModule} from 'primeng/fileupload';
 
 import {AdminService} from './admin.service'
 import {ConfirmationService, MessageService} from 'primeng/api';
@@ -49,7 +51,9 @@ import {ConfirmationService, MessageService} from 'primeng/api';
     RadioButtonModule,
     InputTextareaModule,
     InputSwitchModule,
-    ToastModule
+    ToastModule,
+    TooltipModule,
+    FileUploadModule
   ],
   providers: [AdminService, ConfirmationService, MessageService]
 })

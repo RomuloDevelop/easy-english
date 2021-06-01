@@ -6,6 +6,7 @@ import { HeaderStyleTwoComponent } from './components/common/header-style-two/he
 import { HeaderStyleThreeComponent } from './components/common/header-style-three/header-style-three.component';
 import { HeaderStyleFourComponent } from './components/common/header-style-four/header-style-four.component';
 import { YouTubePlayerModule } from "@angular/youtube-player";
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -14,14 +15,15 @@ import { YouTubePlayerModule } from "@angular/youtube-player";
     HeaderStyleThreeComponent,
     HeaderStyleFourComponent
   ],
-  imports: [RouterModule],
+  imports: [RouterModule, HttpClientModule],
   exports: [
     LayoutModule,
     HeaderStyleOneComponent,
     HeaderStyleTwoComponent,
     HeaderStyleThreeComponent,
     HeaderStyleFourComponent,
-    YouTubePlayerModule
+    YouTubePlayerModule,
+    HttpClientModule
   ]
 })
 export class SharedModule { }

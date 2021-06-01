@@ -28,17 +28,27 @@
     </div>
     <p>{{description}}</p>
     <p-accordion [multiple]="true" *ngIf="lectures.length" class="lecture-group" (onOpen)="onOpen()">
-        <p-accordionTab *ngFor="let lecture of lectures">
+        <p-accordionTab *ngFor="let lecture of lectures; let indexElement=index;">
             <ng-template pTemplate="header">
                 <div class="w-100">
-                    <h4 class="h6 d-inline">{{lecture.id + ' ' + lecture.type}}</h4>
+                    <h4 class="h6 d-inline">{{indexElement + 1 + ' ' + lecture.type}}</h4>
                     <div class="edit-buttons float-end">
-                        <i class="pi pi-pencil" (click)="updateLecture($event, lecture)"></i>
-                        <i class="ml-1 pi pi-trash" (click)="deleteLecture($event, lecture)"></i>
+                        <i class="pi pi-pencil" pTooltip="Edit lecture" (click)="updateLecture($event, lecture)"></i>
+                        <i class="ml-1 pi pi-trash" pTooltip="Delete lecture" (click)="deleteLecture($event, lecture)"></i>
+                        <i *ngIf="lecture.type === 'Video' || lecture.type === 'Article'" class="ml-1 pi pi-file" pTooltip="See resources" (click)="showResources($event, lecture)"></i>
                     </div>
                 </div>
             </ng-template>
             <ng-container *ngIf="lecture.type === 'Video'">
+                <ng-container *ngIf="lecture.resources?.length">
+                    <strong>Resources</strong>
+                    <hr class="mt-0">
+                    <ol class="unstyled-list">
+                        <li *ngFor="let file of lecture?.resources">{{file.name}} - {{file.size}} bytes</li>
+                    </ol>
+                </ng-container>
+                <strong class="mt-4">Video</strong>
+                <hr class="mt-0">
                 <div class="d-flex justify-content-center" id="youtube-container">
                     <youtube-player
                       [videoId]="lecture.data.url"
@@ -52,6 +62,15 @@
                 <div [innerHtml]="lecture.data.detail" class="innerHtml"></div>
             </ng-container>
             <ng-container *ngIf="lecture.type === 'Article'">
+                <ng-container *ngIf="lecture.resources?.length">
+                    <strong>Resources</strong>
+                    <hr class="mt-0">
+                    <ol class="unstyled-list">
+                        <li *ngFor="let file of lecture?.resources">{{file.name}} - {{file.size}} bytes</li>
+                    </ol>
+                </ng-container>
+                <strong class="mt-4">Article</strong>
+                <hr class="mt-0">
                 <span class="h5">{{lecture.data.title}}</span>
                 <div [innerHtml]="lecture.data.detail" class="innerHtml"></div>
             </ng-container>
@@ -66,11 +85,11 @@
                         [value]="answer.id"
                         [(ngModel)]="correctAnswer"
                         ></p-radioButton>
-                        <p style="margin-left: 1.2rem;;">{{answer.text}}</p>
+                        <p style="margin-left: 1.2rem;">{{answer.text}}</p>
                     </li>
                 </ul>
             </ng-container>
-            <ng-container *ngIf="lecture.type === 'FinalQuiz'">
+            <ng-container *ngIf="lecture.type === 'Final Quiz'">
                 <span class="h5">{{lecture.data.title}}</span>
                 <div *ngFor="let questionItem of lecture.data.questions">
                     <div [innerHtml]="questionItem.question" class="mt-3 mb-3 innerHtml"></div>
@@ -100,6 +119,19 @@
 
 <!-- Delete Dialog -->
 <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>
+
+<!-- Resources Dialog -->
+<p-dialog (onHide)="clearResourceModal()" header="Resources" [modal]="true" [(visible)]="displayResource" [style]="{width: '50vw'}" [baseZIndex]="10000">
+    <p>
+        <i class="pi pi-exclamation-circle"></i> Add a title and a description with all the informatión you need.
+    </p>
+    <p-fileUpload customUpload="true" name="demo[]" url="" (uploadHandler)="onUpload($event)"
+    multiple="multiple" accept="image/*" maxFileSize="1000000">
+    </p-fileUpload>
+    <ng-template pTemplate="footer">
+        <p-button (click)="displayResource = false" label="Cancel" styleClass="p-button--sm p-button-outlined p-button-secondary cancel-btn"></p-button>
+    </ng-template>
+</p-dialog>
 
 <!-- Article Dialog -->
 <p-dialog [header]="lectureId ? 'Update Article' : 'New Article'" [modal]="true" [(visible)]="displayArticle" [style]="{width: '50vw'}" [baseZIndex]="10000">

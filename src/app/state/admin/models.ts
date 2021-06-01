@@ -34,7 +34,8 @@ export interface Lecture {
     id: number,
     sectionId: number,
     data: Quiz | Article | VideoLectue | FinalQuiz,
-    type: 'Article' | 'Video' | 'Quiz' | 'FinalQuiz'
+    type: 'Article' | 'Video' | 'Quiz' | 'Final Quiz',
+    resources?: File[]
 }
 
 export interface Section {

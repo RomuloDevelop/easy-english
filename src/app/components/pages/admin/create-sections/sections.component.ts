@@ -23,8 +23,10 @@ export class SectionsComponent implements OnInit, OnChanges, OnDestroy {
   description = ''
   lectures: Lecture[] = []
   lectureId: number = undefined
+  resources: File[] = []
 
   // Modals
+  displayResource = false
   displayDelete = false
   displayArticle = false
   displayVideo = false
@@ -114,6 +116,38 @@ export class SectionsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   // Lectures methods
+  showResources($event, item: Lecture) {
+    $event.stopPropagation()
+    console.log(item)
+    this.lectureId = item.id
+    let lecture = this.lectures.find(item => item.id === this.lectureId)
+    this.resources = lecture.resources
+    this.displayResource = true
+  }
+
+  createResource() {
+    console.log(this.resources)
+    let lecture = this.lectures.find(item => item.id === this.lectureId)
+    lecture = {
+        ...lecture,
+        resources: this.resources
+    }
+    this.addLectureOrEdit(lecture)
+    this.clearResourceModal()
+  }
+
+  onUpload(event) {
+      console.log(event)
+      this.resources = event.files
+      this.createResource()
+    //this.messageService.add({severity: 'info', summary: 'File Uploaded', detail: ''});
+  }
+
+  clearResourceModal() {
+    this.displayResource = false
+    this.clearCommonModalData()
+  }
+
   updateLecture($event, item: Lecture) {
     $event.stopPropagation()
     if (item.type === 'Article') {
@@ -133,13 +167,14 @@ export class SectionsComponent implements OnInit, OnChanges, OnDestroy {
         this.videoDetail = data.detail
         this.videoUrl = data.url
         this.displayVideo = true
-    } else if (item.type === 'FinalQuiz') {
+    } else if (item.type === 'Final Quiz') {
         const data = item.data as FinalQuiz
         this.finalQuizTitle = data.title
         this.questions = data.questions
         this.displayFinalQuiz = true
     }
     this.lectureId = item.id
+    this.resources = item?.resources
   }
 
   deleteLecture($event, lecture: Lecture) {
@@ -165,7 +200,7 @@ export class SectionsComponent implements OnInit, OnChanges, OnDestroy {
     this.displayVideo = false
     this.videoDetail = ''
     this.videoUrl = ''
-    this.lectureId = undefined
+    this.clearCommonModalData()
   }
 
   @memoize()
@@ -188,7 +223,7 @@ export class SectionsComponent implements OnInit, OnChanges, OnDestroy {
     this.displayArticle = false
     this.articleDetail = ''
     this.articleTitle = ''
-    this.lectureId = undefined
+    this.clearCommonModalData()
   }
 
   // Quiz methods
@@ -210,7 +245,7 @@ export class SectionsComponent implements OnInit, OnChanges, OnDestroy {
     this.question = ''
     this.answers = []
     this.correctAnswer = null
-    this.lectureId = undefined
+    this.clearCommonModalData()
   }
 
   addAnswer() {
@@ -259,7 +294,7 @@ export class SectionsComponent implements OnInit, OnChanges, OnDestroy {
         title: this.finalQuizTitle,
         questions: this.questions
     }
-    this.addLectureOrEdit({sectionId, id, data, type: 'FinalQuiz'})
+    this.addLectureOrEdit({sectionId, id, data, type: 'Final Quiz'})
     this.clearFinalQuizModal()
   }
 
@@ -267,7 +302,7 @@ export class SectionsComponent implements OnInit, OnChanges, OnDestroy {
     this.displayFinalQuiz = false
     this.finalQuizTitle = ''
     this.questions = []
-    this.lectureId = undefined
+    this.clearCommonModalData()
   }
 
   addQuestion() {
@@ -293,6 +328,10 @@ export class SectionsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   // General methods
+  clearCommonModalData() {
+    this.lectureId = undefined
+    this.resources = []
+  }
 
   addLectureOrEdit(lecture: Lecture) {
     const index = this.lectures.findIndex(item => item.id === lecture.id)
