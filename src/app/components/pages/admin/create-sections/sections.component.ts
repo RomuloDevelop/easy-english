@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChange
 import { AdminService, SectionAction } from '../admin.service';
 import {ConfirmationService, PrimeNGConfig, Message} from 'primeng/api';
 import { select, Store } from '@ngrx/store';
-import { Section, Lecture, VideoLectue, Article, Quiz, Answer } from '../../../../state/admin/models';
+import { Section, Lecture, VideoLectue, Article, Quiz, Question, FinalQuiz, Answer } from '../../../../state/admin/models';
 import { SectionData, selectLectures } from '../../../../state/admin/admin.selectores';
 import memoize from '../../../../decorators/memoize'
 import { setLecture, updateLecture, deleteLecture } from 'src/app/state/admin/lectures/lecture.actions';
@@ -29,6 +29,7 @@ export class SectionsComponent implements OnInit, OnChanges, OnDestroy {
   displayArticle = false
   displayVideo = false
   displayQuiz = false
+  displayFinalQuiz = false
   msgs: Message[] = [];
 
   // Video variables
@@ -46,6 +47,10 @@ export class SectionsComponent implements OnInit, OnChanges, OnDestroy {
   question = ''
   answers: Answer[] = []
   correctAnswer: number = null
+
+  //Final quiz
+  finalQuizTitle = ''
+  questions: Question[] = []
 
   //All lectures
   allLectures: Lecture[]
@@ -128,6 +133,11 @@ export class SectionsComponent implements OnInit, OnChanges, OnDestroy {
         this.videoDetail = data.detail
         this.videoUrl = data.url
         this.displayVideo = true
+    } else if (item.type === 'FinalQuiz') {
+        const data = item.data as FinalQuiz
+        this.finalQuizTitle = data.title
+        this.questions = data.questions
+        this.displayFinalQuiz = true
     }
     this.lectureId = item.id
   }
@@ -240,6 +250,49 @@ export class SectionsComponent implements OnInit, OnChanges, OnDestroy {
       }
       return result
   }
+
+  // Final Quiz methods
+  createFinalQuiz() {
+    const id = this.lectureId
+    const sectionId = this.data.id
+    const data: FinalQuiz = {
+        title: this.finalQuizTitle,
+        questions: this.questions
+    }
+    this.addLectureOrEdit({sectionId, id, data, type: 'FinalQuiz'})
+    this.clearFinalQuizModal()
+  }
+
+  clearFinalQuizModal() {
+    this.displayFinalQuiz = false
+    this.finalQuizTitle = ''
+    this.questions = []
+    this.lectureId = undefined
+  }
+
+  addQuestion() {
+    let id = 0
+    if (this.questions.length) id = this.questions[this.questions.length - 1].id + 1
+    this.questions.push({
+        id,
+        question: '',
+        answers: [],
+        correctAnswer: null
+    })
+  }
+
+  addFinalAnswer(questionId) {
+    let id = 0
+    const question = this.questions.find(item => item.id === questionId)
+    if (question.answers.length) id = question.answers[question.answers.length - 1].id + 1
+    question.answers.push({
+        id,
+        text: '',
+        correct: false
+    })
+  }
+
+  // General methods
 
   addLectureOrEdit(lecture: Lecture) {
     const index = this.lectures.findIndex(item => item.id === lecture.id)

@@ -6,9 +6,18 @@ export interface Answer {
     correct: boolean
 }
 export interface Quiz {
+    id?: number,
     title: string,
     question: string,
-    answers: Answer[]
+    answers: Answer[],
+    correctAnswer?: number
+}
+
+export type Question = Omit<Quiz, 'title'>
+
+export interface FinalQuiz {
+    title: string,
+    questions: Question[]
 }
 
 export interface Article {
@@ -24,8 +33,8 @@ export interface VideoLectue {
 export interface Lecture {
     id: number,
     sectionId: number,
-    data: Quiz | Article | VideoLectue,
-    type: 'Article' | 'Video' | 'Quiz'
+    data: Quiz | Article | VideoLectue | FinalQuiz,
+    type: 'Article' | 'Video' | 'Quiz' | 'FinalQuiz'
 }
 
 export interface Section {

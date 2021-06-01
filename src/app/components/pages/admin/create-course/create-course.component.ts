@@ -93,7 +93,7 @@ export class CreateCourseComponent implements OnInit {
 
   updateSection(item: {section: Section, type: SectionAction}) {
     const {section: newSection, type} = item
-    if(type === 'delete') {
+    if(type === 'delete' || type === 'cancel') {
         this.deleteSectionAndLectures(newSection)
     } else if (type === 'update') {
         this.store.dispatch(updateSection({section: newSection}))
