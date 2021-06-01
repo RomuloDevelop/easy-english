@@ -66,7 +66,7 @@
         background-color: var(--whiteColor);
         color: var(--mainColor);
         border-color: var(--whiteColor);
-        
+
         .icon-arrow {
             color: var(--mainColor);
             transition: var(--transition);
@@ -75,7 +75,7 @@
             background-color: var(--blackColor);
             color: var(--whiteColor);
             border-color: var(--blackColor);
-        
+
             .icon-arrow {
                 color: var(--whiteColor);
             }
@@ -94,13 +94,13 @@
         li {
             color: var(--paragraphColor);
             text-align: start;
-    
+
             i {
                 color: var(--mainColor);
             }
             a {
                 color: var(--blackColor);
-                
+
                 &:hover, &:focus {
                     color: var(--mainColor);
                     opacity: 1;
@@ -154,7 +154,7 @@
             color: #cccccc;
             position: relative;
             padding-left: 20px;
-            
+
             i {
                 position: absolute;
                 left: 0;
@@ -233,7 +233,7 @@
     .top-header-login-register {
         li {
             color: var(--whiteColor);
-    
+
             a {
                 color: var(--whiteColor);
             }
@@ -266,7 +266,7 @@
         background-color: var(--whiteColor) !important;
         border-radius: 3px;
         padding: 0 20px;
-        
+
         .navbar-brand {
             padding: {
                 top: 0;
@@ -389,11 +389,11 @@
                             opacity: 0;
                             visibility: hidden;
                             transform: scaleY(0);
-                            
+
                             li {
                                 a {
                                     color: #4a6f8a;
-                                    
+
                                     &:hover, &:focus, &.active {
                                         color: var(--mainColor);
                                     }
@@ -404,11 +404,11 @@
                                     opacity: 0;
                                     visibility: hidden;
                                     transform: scaleY(0);
-        
+
                                     li {
                                         a {
                                             color: #4a6f8a;
-        
+
                                             &:hover, &:focus, &.active {
                                                 color: var(--mainColor);
                                             }
@@ -419,11 +419,11 @@
                                             opacity: 0;
                                             visibility: hidden;
                                             transform: scaleY(0);
-                
+
                                             li {
                                                 a {
                                                     color: #4a6f8a;
-                
+
                                                     &:hover, &:focus, &.active {
                                                         color: var(--mainColor);
                                                     }
@@ -434,11 +434,11 @@
                                                     opacity: 0;
                                                     visibility: hidden;
                                                     transform: scaleY(0);
-                        
+
                                                     li {
                                                         a {
                                                             color: #4a6f8a;
-                
+
                                                             &:hover, &:focus, &.active {
                                                                 color: var(--mainColor);
                                                             }
@@ -449,11 +449,11 @@
                                                             opacity: 0;
                                                             visibility: hidden;
                                                             transform: scaleY(0);
-                                
+
                                                             li {
                                                                 a {
                                                                     color: #4a6f8a;
-                
+
                                                                     &:hover, &:focus, &.active {
                                                                         color: var(--mainColor);
                                                                     }
@@ -464,11 +464,11 @@
                                                                     opacity: 0;
                                                                     visibility: hidden;
                                                                     transform: scaleY(0);
-                                        
+
                                                                     li {
                                                                         a {
                                                                             color: #4a6f8a;
-                
+
                                                                             &:hover, &:focus, &.active {
                                                                                 color: var(--mainColor);
                                                                             }
@@ -656,7 +656,7 @@
                 line-height: 1;
                 position: relative;
                 top: 5px;
-                
+
                 i {
                     line-height: 1;
                 }
@@ -720,10 +720,10 @@
                 left: 0;
                 right: 0;
             };
-            .nav-item {    
+            .nav-item {
                 a {
                     color: var(--whiteColor);
-                    
+
                     &:hover, &:focus, &.active {
                         color: var(--mainColor);
                     }
@@ -736,76 +736,76 @@
                 .dropdown-menu {
                     left: 0;
 
-                    li {    
+                    li {
                         a {
                             color: #4a6f8a;
-                            
+
                             &:hover, &:focus, &.active {
                                 color: var(--mainColor);
                             }
                         }
                         .dropdown-menu {
                             left: 250px;
-                            
+
                             li {
                                 a {
                                     color: #4a6f8a;
-                                    
+
                                     &:hover, &:focus, &.active {
                                         color: var(--mainColor);
                                     }
                                 }
                                 .dropdown-menu {
                                     left: -250px;
-        
+
                                     li {
                                         a {
                                             color: #4a6f8a;
-        
+
                                             &:hover, &:focus, &.active {
                                                 color: var(--mainColor);
                                             }
                                         }
                                         .dropdown-menu {
                                             left: 250px;
-                
+
                                             li {
                                                 a {
                                                     color: #4a6f8a;
-                
+
                                                     &:hover, &:focus, &.active {
                                                         color: var(--mainColor);
                                                     }
                                                 }
                                                 .dropdown-menu {
                                                     left: -250px;
-                        
+
                                                     li {
                                                         a {
                                                             color: #4a6f8a;
-                
+
                                                             &:hover, &:focus, &.active {
                                                                 color: var(--mainColor);
                                                             }
                                                         }
                                                         .dropdown-menu {
                                                             left: 250px;
-                                
+
                                                             li {
                                                                 a {
                                                                     color: #4a6f8a;
-                
+
                                                                     &:hover, &:focus, &.active {
                                                                         color: var(--mainColor);
                                                                     }
                                                                 }
                                                                 .dropdown-menu {
                                                                     left: -250px;
-                                        
+
                                                                     li {
                                                                         a {
                                                                             color: #4a6f8a;
-                
+
                                                                             &:hover, &:focus, &.active {
                                                                                 color: var(--mainColor);
                                                                             }
@@ -860,7 +860,7 @@
         .others-option {
             margin-left: auto;
 
-            .language-switcher {    
+            .language-switcher {
                 .dropdown-toggle {
                     span {
                         color: var(--whiteColor);
@@ -898,7 +898,7 @@
         .navbar-nav {
             margin: {
                 left: auto;
-                right: 0;
+                right: 0px;
             };
         }
         .others-option {
@@ -908,7 +908,7 @@
 }
 .navbar-style-four {
     margin-top: 0;
-    
+
     .navbar {
         background-color: var(--whiteColor) !important;
         border-radius: 0;
@@ -1042,7 +1042,7 @@
         &.search-overlay {
             opacity: 1;
             visibility: visible;
-    
+
             .search-overlay-layer {
                 transform: translateX(0);
             }
@@ -1396,7 +1396,7 @@
 
 }
 @media only screen and (min-width: 576px) and (max-width: 767px) {
-    
+
     .top-header-contact-info {
         li {
             flex: 0 0 33.3333333333%;
