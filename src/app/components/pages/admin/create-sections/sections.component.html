@@ -1,288 +1,525 @@
 <div class="create-course-section">
-    <div class="new-section">
-
-  <ng-container *ngIf="adminService.sectionEdit === data?.id else actualSection">
-
-    <h3 class="h6">New Section:</h3>
-    <div class="p-section-field">
+  <div class="new-section">
+    <ng-container
+      *ngIf="adminService.sectionEdit === data?.id; else actualSection"
+    >
+      <h3 class="h6">New Section:</h3>
+      <div class="p-section-field">
         <small id="title-help">Enter a title for the section.</small>
-      <input placeholder="Title" id="title" class="p-inputtext-sm" type="text" aria-describedby="title-help" pInputText [(ngModel)]="title" />
-    </div>
-    <div class="p-section-field">
-        <small id="description-help">Enter a full description to summarize the actual content.</small>
-      <input placeholder="Description" id="description" class="p-inputtext-sm" type="text" aria-describedby="description-help" pInputText [(ngModel)]="description" />
-    </div>
-    <div class="d-flex justify-content-end">
-        <button (click)="emitEvent()" pButton pRipple type="button" label="Accept" class="p-button--sm p-button-outlined"></button>
-        <button (click)="emitEvent('cancel')" pButton pRipple type="button" label="Cancel" class="p-button--sm p-button-outlined p-button-secondary cancel-btn"></button>
-    </div>
+        <input
+          placeholder="Title"
+          id="title"
+          class="p-inputtext-sm"
+          type="text"
+          aria-describedby="title-help"
+          pInputText
+          [(ngModel)]="title"
+        />
+      </div>
+      <div class="p-section-field">
+        <small id="description-help"
+          >Enter a full description to summarize the actual content.</small
+        >
+        <input
+          placeholder="Description"
+          id="description"
+          class="p-inputtext-sm"
+          type="text"
+          aria-describedby="description-help"
+          pInputText
+          [(ngModel)]="description"
+        />
+      </div>
+      <div class="d-flex justify-content-end">
+        <button
+          (click)="emitEvent()"
+          pButton
+          pRipple
+          type="button"
+          label="Accept"
+          class="p-button--sm p-button-outlined"
+        ></button>
+        <button
+          (click)="emitEvent('cancel')"
+          pButton
+          pRipple
+          type="button"
+          label="Cancel"
+          class="p-button--sm p-button-outlined p-button-secondary cancel-btn"
+        ></button>
+      </div>
+    </ng-container>
 
-</ng-container>
-
-  <ng-template #actualSection>
-    <h3 class="h6" style="display: inline;">Section {{data.id}}: </h3>
-    <span>{{title}}</span>
-    <div class="edit-buttons" style="display: inline;">
+    <ng-template #actualSection>
+      <h3 class="h6" style="display: inline">Section {{ data.id }}:</h3>
+      <span>{{ title }}</span>
+      <div class="edit-buttons" style="display: inline">
         <i class="pi pi-pencil" (click)="setEdit()"></i>
         <i class="ml-1 pi pi-trash" (click)="deleteDialog()"></i>
-    </div>
-    <p>{{description}}</p>
-    <p-accordion [multiple]="true" *ngIf="lectures.length" class="lecture-group" (onOpen)="onOpen()">
-        <p-accordionTab *ngFor="let lecture of lectures; let indexElement=index;">
-            <ng-template pTemplate="header">
-                <div class="w-100">
-                    <h4 class="h6 d-inline">{{indexElement + 1 + ' ' + lecture.type}}</h4>
-                    <div class="edit-buttons float-end">
-                        <i class="pi pi-pencil" pTooltip="Edit lecture" (click)="updateLecture($event, lecture)"></i>
-                        <i class="ml-1 pi pi-trash" pTooltip="Delete lecture" (click)="deleteLecture($event, lecture)"></i>
-                        <i *ngIf="lecture.type === 'Video' || lecture.type === 'Article'" class="ml-1 pi pi-file" pTooltip="See resources" (click)="showResources($event, lecture)"></i>
-                    </div>
-                </div>
-            </ng-template>
-            <ng-container *ngIf="lecture.type === 'Video'">
-                <ng-container *ngIf="lecture.resources?.length">
-                    <strong>Resources</strong>
-                    <hr class="mt-0">
-                    <ol class="unstyled-list">
-                        <li *ngFor="let file of lecture?.resources">{{file.name}} - {{file.size}} bytes</li>
-                    </ol>
-                </ng-container>
-                <strong class="mt-4">Video</strong>
-                <hr class="mt-0">
-                <div class="d-flex justify-content-center" id="youtube-container">
-                    <youtube-player
-                      [videoId]="lecture.data.url"
-                      suggestedQuality="highres"
-                      [height]="videoHeight"
-                      [width]="videoWidth"
-                      >
-                    </youtube-player>
-                </div>
+      </div>
+      <p>{{ description }}</p>
+      <p-accordion
+        [multiple]="true"
+        *ngIf="lectures.length"
+        class="lecture-group"
+        (onOpen)="onOpen()"
+      >
+        <p-accordionTab
+          *ngFor="let lecture of lectures; let indexElement = index"
+        >
+          <ng-template pTemplate="header">
+            <div class="w-100">
+              <h4 class="h6 d-inline">
+                {{ indexElement + 1 + ' ' + lecture.type }}
+              </h4>
+              <div class="edit-buttons float-end">
+                <i
+                  class="pi pi-pencil"
+                  pTooltip="Edit lecture"
+                  (click)="updateLecture($event, lecture)"
+                ></i>
+                <i
+                  class="ml-1 pi pi-trash"
+                  pTooltip="Delete lecture"
+                  (click)="deleteLecture($event, lecture)"
+                ></i>
+                <i
+                  *ngIf="lecture.type === 'Video' || lecture.type === 'Article'"
+                  class="ml-1 pi pi-file"
+                  pTooltip="See resources"
+                  (click)="showResources($event, lecture)"
+                ></i>
+              </div>
+            </div>
+          </ng-template>
+          <ng-container *ngIf="lecture.type === 'Video'">
+            <ng-container *ngIf="lecture.resources?.length">
+              <strong>Resources</strong>
+              <hr class="mt-0" />
+              <ol class="unstyled-list">
+                <li *ngFor="let file of lecture?.resources">
+                  {{ file.name }} - {{ file.size }} bytes
+                </li>
+              </ol>
+            </ng-container>
+            <strong class="mt-4">Video</strong>
+            <hr class="mt-0" />
+            <div class="d-flex justify-content-center" id="youtube-container">
+              <youtube-player
+                [videoId]="lecture.data.url"
+                suggestedQuality="highres"
+                [height]="videoHeight"
+                [width]="videoWidth"
+              >
+              </youtube-player>
+            </div>
 
-                <div [innerHtml]="lecture.data.detail" class="innerHtml"></div>
+            <div [innerHtml]="lecture.data.detail" class="innerHtml"></div>
+          </ng-container>
+          <ng-container *ngIf="lecture.type === 'Article'">
+            <ng-container *ngIf="lecture.resources?.length">
+              <strong>Resources</strong>
+              <hr class="mt-0" />
+              <ol class="unstyled-list">
+                <li *ngFor="let file of lecture?.resources">
+                  {{ file.name }} - {{ file.size }} bytes
+                </li>
+              </ol>
             </ng-container>
-            <ng-container *ngIf="lecture.type === 'Article'">
-                <ng-container *ngIf="lecture.resources?.length">
-                    <strong>Resources</strong>
-                    <hr class="mt-0">
-                    <ol class="unstyled-list">
-                        <li *ngFor="let file of lecture?.resources">{{file.name}} - {{file.size}} bytes</li>
-                    </ol>
-                </ng-container>
-                <strong class="mt-4">Article</strong>
-                <hr class="mt-0">
-                <span class="h5">{{lecture.data.title}}</span>
-                <div [innerHtml]="lecture.data.detail" class="innerHtml"></div>
-            </ng-container>
-            <ng-container *ngIf="lecture.type === 'Quiz'">
-                <span class="h5">{{lecture.data.title}}</span>
-                <div [innerHtml]="lecture.data.question" class="mt-3 mb-3 innerHtml"></div>
-                <ul class="unstyled-list container">
-                    <li class="d-flex w-100 mb-2" *ngFor="let answer of lecture.data.answers">
-                        <p-radioButton
-                        [inputId]="answer.id"
-                        name="answer-result"
-                        [value]="answer.id"
-                        [(ngModel)]="correctAnswer"
-                        ></p-radioButton>
-                        <p style="margin-left: 1.2rem;">{{answer.text}}</p>
-                    </li>
-                </ul>
-            </ng-container>
-            <ng-container *ngIf="lecture.type === 'Final Quiz'">
-                <span class="h5">{{lecture.data.title}}</span>
-                <div *ngFor="let questionItem of lecture.data.questions">
-                    <div [innerHtml]="questionItem.question" class="mt-3 mb-3 innerHtml"></div>
-                    <ul class="unstyled-list container">
-                        <li class="d-flex w-100 mb-2" *ngFor="let answerItem of questionItem.answers">
-                            <p-radioButton
-                            [inputId]="answerItem.id"
-                            name="answer-result"
-                            [value]="answerItem.id"
-                            [(ngModel)]="questionItem.correctAnswer"
-                            ></p-radioButton>
-                            <p style="margin-left: 1.2rem;;">{{answerItem.text}}</p>
-                        </li>
-                    </ul>
-                </div>
-            </ng-container>
+            <strong class="mt-4">Article</strong>
+            <hr class="mt-0" />
+            <span class="h5">{{ lecture.data.title }}</span>
+            <div [innerHtml]="lecture.data.detail" class="innerHtml"></div>
+          </ng-container>
+          <ng-container *ngIf="lecture.type === 'Quiz'">
+            <span class="h5">{{ lecture.data.title }}</span>
+            <div
+              [innerHtml]="lecture.data.question"
+              class="mt-3 mb-3 innerHtml"
+            ></div>
+            <ul class="unstyled-list container">
+              <li
+                class="d-flex w-100 mb-2"
+                *ngFor="let answer of lecture.data.answers"
+              >
+                <p-radioButton
+                  [inputId]="answer.id"
+                  name="answer-result"
+                  [value]="answer.id"
+                  [(ngModel)]="correctAnswer"
+                ></p-radioButton>
+                <p style="margin-left: 1.2rem">{{ answer.text }}</p>
+              </li>
+            </ul>
+          </ng-container>
+          <ng-container *ngIf="lecture.type === 'Final Quiz'">
+            <span class="h5">{{ lecture.data.title }}</span>
+            <div *ngFor="let questionItem of lecture.data.questions">
+              <div
+                [innerHtml]="questionItem.question"
+                class="mt-3 mb-3 innerHtml"
+              ></div>
+              <ul class="unstyled-list container">
+                <li
+                  class="d-flex w-100 mb-2"
+                  *ngFor="let answerItem of questionItem.answers"
+                >
+                  <p-radioButton
+                    [inputId]="answerItem.id"
+                    name="answer-result"
+                    [value]="answerItem.id"
+                    [(ngModel)]="questionItem.correctAnswer"
+                  ></p-radioButton>
+                  <p style="margin-left: 1.2rem">{{ answerItem.text }}</p>
+                </li>
+              </ul>
+            </div>
+          </ng-container>
         </p-accordionTab>
-    </p-accordion>
-    <div class="d-flex justify-content-end flex-wrap">
-        <button (click)="displayVideo = true" pButton pRipple type="button" icon="pi pi-plus" label="Video" class="p-mt-2 p-button--sm p-button-outlined p-button-danger"></button>
-        <button (click)="displayArticle = true" pButton pRipple type="button" icon="pi pi-plus" label="Article" class="p-mt-2 p-button--sm p-button-outlined p-button-danger"></button>
-        <button (click)="displayQuiz = true" pButton pRipple type="button" icon="pi pi-plus" label="Quiz" class="p-mt-2 p-button--sm p-button-outlined p-button-danger"></button>
-        <button (click)="displayFinalQuiz = true" pButton pRipple type="button" icon="pi pi-plus" label="Final Quiz" class="p-mt-2 p-button--sm p-button-outlined p-button-danger"></button>
-    </div>
-  </ng-template>
-</div>
+      </p-accordion>
+      <div class="d-flex justify-content-end flex-wrap">
+        <button
+          (click)="displayVideo = true"
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-plus"
+          label="Video"
+          class="p-mt-2 p-button--sm p-button-outlined p-button-danger"
+        ></button>
+        <button
+          (click)="displayArticle = true"
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-plus"
+          label="Article"
+          class="p-mt-2 p-button--sm p-button-outlined p-button-danger"
+        ></button>
+        <button
+          (click)="displayQuiz = true"
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-plus"
+          label="Quiz"
+          class="p-mt-2 p-button--sm p-button-outlined p-button-danger"
+        ></button>
+        <button
+          (click)="displayFinalQuiz = true"
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-plus"
+          label="Final Quiz"
+          class="p-mt-2 p-button--sm p-button-outlined p-button-danger"
+        ></button>
+      </div>
+    </ng-template>
+  </div>
 
-<!-- Delete Dialog -->
-<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>
+  <!-- Delete Dialog -->
+  <p-confirmDialog
+    [style]="{ width: '50vw' }"
+    [baseZIndex]="10000"
+  ></p-confirmDialog>
 
-<!-- Resources Dialog -->
-<p-dialog (onHide)="clearResourceModal()" header="Resources" [modal]="true" [(visible)]="displayResource" [style]="{width: '50vw'}" [baseZIndex]="10000">
+  <!-- Resources Dialog -->
+  <p-dialog
+    (onHide)="clearResourceModal()"
+    header="Resources"
+    [modal]="true"
+    [(visible)]="displayResource"
+    [style]="{ width: '50vw' }"
+    [baseZIndex]="10000"
+  >
     <p>
-        <i class="pi pi-exclamation-circle"></i> Add a title and a description with all the informatión you need.
+      <i class="pi pi-exclamation-circle"></i> Add a title and a description
+      with all the informatión you need.
     </p>
-    <p-fileUpload customUpload="true" name="demo[]" url="" (uploadHandler)="onUpload($event)"
-    multiple="multiple" maxFileSize="1000000">
+    <p-fileUpload
+      customUpload="true"
+      name="demo[]"
+      url=""
+      (uploadHandler)="onUpload($event)"
+      multiple="multiple"
+      maxFileSize="1000000"
+    >
     </p-fileUpload>
     <ng-template pTemplate="footer">
-        <p-button (click)="displayResource = false" label="Cancel" styleClass="p-button--sm p-button-outlined p-button-secondary cancel-btn"></p-button>
+      <p-button
+        (click)="displayResource = false"
+        label="Cancel"
+        styleClass="p-button--sm p-button-outlined p-button-secondary cancel-btn"
+      ></p-button>
     </ng-template>
-</p-dialog>
+  </p-dialog>
 
-<!-- Article Dialog -->
-<p-dialog [header]="lectureId ? 'Update Article' : 'New Article'" [modal]="true" [(visible)]="displayArticle" [style]="{width: '50vw'}" [baseZIndex]="10000">
+  <!-- Article Dialog -->
+  <p-dialog
+    [header]="lectureId ? 'Update Article' : 'New Article'"
+    [modal]="true"
+    [(visible)]="displayArticle"
+    [style]="{ width: '50vw' }"
+    [baseZIndex]="10000"
+  >
     <p>
-        <i class="pi pi-exclamation-circle"></i> Add a title and a description with all the informatión you need.
+      <i class="pi pi-exclamation-circle"></i> Add a title and a description
+      with all the informatión you need.
     </p>
-    <input placeholder="Title" class="p-inputtext-sm mb-3 w-100" type="text" pInputText [(ngModel)]="articleTitle" />
-    <p-editor [(ngModel)]="articleDetail" [style]="{'height':'150px'}"></p-editor>
+    <input
+      placeholder="Title"
+      class="p-inputtext-sm mb-3 w-100"
+      type="text"
+      pInputText
+      [(ngModel)]="articleTitle"
+    />
+    <p-editor
+      [(ngModel)]="articleDetail"
+      [style]="{ height: '150px' }"
+    ></p-editor>
     <ng-template pTemplate="footer">
-        <p-button (click)="createArticle()" label="Accept" styleClass="p-button--sm p-button-outlined"></p-button>
-        <p-button (click)="clearArticleModal()" label="Cancel" styleClass="p-button--sm p-button-outlined p-button-secondary cancel-btn"></p-button>
+      <p-button
+        (click)="createArticle()"
+        label="Accept"
+        styleClass="p-button--sm p-button-outlined"
+      ></p-button>
+      <p-button
+        (click)="clearArticleModal()"
+        label="Cancel"
+        styleClass="p-button--sm p-button-outlined p-button-secondary cancel-btn"
+      ></p-button>
     </ng-template>
-</p-dialog>
+  </p-dialog>
 
-<!-- Video dialog -->
-<p-dialog [header]="lectureId ? 'Update Video' : 'New Video'" [modal]="true" [(visible)]="displayVideo" [style]="{width: '50vw'}" [baseZIndex]="10000">
+  <!-- Video dialog -->
+  <p-dialog
+    [header]="lectureId ? 'Update Video' : 'New Video'"
+    [modal]="true"
+    [(visible)]="displayVideo"
+    [style]="{ width: '50vw' }"
+    [baseZIndex]="10000"
+  >
     <div class="p-4">
-
-    <p>
-        <i class="pi pi-exclamation-circle"></i> Add the Youtube Id of the video that will be shown in this part of the section course plus a description that will be shown below.
-    </p>
-    <input placeholder="Youtube Id"
-    class="p-inputtext-sm mb-3 w-100" type="text" pInputText [(ngModel)]="videoUrl" />
-    <p-editor [(ngModel)]="videoDetail" [style]="{'height':'150px'}"></p-editor>
-</div>
+      <p>
+        <i class="pi pi-exclamation-circle"></i> Add the Youtube Id of the video
+        that will be shown in this part of the section course plus a description
+        that will be shown below.
+      </p>
+      <input
+        placeholder="Youtube Id"
+        class="p-inputtext-sm mb-3 w-100"
+        type="text"
+        pInputText
+        [(ngModel)]="videoUrl"
+      />
+      <p-editor
+        [(ngModel)]="videoDetail"
+        [style]="{ height: '150px' }"
+      ></p-editor>
+    </div>
 
     <ng-template pTemplate="footer">
-        <button pButton (click)="createVideo()" [disabled]="disableCreateVideo(videoUrl)" label="Accept" styleClass="p-button--sm p-button-outlined"></button>
-        <button pButton (click)="clearVideoModal()" label="Cancel" styleClass="p-button--sm p-button-outlined p-button-secondary cancel-btn"></button>
+      <button
+        pButton
+        (click)="createVideo()"
+        [disabled]="disableCreateVideo(videoUrl)"
+        label="Accept"
+        styleClass="p-button--sm p-button-outlined"
+      ></button>
+      <button
+        pButton
+        (click)="clearVideoModal()"
+        label="Cancel"
+        styleClass="p-button--sm p-button-outlined p-button-secondary cancel-btn"
+      ></button>
     </ng-template>
-</p-dialog>
+  </p-dialog>
 
-<!-- Quiz Dialog -->
-<p-dialog [header]="lectureId ? 'Update Quiz' : 'New Quiz'" [modal]="true" [(visible)]="displayQuiz" [style]="{width: '50vw'}" [baseZIndex]="10000">
+  <!-- Quiz Dialog -->
+  <p-dialog
+    [header]="lectureId ? 'Update Quiz' : 'New Quiz'"
+    [modal]="true"
+    [(visible)]="displayQuiz"
+    [style]="{ width: '50vw' }"
+    [baseZIndex]="10000"
+  >
     <p>
-        <i class="pi pi-exclamation-circle"></i> Add a title and a question for the quiz.
-        Create as many answers as you want and don't forget to select the correct answer before you're done.
+      <i class="pi pi-exclamation-circle"></i> Add a title and a question for
+      the quiz. Create as many answers as you want and don't forget to select
+      the correct answer before you're done.
     </p>
-    <input placeholder="Title" class="p-inputtext-sm mb-3 w-100" type="text" pInputText [(ngModel)]="quizTitle" />
+    <input
+      placeholder="Title"
+      class="p-inputtext-sm mb-3 w-100"
+      type="text"
+      pInputText
+      [(ngModel)]="quizTitle"
+    />
     <div class="p-section-field">
-        <h2 class="h6 mt-4 mb-3">Question</h2>
-      <p-editor [(ngModel)]="question" [style]="{'height':'150px'}"></p-editor>
+      <h2 class="h6 mt-4 mb-3">Question</h2>
+      <p-editor [(ngModel)]="question" [style]="{ height: '150px' }"></p-editor>
     </div>
     <div *ngIf="answers.length">
-        <h2 class="h6 mt-4 mb-3">Answers</h2>
-        <div class="answer-item" *ngFor="let answer of answers">
-            <div class="delete-btn" (click)="deleteaAnswer(answer.id)">
-                <i class="pi pi-times"></i>
-            </div>
-            <p-radioButton
-            [inputId]="answer.id"
-            name="answer"
-            [value]="answer.id"
-            [(ngModel)]="correctAnswer"
-            ></p-radioButton>
-            <div class="w-100">
-                <small
-                    class="d-block"
-                    style="color: var(--green-500); transition: all 0.2s"
-                    [style]="{'opacity': correctAnswer === answer.id ? 1 : 0}"
-                    >
-                    Correct Answer!
-                </small>
-                <textarea pInputTextarea placeholder="Add answer" [(ngModel)]="answer.text"
-                    [style]="{'height': '50px', 'border-color': correctAnswer === answer.id ? 'var(--green-500)': ''}">
-                </textarea>
-            </div>
+      <h2 class="h6 mt-4 mb-3">Answers</h2>
+      <div class="answer-item" *ngFor="let answer of answers">
+        <div class="delete-btn" (click)="deleteaAnswer(answer.id)">
+          <i class="pi pi-times"></i>
         </div>
+        <p-radioButton
+          [inputId]="answer.id"
+          name="answer"
+          [value]="answer.id"
+          [(ngModel)]="correctAnswer"
+        ></p-radioButton>
+        <div class="w-100">
+          <small
+            class="d-block"
+            style="color: var(--green-500); transition: all 0.2s"
+            [style]="{ opacity: correctAnswer === answer.id ? 1 : 0 }"
+          >
+            Correct Answer!
+          </small>
+          <textarea
+            pInputTextarea
+            placeholder="Add answer"
+            [(ngModel)]="answer.text"
+            [style]="{
+              height: '50px',
+              'border-color':
+                correctAnswer === answer.id ? 'var(--green-500)' : ''
+            }"
+          >
+          </textarea>
+        </div>
+      </div>
     </div>
     <div class="d-flex justify-content-end">
-        <button
-            pButton
-            pRipple
-            type="button"
-            icon="pi pi-plus"
-            class="p-button-rounded p-button-danger"
-            [disabled] ="disableAddAnswer(question)"
-            (click)="addAnswer()">
-        </button>
+      <button
+        pButton
+        pRipple
+        type="button"
+        icon="pi pi-plus"
+        class="p-button-rounded p-button-danger"
+        [disabled]="disableAddAnswer(question)"
+        (click)="addAnswer()"
+      ></button>
     </div>
     <ng-template pTemplate="footer">
-
-        <button pButton
+      <button
+        pButton
         [disabled]="disabledCreateQuiz(answers, correctAnswer)"
-        (click)="createQuiz()" label="Accept" styleClass="p-button--sm p-button-outlined"></button>
-        <button pButton (click)="clearQuizModal()" label="Cancel" styleClass="p-button--sm p-button-outlined p-button-secondary cancel-btn"></button>
+        (click)="createQuiz()"
+        label="Accept"
+        styleClass="p-button--sm p-button-outlined"
+      ></button>
+      <button
+        pButton
+        (click)="clearQuizModal()"
+        label="Cancel"
+        styleClass="p-button--sm p-button-outlined p-button-secondary cancel-btn"
+      ></button>
     </ng-template>
-</p-dialog>
+  </p-dialog>
 
-<!-- Final Quiz Dialog -->
-<p-dialog [header]="lectureId ? 'Update Final Quiz' : 'New Final Quiz'" [modal]="true" [(visible)]="displayFinalQuiz" [style]="{width: '50vw'}" [baseZIndex]="10000">
+  <!-- Final Quiz Dialog -->
+  <p-dialog
+    [header]="lectureId ? 'Update Final Quiz' : 'New Final Quiz'"
+    [modal]="true"
+    [(visible)]="displayFinalQuiz"
+    [style]="{ width: '50vw' }"
+    [baseZIndex]="10000"
+  >
     <p>
-        <i class="pi pi-exclamation-circle"></i> Add a title and various question for the quiz.
-        Create as many answers as you want and don't forget to select the correct answer before you're done.
+      <i class="pi pi-exclamation-circle"></i> Add a title and various question
+      for the quiz. Create as many answers as you want and don't forget to
+      select the correct answer before you're done.
     </p>
-    <input placeholder="Title" class="p-inputtext-sm mb-3 w-100" type="text" pInputText [(ngModel)]="finalQuizTitle" />
-    <div *ngFor="let questItem of questions; let indexOfelement=index;">
-        <div class="p-section-field">
-            <h2 class="h6 mt-4 mb-3">Question {{indexOfelement + 1}}</h2>
-            <p-editor [(ngModel)]="questItem.question" [style]="{'height':'150px'}"></p-editor>
+    <input
+      placeholder="Title"
+      class="p-inputtext-sm mb-3 w-100"
+      type="text"
+      pInputText
+      [(ngModel)]="finalQuizTitle"
+    />
+    <div *ngFor="let questItem of questions; let indexOfelement = index">
+      <div class="p-section-field">
+        <h2 class="h6 mt-4 mb-3">Question {{ indexOfelement + 1 }}</h2>
+        <p-editor
+          [(ngModel)]="questItem.question"
+          [style]="{ height: '150px' }"
+        ></p-editor>
+      </div>
+      <div *ngIf="questItem.answers.length">
+        <h2 class="h6 mt-4 mb-3">Answers</h2>
+        <div class="answer-item" *ngFor="let answerItem of questItem.answers">
+          <div class="delete-btn" (click)="deleteaAnswer(answerItem.id)">
+            <i class="pi pi-times"></i>
           </div>
-          <div *ngIf="questItem.answers.length">
-              <h2 class="h6 mt-4 mb-3">Answers</h2>
-              <div class="answer-item" *ngFor="let answerItem of questItem.answers">
-                  <div class="delete-btn" (click)="deleteaAnswer(answerItem.id)">
-                      <i class="pi pi-times"></i>
-                  </div>
-                  <p-radioButton
-                  [inputId]="answerItem.id"
-                  [name]="'answer' + questItem.id"
-                  [value]="answerItem.id"
-                  [(ngModel)]="questItem.correctAnswer"
-                  ></p-radioButton>
-                  <div class="w-100">
-                      <small
-                          class="d-block"
-                          style="color: var(--green-500); transition: all 0.2s"
-                          [style]="{'opacity': questItem.correctAnswer === answerItem.id ? 1 : 0}"
-                          >
-                          Correct Answer!
-                      </small>
-                      <textarea pInputTextarea placeholder="Add answer" [(ngModel)]="answerItem.text"
-                          [style]="{'height': '50px', 'border-color': questItem.correctAnswer === answerItem.id ? 'var(--green-500)': ''}">
-                      </textarea>
-                  </div>
-              </div>
+          <p-radioButton
+            [inputId]="answerItem.id"
+            [name]="'answer' + questItem.id"
+            [value]="answerItem.id"
+            [(ngModel)]="questItem.correctAnswer"
+          ></p-radioButton>
+          <div class="w-100">
+            <small
+              class="d-block"
+              style="color: var(--green-500); transition: all 0.2s"
+              [style]="{
+                opacity: questItem.correctAnswer === answerItem.id ? 1 : 0
+              }"
+            >
+              Correct Answer!
+            </small>
+            <textarea
+              pInputTextarea
+              placeholder="Add answer"
+              [(ngModel)]="answerItem.text"
+              [style]="{
+                height: '50px',
+                'border-color':
+                  questItem.correctAnswer === answerItem.id
+                    ? 'var(--green-500)'
+                    : ''
+              }"
+            >
+            </textarea>
           </div>
-          <div class="d-flex justify-content-end">
-              <button
-                  pButton
-                  pRipple
-                  type="button"
-                  icon="pi pi-plus"
-                  class="p-button-rounded p-button-danger"
-                  (click)="addFinalAnswer(questItem.id)">
-              </button>
-          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-end">
+        <button
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-plus"
+          class="p-button-rounded p-button-danger"
+          (click)="addFinalAnswer(questItem.id)"
+        ></button>
+      </div>
     </div>
     <div class="p-3 d-flex justify-content-center">
-        <button pButton
-            (click)="addQuestion()"
-            label="Create Question"
-            styleClass="p-button--sm p-button-outlined">
-        </button>
+      <button
+        pButton
+        (click)="addQuestion()"
+        label="Create Question"
+        styleClass="p-button--sm p-button-outlined"
+      ></button>
     </div>
     <ng-template pTemplate="footer">
-
-        <button pButton
-        (click)="createFinalQuiz()" label="Accept" styleClass="p-button--sm p-button-outlined"></button>
-        <button pButton (click)="clearFinalQuizModal()" label="Cancel" styleClass="p-button--sm p-button-outlined p-button-secondary cancel-btn"></button>
+      <button
+        pButton
+        (click)="createFinalQuiz()"
+        label="Accept"
+        styleClass="p-button--sm p-button-outlined"
+      ></button>
+      <button
+        pButton
+        (click)="clearFinalQuizModal()"
+        label="Cancel"
+        styleClass="p-button--sm p-button-outlined p-button-secondary cancel-btn"
+      ></button>
     </ng-template>
-</p-dialog>
+  </p-dialog>
 </div>
-

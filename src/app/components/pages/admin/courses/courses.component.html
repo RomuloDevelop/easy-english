@@ -1,96 +1,145 @@
 <div class="container">
-    <div class="page-title-content p-mb-5">
-        <ul>
-            <li><a routerLink="../admin">Admin</a></li>
-            <li>Courses</li>
-        </ul>
-        <h2>Courses List</h2>
-    </div>
-  <ng-container *ngIf="courses.length else noData">
+  <div class="page-title-content p-mb-5">
+    <ul>
+      <li><a routerLink="../admin">Admin</a></li>
+      <li>Courses</li>
+    </ul>
+    <h2>Courses List</h2>
+  </div>
+  <ng-container *ngIf="courses.length; else noData">
     <p-table [value]="courses" dataKey="name">
       <ng-template pTemplate="header">
-          <tr>
-            <th style="width: 3rem"></th>
-            <th *ngFor="let col of courseCols">{{col}}</th>
-            <th>Activate</th>
-            <th>Actions</th>
-          </tr>
+        <tr>
+          <th style="width: 3rem"></th>
+          <th *ngFor="let col of courseCols">{{ col }}</th>
+          <th>Activate</th>
+          <th>Actions</th>
+        </tr>
       </ng-template>
       <ng-template pTemplate="body" let-course let-expanded="expanded">
-          <tr>
-            <td style="width: 3rem">
-            </td>
-              <td *ngFor="let row of courseRows">
-                <ng-container *ngIf="row !== 'status' && row !== 'sections'">
-                    {{course[row]}}
-                </ng-container>
-                <ng-container *ngIf="row === 'sections'">
-                    <div class="d-flex justify-content-around align-items-center" style="max-width: 100px;">
-                        <span style="vertical-align: center;">
-                            {{course[row].length}}
-                        </span>
-                        <button type="button" pButton pRipple [pRowToggler]="course" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
-                    </div>
-                </ng-container>
-                <ng-container *ngIf="row === 'status'">
-                    {{course[row] ? 'Active' : 'Inactive' }}
-                </ng-container>
-            </td>
-            <td>
-                <p-inputSwitch (onChange)="changeStatus($event, course)" [(ngModel)]="course.status"></p-inputSwitch>
-            </td>
-            <td>
-                <button pButton pRipple type="button" icon="pi pi-eye" class="p-button-rounded p-button-secondary p-button-outlined"></button>
-                <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded p-button-outlined p-mr-2 p-ml-2" (click)="editCourse(course)"></button>
-                <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-outlined" (click)="confirmDeleteCourse(course)"></button>
-            </td>
-          </tr>
+        <tr>
+          <td style="width: 3rem"></td>
+          <td *ngFor="let row of courseRows">
+            <ng-container *ngIf="row !== 'status' && row !== 'sections'">
+              {{ course[row] }}
+            </ng-container>
+            <ng-container *ngIf="row === 'sections'">
+              <div
+                class="d-flex justify-content-around align-items-center"
+                style="max-width: 100px"
+              >
+                <span style="vertical-align: center">
+                  {{ course[row].length }}
+                </span>
+                <button
+                  type="button"
+                  pButton
+                  pRipple
+                  [pRowToggler]="course"
+                  class="p-button-text p-button-rounded p-button-plain"
+                  [icon]="
+                    expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'
+                  "
+                ></button>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="row === 'status'">
+              {{ course[row] ? 'Active' : 'Inactive' }}
+            </ng-container>
+          </td>
+          <td>
+            <p-inputSwitch
+              (onChange)="changeStatus($event, course)"
+              [(ngModel)]="course.status"
+            ></p-inputSwitch>
+          </td>
+          <td>
+            <button
+              pButton
+              pRipple
+              type="button"
+              icon="pi pi-eye"
+              class="p-button-rounded p-button-secondary p-button-outlined"
+            ></button>
+            <button
+              pButton
+              pRipple
+              type="button"
+              icon="pi pi-pencil"
+              class="p-button-rounded p-button-outlined p-mr-2 p-ml-2"
+              (click)="editCourse(course)"
+            ></button>
+            <button
+              pButton
+              pRipple
+              type="button"
+              icon="pi pi-trash"
+              class="p-button-rounded p-button-danger p-button-outlined"
+              (click)="confirmDeleteCourse(course)"
+            ></button>
+          </td>
+        </tr>
       </ng-template>
       <ng-template pTemplate="rowexpansion" let-course>
         <tr>
-            <td colspan="8">
-                <div class="p-p-1">
-                    <h2 class="h5 mb-3">Sections:</h2>
-                    <p-table [value]="course.sections" dataKey="id">
-                        <ng-template pTemplate="header">
-                            <tr>
-                                <th *ngFor="let col of sectionCols">{{col}}</th>
-                                <!-- <th style="width: 4rem"></th> -->
-                            </tr>
-                        </ng-template>
-                        <ng-template pTemplate="body" let-section>
-                            <tr>
-                                <td *ngFor="let row of sectionRows" [class]="{'p-pl-5': row === 'lectures'}">
-                                    <ng-container *ngIf="row !== 'lectures'">
-                                        {{section[row]}}
-                                    </ng-container>
-                                    <ng-container *ngIf="row === 'lectures'">
-                                        {{section[row].length }}
-                                    </ng-container>
-                                </td>
-                            </tr>
-                        </ng-template>
-                        <ng-template pTemplate="emptymessage">
-                            <tr>
-                                <td colspan="4">There are no sections for this course yet.</td>
-                            </tr>
-                        </ng-template>
-                    </p-table>
-                </div>
-            </td>
+          <td colspan="8">
+            <div class="p-p-1">
+              <h2 class="h5 mb-3">Sections:</h2>
+              <p-table [value]="course.sections" dataKey="id">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th *ngFor="let col of sectionCols">{{ col }}</th>
+                    <!-- <th style="width: 4rem"></th> -->
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-section>
+                  <tr>
+                    <td
+                      *ngFor="let row of sectionRows"
+                      [class]="{ 'p-pl-5': row === 'lectures' }"
+                    >
+                      <ng-container *ngIf="row !== 'lectures'">
+                        {{ section[row] }}
+                      </ng-container>
+                      <ng-container *ngIf="row === 'lectures'">
+                        {{ section[row].length }}
+                      </ng-container>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="4">
+                      There are no sections for this course yet.
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </td>
         </tr>
-    </ng-template>
-  </p-table>
-</ng-container>
-<ng-template #noData>
-    <div class="d-flex justify-content-center align-items-center w-100" style="height: 200px">
+      </ng-template>
+    </p-table>
+  </ng-container>
+  <ng-template #noData>
+    <div
+      class="d-flex justify-content-center align-items-center w-100"
+      style="height: 200px"
+    >
       <span class="h1">No data available</span>
     </div>
-</ng-template>
+  </ng-template>
   <div class="d-flex justify-content-end mt-3">
-      <a (click)="toCreatePage()" class="default-btn"><i class='bx bx-plus-circle icon-arrow before'></i><span class="label">Create Course</span><i class="bx bx-plus-circle icon-arrow after"></i></a>
+    <a (click)="toCreatePage()" class="default-btn"
+      ><i class="bx bx-plus-circle icon-arrow before"></i
+      ><span class="label">Create Course</span
+      ><i class="bx bx-plus-circle icon-arrow after"></i
+    ></a>
   </div>
 </div>
 
 <!-- Delete Dialog -->
-<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>
+<p-confirmDialog
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+></p-confirmDialog>

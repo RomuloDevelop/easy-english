@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core'
 
 @Component({
   selector: 'app-header-style-one',
@@ -6,25 +6,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header-style-one.component.scss']
 })
 export class HeaderStyleOneComponent implements OnInit {
+  constructor() {}
 
-    constructor() { }
+  ngOnInit(): void {}
 
-    ngOnInit(): void {
-    }
+  classApplied = false
+  toggleClass() {
+    this.classApplied = !this.classApplied
+  }
 
-    classApplied = false;
-    toggleClass() {
-        this.classApplied = !this.classApplied;
-    }
+  classApplied2 = false
+  toggleClass2() {
+    this.classApplied2 = !this.classApplied2
+  }
 
-    classApplied2 = false;
-    toggleClass2() {
-        this.classApplied2 = !this.classApplied2;
-    }
-
-    classApplied3 = false;
-    toggleClass3() {
-        this.classApplied3 = !this.classApplied3;
-    }
-
+  classApplied3 = false
+  toggleClass3() {
+    this.classApplied3 = !this.classApplied3
+  }
 }

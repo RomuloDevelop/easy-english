@@ -1,32 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core'
 
 @Component({
-    selector: 'app-contact-page',
-    templateUrl: './contact-page.component.html',
-    styleUrls: ['./contact-page.component.scss']
+  selector: 'app-contact-page',
+  templateUrl: './contact-page.component.html',
+  styleUrls: ['./contact-page.component.scss']
 })
 export class ContactPageComponent implements OnInit {
+  constructor() {}
 
-    constructor() { }
+  ngOnInit(): void {}
 
-    ngOnInit(): void {
-    }
+  submit(form) {
+    var name = form.name
+    console.log(name)
 
-    submit(form){
-        var name = form.name;
-        console.log(name);
-        
-        var email = form.email;
-        console.log(email);
+    var email = form.email
+    console.log(email)
 
-        var number = form.number;
-        console.log(number);
-        
-        var subject = form.subject;
-        console.log(subject);
-        
-        var message = form.message;
-        console.log(message);
-    }
+    var number = form.number
+    console.log(number)
 
+    var subject = form.subject
+    console.log(subject)
+
+    var message = form.message
+    console.log(message)
+  }
 }

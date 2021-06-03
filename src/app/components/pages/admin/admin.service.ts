@@ -1,14 +1,11 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http'
+import { Injectable } from '@angular/core'
 
 export type SectionAction = 'update' | 'cancel' | 'delete'
 
 @Injectable()
 export class AdminService {
+  sectionEdit = null
 
-    sectionEdit = null
-
-    constructor(private http: HttpClient) { }
-
-
+  constructor(private http: HttpClient) {}
 }

@@ -27,21 +27,23 @@
               "src/assets"
             ],
             "styles": [
-                "node_modules/bootstrap/scss/bootstrap.scss",
-                "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.carousel.min.css",
-                "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.theme.default.min.css",
-                "node_modules/ngx-lightbox/lightbox.css",
-                "src/assets/css/animate.min.css",
-                "src/assets/css/boxicons.min.css",
-                "src/styles.scss",
-                "node_modules/primeng/resources/themes/bootstrap4-light-blue/theme.css",
-                "node_modules/primeng/resources/primeng.min.css",
-                "node_modules/primeflex/primeflex.css",
-                "node_modules/primeicons/primeicons.css",
-                "node_modules/quill/dist/quill.core.css",
-                "node_modules/quill/dist/quill.snow.css"
+              "node_modules/bootstrap/scss/bootstrap.scss",
+              "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.carousel.min.css",
+              "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.theme.default.min.css",
+              "node_modules/ngx-lightbox/lightbox.css",
+              "src/assets/css/animate.min.css",
+              "src/assets/css/boxicons.min.css",
+              "src/styles.scss",
+              "node_modules/primeng/resources/themes/bootstrap4-light-blue/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/primeflex/primeflex.css",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/quill/dist/quill.core.css",
+              "node_modules/quill/dist/quill.snow.css"
             ],
-            "scripts": ["node_modules/quill/dist/quill.js"],
+            "scripts": [
+              "node_modules/quill/dist/quill.js"
+            ],
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,
@@ -114,15 +116,11 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "tsconfig.app.json",
-              "tsconfig.spec.json",
-              "e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
             ]
           }
         },
@@ -139,6 +137,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "ednuv-ng"
+    }
+  },
+  "defaultProject": "ednuv-ng",
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
+  }
 }
