@@ -11,7 +11,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { CountUpModule } from 'ngx-countup'
 import { TabsModule } from 'ngx-tabset'
 import { NgxScrollTopModule } from 'ngx-scrolltop'
-import { StickyNavModule } from 'ng2-sticky-nav'
 import { LightboxModule } from 'ngx-lightbox'
 import { FormsModule } from '@angular/forms'
 import { HttpClientModule } from '@angular/common/http'
@@ -232,7 +231,6 @@ const store = {
     CountUpModule,
     TabsModule,
     NgxScrollTopModule,
-    StickyNavModule,
     LightboxModule,
     FormsModule,
     HttpClientModule,

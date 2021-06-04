@@ -13,7 +13,10 @@
           "plugin:@angular-eslint/template/process-inline-templates",
           "plugin:prettier/recommended"
         ],
-        "rules": {}
+        "rules": {
+            "@angular-eslint/no-input-rename": "off",
+            "@angular-eslint/no-output-rename": "off"
+        }
       },
       // NOTE: WE ARE NOT APPLYING PRETTIER IN THIS OVERRIDE, ONLY @ANGULAR-ESLINT/TEMPLATE
       {
@@ -32,4 +35,4 @@
         }
       }
     ]
-  }
+}

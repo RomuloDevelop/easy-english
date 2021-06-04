@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-lg">
   <div class="page-title-content p-mb-5">
     <ul>
       <li><a routerLink="../admin">Admin</a></li>
@@ -7,7 +7,11 @@
     <h2>Courses List</h2>
   </div>
   <ng-container *ngIf="courses.length; else noData">
-    <p-table [value]="courses" dataKey="name">
+    <p-table
+      [value]="courses"
+      dataKey="id"
+      tableStyleClass="p-datatable-responsive"
+    >
       <ng-template pTemplate="header">
         <tr>
           <th style="width: 3rem"></th>
@@ -19,15 +23,13 @@
       <ng-template pTemplate="body" let-course let-expanded="expanded">
         <tr>
           <td style="width: 3rem"></td>
-          <td *ngFor="let row of courseRows">
+          <td *ngFor="let row of courseRows; let iCol = index">
+            <span class="p-column-title">{{ courseCols[iCol] }}</span>
             <ng-container *ngIf="row !== 'status' && row !== 'sections'">
               {{ course[row] }}
             </ng-container>
             <ng-container *ngIf="row === 'sections'">
-              <div
-                class="d-flex justify-content-around align-items-center"
-                style="max-width: 100px"
-              >
+              <div class="section-expand">
                 <span style="vertical-align: center">
                   {{ course[row].length }}
                 </span>
@@ -48,12 +50,14 @@
             </ng-container>
           </td>
           <td>
+            <span class="p-column-title">Activate</span>
             <p-inputSwitch
               (onChange)="changeStatus($event, course)"
               [(ngModel)]="course.status"
             ></p-inputSwitch>
           </td>
           <td>
+            <span class="p-column-title">Actions</span>
             <button
               pButton
               pRipple
@@ -95,9 +99,12 @@
                 <ng-template pTemplate="body" let-section>
                   <tr>
                     <td
-                      *ngFor="let row of sectionRows"
+                      *ngFor="let row of sectionRows; let iCol = index"
                       [class]="{ 'p-pl-5': row === 'lectures' }"
                     >
+                      <span class="p-column-title">{{
+                        sectionCols[iCol]
+                      }}</span>
                       <ng-container *ngIf="row !== 'lectures'">
                         {{ section[row] }}
                       </ng-container>

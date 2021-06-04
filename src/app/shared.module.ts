@@ -7,6 +7,7 @@ import { HeaderStyleThreeComponent } from './components/common/header-style-thre
 import { HeaderStyleFourComponent } from './components/common/header-style-four/header-style-four.component'
 import { YouTubePlayerModule } from '@angular/youtube-player'
 import { HttpClientModule } from '@angular/common/http'
+import { StickyNavModule } from 'ng2-sticky-nav'
 
 @NgModule({
   declarations: [
@@ -15,7 +16,7 @@ import { HttpClientModule } from '@angular/common/http'
     HeaderStyleThreeComponent,
     HeaderStyleFourComponent
   ],
-  imports: [RouterModule, HttpClientModule],
+  imports: [RouterModule, HttpClientModule, StickyNavModule],
   exports: [
     LayoutModule,
     HeaderStyleOneComponent,
@@ -23,7 +24,8 @@ import { HttpClientModule } from '@angular/common/http'
     HeaderStyleThreeComponent,
     HeaderStyleFourComponent,
     YouTubePlayerModule,
-    HttpClientModule
+    HttpClientModule,
+    StickyNavModule
   ]
 })
 export class SharedModule {}

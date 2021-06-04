@@ -3,8 +3,10 @@
     --fontFamily1: 'Poppins', sans-serif;
     --fontFamily2: 'Open Sans', sans-serif;
     --mainColor: #af3a2b;
+    --optionalColor2: #1f3353;
     --optionalColor: #102360;
     --whiteColor: #ffffff;
+    --hoverWhiteColor: #cdcdcdf7;
     --blackColor: #252525;
     --paragraphColor: #727695;
     --fontSize: 15px;
@@ -31,6 +33,9 @@ a {
 }
 input, button, a {
     outline: 0 !important;
+}
+.p-button:focus {
+    box-shadow: none !important;
 }
 p {
     margin-bottom: 15px;

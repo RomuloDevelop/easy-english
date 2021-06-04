@@ -1,14 +1,12 @@
-import { Component, OnInit } from '@angular/core'
+import { Component } from '@angular/core'
 
 @Component({
   selector: 'app-header-style-one',
   templateUrl: './header-style-one.component.html',
   styleUrls: ['./header-style-one.component.scss']
 })
-export class HeaderStyleOneComponent implements OnInit {
+export class HeaderStyleOneComponent {
   constructor() {}
-
-  ngOnInit(): void {}
 
   classApplied = false
   toggleClass() {

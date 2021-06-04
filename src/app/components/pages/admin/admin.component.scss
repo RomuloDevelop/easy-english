@@ -19,3 +19,94 @@ section {
         }
     }
 }
+
+$sideNavTransition: 0.5s;
+$menuItemPadX: 15px;
+:host ::ng-deep .admin-container {
+    display: flex;
+    position: relative;
+    min-height: 100vh;
+    .overlay {
+        top: 0;
+        bottom: 0;
+        left: 0;
+        background-color: #10236077;
+        width: 0px;
+        opacity: 0;
+        transition: opacity $sideNavTransition;
+        z-index: 1000;
+    }
+    .admin-side-nav {
+        position: relative;
+        padding-top: 50px;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 0px;
+        overflow: hidden;
+        background-color: var(--optionalColor2);
+        transition: width $sideNavTransition;
+        &.active {
+            width: 300px;
+        }
+        .menu-list {
+            padding: 20px 0;
+            width: 100%;
+            list-style: none;
+        }
+        .menu-list .menu-item {
+            position: relative;
+            color: white;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: end;
+            align-items: center;
+            padding: 10px $menuItemPadX;
+            width: 100%;
+            cursor: pointer;
+            background-color: transparent;
+            transition: all 0.3s;
+            white-space: nowrap;
+            * {
+                margin-left: 15px;
+                transition: all 0.3s;
+            }
+            &.clicked {
+              background-color: mix(#af3a2b, white, 80%);
+            }
+            &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                width: 7px;
+                background-color: #af3a2b;
+                opacity: 0;
+                transition: opacity 0.3s;
+            }
+            &:hover {
+                background-color: mix(#af3a2b, white, 65%);
+                span {
+                    transform: translateX(10px);
+                }
+                &::after {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 40rem) {
+    .admin-container .admin-side-nav {
+        position: fixed;
+        z-index: 1000;
+    }
+    .admin-container .overlay.activeOverlay {
+        position: fixed;
+        width: 100vw;
+        opacity: 1;
+    }
+
+}

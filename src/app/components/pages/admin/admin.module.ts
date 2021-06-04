@@ -7,6 +7,7 @@ import { AdminComponent } from './admin.component'
 import { CoursesComponent } from './courses/courses.component'
 import { CreateCourseComponent } from './create-course/create-course.component'
 import { SectionsComponent } from './create-sections/sections.component'
+import { HeaderComponent } from './header/header.component'
 
 import { SharedModule } from '../../../shared.module'
 
@@ -24,15 +25,22 @@ import { InputSwitchModule } from 'primeng/inputswitch'
 import { ToastModule } from 'primeng/toast'
 import { TooltipModule } from 'primeng/tooltip'
 import { FileUploadModule } from 'primeng/fileupload'
+import { SidebarModule } from 'primeng/sidebar'
+import { AvatarModule } from 'primeng/avatar'
+import { AvatarGroupModule } from 'primeng/avatargroup'
+import { RippleModule } from 'primeng/ripple'
+import { MenuModule } from 'primeng/menu'
+import { PanelMenuModule } from 'primeng/panelmenu'
 
-import { AdminService } from './admin.service'
 import { ConfirmationService, MessageService } from 'primeng/api'
+import { AdminService } from './admin.service'
 @NgModule({
   declarations: [
     AdminComponent,
     CoursesComponent,
     CreateCourseComponent,
-    SectionsComponent
+    SectionsComponent,
+    HeaderComponent
   ],
   imports: [
     CommonModule,
@@ -53,7 +61,13 @@ import { ConfirmationService, MessageService } from 'primeng/api'
     InputSwitchModule,
     ToastModule,
     TooltipModule,
-    FileUploadModule
+    FileUploadModule,
+    SidebarModule,
+    AvatarModule,
+    AvatarGroupModule,
+    RippleModule,
+    MenuModule,
+    PanelMenuModule
   ],
   providers: [AdminService, ConfirmationService, MessageService]
 })
