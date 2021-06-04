@@ -19,6 +19,10 @@
     .p-datatable-responsive .p-datatable-tbody > tr > td .p-column-title {
         display: none;
     }
+    .btn-action {
+      margin-right: 10px;
+      margin-top: 10px;
+    }
 }
 
 @media screen and (max-width: 40rem) {
@@ -46,6 +50,10 @@
                         display: inline-block;
                         margin: -.4em 1em -.4em -.4rem;
                         font-weight: bold;
+                    }
+
+                    .btn-action {
+                        margin: 0 10px;
                     }
 
                     &:last-child {

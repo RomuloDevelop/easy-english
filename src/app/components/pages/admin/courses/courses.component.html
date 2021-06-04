@@ -31,7 +31,7 @@
             <ng-container *ngIf="row === 'sections'">
               <div class="section-expand">
                 <span style="vertical-align: center">
-                  {{ course[row].length }}
+                  {{ course[row].length }} Sect.
                 </span>
                 <button
                   type="button"
@@ -58,29 +58,31 @@
           </td>
           <td>
             <span class="p-column-title">Actions</span>
-            <button
-              pButton
-              pRipple
-              type="button"
-              icon="pi pi-eye"
-              class="p-button-rounded p-button-secondary p-button-outlined"
-            ></button>
-            <button
-              pButton
-              pRipple
-              type="button"
-              icon="pi pi-pencil"
-              class="p-button-rounded p-button-outlined p-mr-2 p-ml-2"
-              (click)="editCourse(course)"
-            ></button>
-            <button
-              pButton
-              pRipple
-              type="button"
-              icon="pi pi-trash"
-              class="p-button-rounded p-button-danger p-button-outlined"
-              (click)="confirmDeleteCourse(course)"
-            ></button>
+            <div class="d-inline-flex justify-content-center flex-wrap">
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  icon="pi pi-eye"
+                  class="p-button-rounded p-button-secondary p-button-outlined btn-action"
+                ></button>
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  icon="pi pi-pencil"
+                  class="p-button-rounded p-button-outlined btn-action"
+                  (click)="editCourse(course)"
+                ></button>
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  icon="pi pi-trash"
+                  class="p-button-rounded p-button-danger p-button-outlined btn-action"
+                  (click)="confirmDeleteCourse(course)"
+                ></button>
+            </div>
           </td>
         </tr>
       </ng-template>
@@ -109,7 +111,7 @@
                         {{ section[row] }}
                       </ng-container>
                       <ng-container *ngIf="row === 'lectures'">
-                        {{ section[row].length }}
+                        {{ section[row].length }} Lect.
                       </ng-container>
                     </td>
                   </tr>
