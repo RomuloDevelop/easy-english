@@ -2,22 +2,22 @@ import { Component, OnInit } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 import { AdminService, SectionAction } from '../admin.service'
 import { Store, select } from '@ngrx/store'
-import { Course, Section } from '../../../../state/admin/models'
-import { updateCourse } from '../../../../state/admin/courses/course.actions'
+import { Course, Section } from '../../state/admin/models'
+import { updateCourse } from '../../state/admin/courses/course.actions'
 import {
   deleteSection,
   setSection,
   updateSection
-} from '../../../../state/admin/sections/section.actions'
+} from '../../state/admin/sections/section.actions'
 import {
   selectCoursesTable,
   CoursesTableRow,
   selectSectionsData,
   SectionData
-} from '../../../../state/admin/admin.selectores'
+} from '../../state/admin/admin.selectores'
 import { PrimeNGConfig, MessageService } from 'primeng/api'
 import { combineLatest } from 'rxjs'
-import memoize from '../../../../decorators/memoize'
+import memoize from '../../decorators/memoize'
 import { deleteSectionLecture } from 'src/app/state/admin/lectures/lecture.actions'
 
 @Component({

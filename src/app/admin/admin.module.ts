@@ -9,7 +9,7 @@ import { CreateCourseComponent } from './create-course/create-course.component'
 import { SectionsComponent } from './create-sections/sections.component'
 import { HeaderComponent } from './header/header.component'
 
-import { SharedModule } from '../../../shared.module'
+import { SharedModule } from '../shared.module'
 
 import { ButtonModule } from 'primeng/button'
 import { TableModule } from 'primeng/table'

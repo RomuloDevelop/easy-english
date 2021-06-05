@@ -21,12 +21,9 @@ import {
   Question,
   FinalQuiz,
   Answer
-} from '../../../../state/admin/models'
-import {
-  SectionData,
-  selectLectures
-} from '../../../../state/admin/admin.selectores'
-import memoize from '../../../../decorators/memoize'
+} from '../../state/admin/models'
+import { SectionData, selectLectures } from '../../state/admin/admin.selectores'
+import memoize from '../../decorators/memoize'
 import {
   setLecture,
   updateLecture,

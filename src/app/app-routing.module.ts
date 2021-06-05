@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core'
 import { Routes, RouterModule } from '@angular/router'
-import { AdminModule } from './components/pages/admin/admin.module'
+import { AdminModule } from './admin/admin.module'
 import { HomePageOneComponent } from './components/pages/home-page-one/home-page-one.component'
 import { HomePageTwoComponent } from './components/pages/home-page-two/home-page-two.component'
 import { HomePageThreeComponent } from './components/pages/home-page-three/home-page-three.component'
@@ -146,7 +146,7 @@ const routes: Routes = [
   {
     path: 'admin',
     loadChildren: () =>
-      import('./components/pages/admin/admin.module').then((m) => m.AdminModule)
+      import('./admin/admin.module').then((m) => m.AdminModule)
   },
   { path: '**', component: ErrorPageComponent }
 ]
