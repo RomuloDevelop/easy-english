@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 import { AdminService, SectionAction } from '../admin.service'
 import { Store, select } from '@ngrx/store'
@@ -26,6 +26,8 @@ import { deleteSectionLecture } from 'src/app/state/admin/lectures/lecture.actio
   styleUrls: ['./create-course.component.scss']
 })
 export class CreateCourseComponent implements OnInit {
+  disableAdd = null
+  nextSectionId: number = null
   title = ''
   subtitle = ''
   description = ''
@@ -39,7 +41,8 @@ export class CreateCourseComponent implements OnInit {
     private _router: Router,
     private route: ActivatedRoute,
     private primengConfig: PrimeNGConfig,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -54,6 +57,12 @@ export class CreateCourseComponent implements OnInit {
       this.title = this.course.title
       this.subtitle = this.course.subtitle
       this.description = this.course.detail
+      this.nextSectionId = this.getLastId(sections)
+    })
+    this.adminService.sectionToEdit$.subscribe((id) => {
+      const item = this.sections.find((item) => item.id === id)
+      this.disableAdd = item != null
+      console.log(item, this.disableAdd)
     })
   }
 
@@ -75,7 +84,6 @@ export class CreateCourseComponent implements OnInit {
 
   @memoize()
   disableUpdate(title, subtitle, description) {
-    console.log(description)
     return (
       title === '' ||
       subtitle === '' ||
@@ -85,7 +93,7 @@ export class CreateCourseComponent implements OnInit {
   }
 
   addSection() {
-    const id = this.getLastId()
+    const id = this.nextSectionId
     const section: Section = {
       courseId: this.courseId,
       title: 'Temporal title',
@@ -93,41 +101,28 @@ export class CreateCourseComponent implements OnInit {
       id
     }
     this.store.dispatch(setSection({ section }))
-    this.adminService.sectionEdit = id
+    this.adminService.nextMessage(id)
   }
 
-  getLastId() {
+  getLastId(sections) {
     let lastId = 1
-    if (this.sections[this.sections.length - 1]) {
-      lastId = this.sections[this.sections.length - 1].id + 1
+    if (sections[sections.length - 1]) {
+      lastId = sections[sections.length - 1].id + 1
     }
     return lastId
   }
 
   updateSection(item: { section: Section; type: SectionAction }) {
     const { section: newSection, type } = item
-    if (type === 'delete' || type === 'cancel') {
+    if (type === 'delete') {
       this.deleteSectionAndLectures(newSection)
     } else if (type === 'update') {
       this.store.dispatch(updateSection({ section: newSection }))
     }
-    this.adminService.sectionEdit = null
+    this.adminService.nextMessage(null)
   }
-
   deleteSectionAndLectures(section: Section) {
     this.store.dispatch(deleteSectionLecture({ sectionId: section.id }))
     this.store.dispatch(deleteSection({ id: section.id }))
-  }
-
-  @memoize({
-    normalizer: function (args) {
-      return JSON.stringify(args)
-    }
-  })
-  disableAdd(sections: Section[]) {
-    const item = sections.find(
-      (item) => item.id === this.adminService.sectionEdit
-    )
-    return item != null
   }
 }

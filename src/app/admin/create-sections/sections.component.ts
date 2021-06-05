@@ -6,8 +6,7 @@ import {
   OnInit,
   OnChanges,
   SimpleChanges,
-  OnDestroy,
-  ChangeDetectorRef
+  OnDestroy
 } from '@angular/core'
 import { AdminService, SectionAction } from '../admin.service'
 import { ConfirmationService, PrimeNGConfig, Message } from 'primeng/api'
@@ -41,6 +40,7 @@ export class SectionsComponent implements OnInit, OnChanges, OnDestroy {
     section: Section
     type: SectionAction
   }>()
+  @Input('count') count: number = null
   @Input('data') data: SectionData = null
   @Input('course') courseId: number = null
   edit = false
@@ -86,8 +86,7 @@ export class SectionsComponent implements OnInit, OnChanges, OnDestroy {
     public adminService: AdminService,
     private confirmationService: ConfirmationService,
     private primengConfig: PrimeNGConfig,
-    private store: Store,
-    private cdr: ChangeDetectorRef
+    private store: Store
   ) {}
 
   ngOnInit() {
@@ -381,7 +380,7 @@ export class SectionsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   setEdit() {
-    this.adminService.sectionEdit = this.data.id
+    this.adminService.nextMessage(this.data.id)
   }
 
   deleteDialog(cb: () => void = null) {

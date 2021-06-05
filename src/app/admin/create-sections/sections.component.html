@@ -1,7 +1,7 @@
 <div class="create-course-section">
   <div class="new-section">
     <ng-container
-      *ngIf="adminService.sectionEdit === data?.id; else actualSection"
+      *ngIf="(this.adminService.sectionToEdit$ | async) === data?.id; else actualSection"
     >
       <h3 class="h6">New Section:</h3>
       <div class="p-section-field">
@@ -51,7 +51,7 @@
     </ng-container>
 
     <ng-template #actualSection>
-      <h3 class="h6" style="display: inline">Section {{ data.id }}:</h3>
+      <h3 class="h6" style="display: inline">Section {{ count }}: </h3>
       <span>{{ title }}</span>
       <div class="edit-buttons" style="display: inline">
         <i class="pi pi-pencil" (click)="setEdit()"></i>

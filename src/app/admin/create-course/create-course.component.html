@@ -58,7 +58,8 @@
       and resources. Click the + icon on the left to create the section.
     </p>
     <app-sections
-      *ngFor="let section of sections"
+      *ngFor="let section of sections; let i=index;"
+      [count]="i + 1"
       [data]="section"
       [course]="courseId"
       (save)="updateSection($event)"
@@ -68,7 +69,7 @@
       <button
         class="default-btn"
         (click)="addSection()"
-        [disabled]="disableAdd(sections)"
+        [disabled]="disableAdd"
       >
         <i class="bx bx-plus-circle icon-arrow before"></i>
         <span class="label">New Section</span>
