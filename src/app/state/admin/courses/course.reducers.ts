@@ -23,8 +23,9 @@ const courseReducers = createReducer(
   on(CourseActions.updateStatus, (state, { id, status }) =>
     state.map((item) => {
       if (item.id === id) {
-        return { ...item, status: status }
+        return { ...item, status }
       }
+      return item
     })
   )
 )

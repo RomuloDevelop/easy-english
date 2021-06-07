@@ -116,6 +116,7 @@ import { EditBillingAddressPageComponent } from './components/pages/edit-billing
 import { EditShippingAddressPageComponent } from './components/pages/edit-shipping-address-page/edit-shipping-address-page.component'
 import { AdminModule } from './admin/admin.module'
 import { SharedModule } from './shared.module'
+import { StudentModule } from './student/student.module'
 
 const store = {
   courses: CourseReducer,
@@ -239,7 +240,8 @@ const store = {
     StoreModule.forRoot(store, { metaReducers: [storageSyncMetaReducer] }),
     StoreDevtoolsModule.instrument({
       maxAge: 25
-    })
+    }),
+    StudentModule
   ],
   providers: [],
   bootstrap: [AppComponent]
