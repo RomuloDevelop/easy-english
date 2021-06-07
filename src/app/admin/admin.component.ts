@@ -6,7 +6,7 @@ import { MenuItem } from 'primeng/api'
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit {
-  viewMenu = false
+  viewMenu = true
   items: MenuItem[]
   constructor() {}
 

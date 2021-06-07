@@ -42,7 +42,7 @@ $menuItemPadX: 15px;
         top: 0;
         bottom: 0;
         left: 0;
-        width: 0px;
+        width: calc(30px + 25px + #{$menuItemPadX});
         overflow: hidden;
         background-color: var(--optionalColor2);
         transition: width $sideNavTransition;
@@ -67,9 +67,13 @@ $menuItemPadX: 15px;
             background-color: transparent;
             transition: all 0.3s;
             white-space: nowrap;
-            * {
+            i {
                 margin-left: 15px;
-                transition: all 0.3s;
+                margin-right: 15px;
+                font-size: 1.2rem;
+            }
+            span {
+                margin-left: 8px;
             }
             &.clicked {
               background-color: mix(#af3a2b, white, 80%);
@@ -102,6 +106,10 @@ $menuItemPadX: 15px;
     .admin-container .admin-side-nav {
         position: fixed;
         z-index: 1000;
+        width: 0px;
+        &.active {
+            width: 300px;
+        }
     }
     .admin-container .overlay.activeOverlay {
         position: fixed;

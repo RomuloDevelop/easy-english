@@ -33,27 +33,16 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.items = [
       {
-        label: 'File',
-        icon: 'pi pi-fw pi-file'
-      },
-      {
-        label: 'Edit',
-        icon: 'pi pi-fw pi-pencil'
-      },
-      {
-        label: 'Users',
+        label: 'My Profile',
         icon: 'pi pi-fw pi-user'
-      },
-      {
-        label: 'Events',
-        icon: 'pi pi-fw pi-calendar'
       },
       {
         separator: true
       },
       {
-        label: 'Quit',
-        icon: 'pi pi-fw pi-power-off'
+        label: 'Logout',
+        icon: 'pi pi-fw pi-power-off',
+        routerLink: '/'
       }
     ]
   }
