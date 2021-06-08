@@ -21,6 +21,7 @@ section {
 }
 
 $sideNavTransition: 0.5s;
+$sideNavWidth: 300px;
 $menuItemPadX: 15px;
 :host ::ng-deep .admin-container {
     display: flex;
@@ -47,7 +48,7 @@ $menuItemPadX: 15px;
         background-color: var(--optionalColor2);
         transition: width $sideNavTransition;
         &.active {
-            width: 300px;
+            width: $sideNavWidth;
         }
         .menu-list {
             padding: 20px 0;
@@ -62,18 +63,19 @@ $menuItemPadX: 15px;
             justify-content: end;
             align-items: center;
             padding: 10px $menuItemPadX;
-            width: 100%;
+            width: $sideNavWidth;
             cursor: pointer;
             background-color: transparent;
-            transition: all 0.3s;
-            white-space: nowrap;
+            transition: all 0.2s;
             i {
-                margin-left: 15px;
+                margin-left: 10px;
                 margin-right: 15px;
                 font-size: 1.2rem;
+                width: 25px;
             }
             span {
                 margin-left: 8px;
+                transition: transform 0.2s;
             }
             &.clicked {
               background-color: mix(#af3a2b, white, 80%);
@@ -108,7 +110,7 @@ $menuItemPadX: 15px;
         z-index: 1000;
         width: 0px;
         &.active {
-            width: 300px;
+            width: $sideNavWidth;
         }
     }
     .admin-container .overlay.activeOverlay {
