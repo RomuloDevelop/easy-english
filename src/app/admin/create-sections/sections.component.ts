@@ -60,6 +60,7 @@ export class SectionsComponent implements OnInit, OnChanges, OnDestroy {
   msgs: Message[] = []
 
   // Video variables
+  videoTitle = ''
   videoUrl = ''
   videoDetail = ''
   videoHeight = 250
@@ -194,6 +195,7 @@ export class SectionsComponent implements OnInit, OnChanges, OnDestroy {
       const data = item.data as VideoLectue
       this.videoDetail = data.detail
       this.videoUrl = data.url
+      this.videoTitle = data.title
       this.displayVideo = true
     } else if (item.type === 'Final Quiz') {
       const data = item.data as FinalQuiz
@@ -217,6 +219,7 @@ export class SectionsComponent implements OnInit, OnChanges, OnDestroy {
     const id = this.lectureId
     const sectionId = this.data.id
     const video: VideoLectue = {
+      title: this.videoTitle,
       url: this.videoUrl,
       detail: this.videoDetail
     }

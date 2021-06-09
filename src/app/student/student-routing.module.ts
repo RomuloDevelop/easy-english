@@ -4,6 +4,9 @@ import { DashboardComponent } from './dashboard/dashboard.component'
 import { CourseComponent } from './course/course.component'
 import { CourseListComponent } from './course-list/course-list.component'
 import { AddressComponent } from './address/address.component'
+import { EditBillingComponent } from './edit-billing/edit-billing.component'
+import { EditShippingComponent } from './edit-shipping/edit-shipping.component'
+import { EditAccountComponent } from './edit-account/edit-account.component'
 
 const routes: Routes = [
   {
@@ -16,7 +19,24 @@ const routes: Routes = [
       },
       {
         path: 'edit-address',
-        component: AddressComponent
+        children: [
+          {
+            path: '',
+            component: AddressComponent
+          },
+          {
+            path: 'edit-billing-address',
+            component: EditBillingComponent
+          },
+          {
+            path: 'edit-shipping-address',
+            component: EditShippingComponent
+          }
+        ]
+      },
+      {
+        path: 'edit-account',
+        component: EditAccountComponent
       }
     ]
   },

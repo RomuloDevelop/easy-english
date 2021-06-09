@@ -80,17 +80,17 @@
     <div class="myDashboard-navigation">
       <ul>
         <li>
-          <a routerLink="" class="active"
+          <a routerLink="/student" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}"
             ><i class="bx bxs-dashboard"></i> Dashboard</a
           >
         </li>
         <li>
-          <a routerLink="edit-address"
+          <a routerLink="edit-address" [routerLinkActive]="['active']"
             ><i class="bx bx-home-alt"></i> Addresses</a
           >
         </li>
         <li>
-          <a routerLink="/edit-account"
+          <a routerLink="edit-account" [routerLinkActive]="['active']"
             ><i class="bx bx-edit"></i> Account Details</a
           >
         </li>
@@ -108,9 +108,9 @@
       <p>
         From your account dashboard you can view your
         <a>courses</a>, manage your
-        <a routerLink="/edit-address">shipping and billing addresses</a>,
-        <a routerLink="/edit-account">edit your password</a>, and
-        <a routerLink="/edit-account">account details</a>.
+        <a routerLink="edit-address">shipping and billing addresses</a>,
+        <a routerLink="edit-account">edit your password</a>, and
+        <a routerLink="edit-account">account details</a>.
       </p>
       <router-outlet></router-outlet>
     </div>

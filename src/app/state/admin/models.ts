@@ -26,6 +26,7 @@ export interface Article {
 }
 
 export interface VideoLectue {
+  title: string
   url: string
   detail: string
 }

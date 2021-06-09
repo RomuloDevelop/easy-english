@@ -222,96 +222,7 @@
             }
         }
     }
-    .orders-table {
-        .table {
-            margin-bottom: 0;
-
-            thead {
-                th {
-                    vertical-align: middle;
-                    border: 1px solid #dee2e6;
-                    white-space: nowrap;
-                    padding: 13px 20px 12px;
-                    color: var(--blackColor);
-                    font: {
-                        size: 16px;
-                        weight: 600;
-                    };
-                }
-            }
-            tbody {
-                td {
-                    vertical-align: middle;
-                    border: 1px solid #dee2e6;
-                    white-space: nowrap;
-                    color: var(--blackColor);
-                    padding: 13px 20px 12px;
-
-                    .view-button {
-                        display: inline-block;
-                        background-color: #EAEAEC;
-                        border-radius: 3px;
-                        padding: 6px 20px;
-                        font: {
-                            size: 14px;
-                            weight: 600;
-                        };
-                        &:hover {
-                            background-color: var(--mainColor);
-                            color: var(--whiteColor);
-                        }
-                    }
-                }
-            }
-        }
-    }
-    .downloads-table {
-        .table {
-            margin-bottom: 0;
-
-            thead {
-                th {
-                    vertical-align: middle;
-                    border: 1px solid #dee2e6;
-                    white-space: nowrap;
-                    padding: 13px 20px 12px;
-                    color: var(--blackColor);
-                    font: {
-                        size: 16px;
-                        weight: 600;
-                    };
-                }
-            }
-            tbody {
-                td {
-                    vertical-align: middle;
-                    border: 1px solid #dee2e6;
-                    white-space: nowrap;
-                    color: var(--blackColor);
-                    padding: 13px 20px 12px;
-
-                    a {
-                        display: inline-block;
-                    }
-                    .downloads-button {
-                        display: inline-block;
-                        background-color: #EAEAEC;
-                        border-radius: 3px;
-                        padding: 6px 20px;
-                        font: {
-                            size: 14px;
-                            weight: 600;
-                        };
-                        &:hover {
-                            background-color: var(--mainColor);
-                            color: var(--whiteColor);
-                        }
-                    }
-                }
-            }
-        }
-    }
-    .edit-account {
+    ::ng-deep .edit-account {
         background-color: var(--whiteColor);
         box-shadow: 0px 8px 16px 0px rgba(146, 184, 255, 0.2);
         padding: 40px;
@@ -368,7 +279,7 @@
             }
         }
     }
-    .myAccount-addresses {
+    ::ng-deep .myAccount-addresses {
         margin-top: 20px;
 
         .addresses-title {
@@ -403,7 +314,7 @@
             margin-bottom: 0;
         }
     }
-    .edit-account {
+    ::ng-deep .edit-account {
         .form-group {
             .form-select {
                 background-color: var(--whiteColor);
@@ -465,7 +376,7 @@
         h3 {
             font-size: 18px;
         }
-        .recent-orders-table {
+        ::ng-deep .recent-orders-table {
             .table {
                 thead {
                     th {
@@ -485,47 +396,7 @@
                 }
             }
         }
-        .orders-table {
-            .table {
-                thead {
-                    th {
-                        padding: 10px 15px 9px;
-                        font-size: 14px;
-                    }
-                }
-                tbody {
-                    td {
-                        padding: 10px 15px 9px;
-                        font-size: 13px;
-
-                        .view-button {
-                            font-size: 13px;
-                        }
-                    }
-                }
-            }
-        }
-        .downloads-table {
-            .table {
-                thead {
-                    th {
-                        padding: 10px 15px 9px;
-                        font-size: 14px;
-                    }
-                }
-                tbody {
-                    td {
-                        padding: 10px 15px 9px;
-                        font-size: 13px;
-
-                        .downloads-button {
-                            font-size: 13px;
-                        }
-                    }
-                }
-            }
-        }
-        .edit-account {
+        ::ng-deep .edit-account {
             box-shadow: unset;
             padding: 0;
             border-radius: 0;
@@ -547,7 +418,7 @@
                 font-size: 18px;
             }
         }
-        .myAccount-addresses {
+        ::ng-deep .myAccount-addresses {
             .addresses-title {
                 h3 {
                     font-size: 16px;

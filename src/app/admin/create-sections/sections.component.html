@@ -302,10 +302,17 @@
   >
     <div class="p-4">
       <p>
-        <i class="pi pi-exclamation-circle"></i> Add the Youtube Id of the video
+        <i class="pi pi-exclamation-circle"></i> Add a title and a Youtube Id of the video
         that will be shown in this part of the section course plus a description
         that will be shown below.
       </p>
+      <input
+        placeholder="Title"
+        class="p-inputtext-sm mb-3 w-100"
+        type="text"
+        pInputText
+        [(ngModel)]="videoTitle"
+      />
       <input
         placeholder="Youtube Id"
         class="p-inputtext-sm mb-3 w-100"
