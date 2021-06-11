@@ -8,6 +8,9 @@ import { HeaderStyleFourComponent } from './components/common/header-style-four/
 import { YouTubePlayerModule } from '@angular/youtube-player'
 import { HttpClientModule } from '@angular/common/http'
 import { StickyNavModule } from 'ng2-sticky-nav'
+import { RippleModule } from 'primeng/ripple'
+import { ButtonModule } from 'primeng/button'
+import { AccordionModule } from 'primeng/accordion'
 
 @NgModule({
   declarations: [
@@ -25,7 +28,10 @@ import { StickyNavModule } from 'ng2-sticky-nav'
     HeaderStyleFourComponent,
     YouTubePlayerModule,
     HttpClientModule,
-    StickyNavModule
+    StickyNavModule,
+    RippleModule,
+    ButtonModule,
+    AccordionModule
   ]
 })
 export class SharedModule {}

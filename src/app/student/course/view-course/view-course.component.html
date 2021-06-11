@@ -1,0 +1,61 @@
+<div style="width: 100%; height: 10vh; background-color: blue"></div>
+<div class="view-course">
+  <div
+    *ngIf="!sectionPanel"
+    class="show-panel"
+    (click)="toggleSectionPanel()"
+    pRipple
+  >
+    <div>
+      <i class="pi pi-arrow-left"></i>
+    </div>
+    <span class="h5">Course Content</span>
+  </div>
+  <div class="view-course__lesson" [class]="{ active: !sectionPanel }">
+    <ng-container *ngIf="actualLesson?.type === 'Video'">
+      <app-video-lesson></app-video-lesson>
+    </ng-container>
+    <ng-container *ngIf="actualLesson?.type === 'Article'">
+      <app-article-lesson></app-article-lesson>
+    </ng-container>
+    <ng-container
+      *ngIf="
+        actualLesson?.type === 'Quiz' || actualLesson?.type === 'FinalQuiz'
+      "
+    >
+      <app-quiz></app-quiz>
+    </ng-container>
+    <ng-container *ngIf="actualLesson === null">
+      <div style="width: 100%; height: 200vh; background-color: black"></div>
+    </ng-container>
+  </div>
+  <div class="view-course__sections" [class]="{ active: !sectionPanel }">
+    <div class="view-course__sections__header">
+      <h2 class="h5">Course Content</h2>
+      <button
+        (click)="toggleSectionPanel()"
+        pButton
+        pRipple
+        type="button"
+        icon="pi pi-times"
+        class="p-button-rounded p-button-secondary p-button-text"
+      ></button>
+    </div>
+    <p-accordion [multiple]="true" styleClass="view-course__sections__list">
+      <p-accordionTab
+        [header]="'Lesson ' + (i + 1)"
+        *ngFor="let item of arrayTest; let i = index"
+      >
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+      </p-accordionTab>
+    </p-accordion>
+  </div>
+</div>

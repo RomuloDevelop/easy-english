@@ -11,13 +11,11 @@ import { HeaderComponent } from './header/header.component'
 
 import { SharedModule } from '../shared.module'
 
-import { ButtonModule } from 'primeng/button'
 import { TableModule } from 'primeng/table'
 import { InputTextModule } from 'primeng/inputtext'
 import { EditorModule } from 'primeng/editor'
 import { CardModule } from 'primeng/card'
 import { DialogModule } from 'primeng/dialog'
-import { AccordionModule } from 'primeng/accordion'
 import { ConfirmDialogModule } from 'primeng/confirmdialog'
 import { RadioButtonModule } from 'primeng/radiobutton'
 import { InputTextareaModule } from 'primeng/inputtextarea'
@@ -28,7 +26,6 @@ import { FileUploadModule } from 'primeng/fileupload'
 import { SidebarModule } from 'primeng/sidebar'
 import { AvatarModule } from 'primeng/avatar'
 import { AvatarGroupModule } from 'primeng/avatargroup'
-import { RippleModule } from 'primeng/ripple'
 import { MenuModule } from 'primeng/menu'
 import { PanelMenuModule } from 'primeng/panelmenu'
 
@@ -48,13 +45,11 @@ import { AdminService } from './admin.service'
     AdminRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    ButtonModule,
     TableModule,
     InputTextModule,
     EditorModule,
     CardModule,
     DialogModule,
-    AccordionModule,
     ConfirmDialogModule,
     RadioButtonModule,
     InputTextareaModule,
@@ -65,7 +60,6 @@ import { AdminService } from './admin.service'
     SidebarModule,
     AvatarModule,
     AvatarGroupModule,
-    RippleModule,
     MenuModule,
     PanelMenuModule
   ],

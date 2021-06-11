@@ -1,4 +1,4 @@
-@import "../../components/pages/home-page-one/homeone-courses/homeone-courses.component.scss";
+@import "../../../components/pages/home-page-one/homeone-courses/homeone-courses.component.scss";
 .courses-details-header {
     margin-bottom: 30px;
 
@@ -273,7 +273,7 @@
             border-radius: 5px 5px 0 0;
             background: {
                 color: var(--mainColor);
-                image: url(../../../assets/img/bg.jpg);
+                image: url(../../../../assets/img/bg.jpg);
                 position: center center;
                 size: cover;
                 repeat: no-repeat;
@@ -631,7 +631,7 @@
     border-radius: 5px;
     z-index: 1;
     background: {
-        image: url(../../../assets/img/mission-bg.jpg);
+        image: url(../../../../assets/img/mission-bg.jpg);
         position: center center;
         size: cover;
         repeat: no-repeat;
@@ -657,7 +657,7 @@
         height: 100%;
         z-index: -1;
         background: {
-            image: url(../../../assets/img/bg-lines.svg);
+            image: url(../../../../assets/img/bg-lines.svg);
             position: center center;
             size: cover;
             repeat: no-repeat;

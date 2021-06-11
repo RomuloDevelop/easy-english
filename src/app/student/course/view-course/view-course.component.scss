@@ -1,0 +1,79 @@
+$viewCourseSectionsHeader: 4rem;
+
+.show-panel {
+  position: absolute;
+  height: 3rem;
+  top: calc(10vh + 10px);
+  right: -0px;
+  z-index: 1000;
+  padding: 0.5rem 0px 0.5rem 0;
+  width: 3rem;
+  background-color: var(--optionalColor2);
+  transition: all 0.3s ease-out;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  color: white;
+  span {
+    display: inline;
+    text-align: center;
+    color: white;
+    margin-left: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    vertical-align: middle;
+  }
+  & > div {
+    height: 100%;
+    width: 3rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+  }
+  i {
+    font-size: 1.2rem;
+  }
+  &:hover {
+    width: 240px;
+  }
+}
+.view-course {
+  min-height: 100vh;
+  display: flex;
+  .view-course__lesson {
+    width: 75%;
+    transition: width 0.2s ease-out;
+    &.active {
+      width: 100%;
+    }
+  }
+  .view-course__sections {
+    position: sticky;
+    top: 0px;
+    width: 25%;
+    height: 100vh;
+    overflow: hidden;
+    &.active {
+      min-width: 0px;
+      width: 0px;
+    }
+    transition: width 0.2s ease-out;
+    .view-course__sections__header {
+      background-color: white;
+      height: $viewCourseSectionsHeader;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0px 1.2rem;
+      white-space: nowrap;
+      * {
+        margin: 0;
+      }
+    }
+    ::ng-deep .view-course__sections__list {
+      max-height: calc(100vh - #{$viewCourseSectionsHeader});
+      overflow-y: auto;
+    }
+  }
+}

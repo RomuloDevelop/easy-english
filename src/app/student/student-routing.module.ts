@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
 import { DashboardComponent } from './dashboard/dashboard.component'
-import { CourseComponent } from './course/course.component'
 import { CourseListComponent } from './course-list/course-list.component'
 import { AddressComponent } from './address/address.component'
 import { EditBillingComponent } from './edit-billing/edit-billing.component'
 import { EditShippingComponent } from './edit-shipping/edit-shipping.component'
 import { EditAccountComponent } from './edit-account/edit-account.component'
+import { ViewCourseComponent } from './course/view-course/view-course.component'
+import { DetailComponent } from './course/detail/detail.component'
 
 const routes: Routes = [
   {
@@ -41,8 +42,17 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'view-course/:id',
-    component: CourseComponent
+    path: 'course-detail/:id',
+    children: [
+      {
+        path: '',
+        component: DetailComponent
+      },
+      {
+        path: 'view-course',
+        component: ViewCourseComponent
+      }
+    ]
   }
 ]
 
