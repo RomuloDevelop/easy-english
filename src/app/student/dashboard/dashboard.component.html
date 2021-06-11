@@ -80,7 +80,10 @@
     <div class="myDashboard-navigation">
       <ul>
         <li>
-          <a routerLink="/student" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}"
+          <a
+            routerLink="/student"
+            [routerLinkActive]="['active']"
+            [routerLinkActiveOptions]="{ exact: true }"
             ><i class="bx bxs-dashboard"></i> Dashboard</a
           >
         </li>
@@ -102,8 +105,7 @@
     <div class="myDashboard-content">
       <p>
         Hello <strong>James Anderson</strong> (not
-        <strong>James Anderson</strong>?
-        <a routerLink="/">Log out</a>)
+        <strong>James Anderson</strong>? <a routerLink="/">Log out</a>)
       </p>
       <p>
         From your account dashboard you can view your
@@ -116,4 +118,3 @@
     </div>
   </div>
 </div>
-

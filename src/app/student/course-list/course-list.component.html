@@ -4,18 +4,20 @@
     <thead>
       <tr>
         <th *ngFor="let item of courseCols">
-            {{item}}
+          {{ item }}
         </th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let row of (list | async)">
-        <td>{{row.id}}</td>
-        <td>{{row.title}}</td>
-        <td>{{row.subtitle}}</td>
-        <td>{{row.sections.length}}</td>
+      <tr *ngFor="let row of list | async">
+        <td>{{ row.id }}</td>
+        <td>{{ row.title }}</td>
+        <td>{{ row.subtitle }}</td>
+        <td>{{ row.sections.length }}</td>
         <td>
-          <a [routerLink]="'course-detail/' + row.id" class="view-button">View</a>
+          <a [routerLink]="'course-detail/' + row.id" class="view-button"
+            >View</a
+          >
         </td>
       </tr>
     </tbody>

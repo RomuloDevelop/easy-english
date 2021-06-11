@@ -41,7 +41,6 @@
       <nav
         class="admin-navbar navbar navbar-light bg-light"
         [class.active]="classApplied"
-
       >
         <div class="p-mr-3 menu-btn p-pl-3 d-flex align-items-center">
           <button
@@ -62,24 +61,23 @@
         <div
           style="display: flex !important; flex-basis: auto; flex-grow: 1"
         ></div>
-        <div style="position: relative;">
-        <div
-          pRipple
-          (click)="viewProfile = !viewProfile"
-          class="p-ml-5 p-pr-3 p-pl-3 menu-btn"
-
-        >
+        <div style="position: relative">
+          <div
+            pRipple
+            (click)="viewProfile = !viewProfile"
+            class="p-ml-5 p-pr-3 p-pl-3 menu-btn"
+          >
             <div class="p-mr-2">
-                <p-avatar label="P" styleClass="p-mr-2" shape="circle"></p-avatar>
-                <span>Admin</span>
+              <p-avatar label="P" styleClass="p-mr-2" shape="circle"></p-avatar>
+              <span>Admin</span>
             </div>
             <i class="pi pi-angle-down"></i>
-        </div>
-        <div class="menu-list" [class]="{'active': viewProfile}">
+          </div>
+          <div class="menu-list" [class]="{ active: viewProfile }">
             <p-menu #menu [model]="items" [appendTo]="btn"></p-menu>
+          </div>
         </div>
-    </div>
       </nav>
     </div>
-</div>
+  </div>
 </header>

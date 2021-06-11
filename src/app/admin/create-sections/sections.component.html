@@ -1,7 +1,10 @@
 <div class="create-course-section">
   <div class="new-section">
     <ng-container
-      *ngIf="(this.adminService.sectionToEdit$ | async) === data?.id; else actualSection"
+      *ngIf="
+        (this.adminService.sectionToEdit$ | async) === data?.id;
+        else actualSection
+      "
     >
       <h3 class="h6">New Section:</h3>
       <div class="p-section-field">
@@ -51,7 +54,7 @@
     </ng-container>
 
     <ng-template #actualSection>
-      <h3 class="h6" style="display: inline">Section {{ count }}: </h3>
+      <h3 class="h6" style="display: inline">Section {{ count }}:</h3>
       <span>{{ title }}</span>
       <div class="edit-buttons" style="display: inline">
         <i class="pi pi-pencil" (click)="setEdit()"></i>
@@ -302,9 +305,9 @@
   >
     <div class="p-4">
       <p>
-        <i class="pi pi-exclamation-circle"></i> Add a title and a Youtube Id of the video
-        that will be shown in this part of the section course plus a description
-        that will be shown below.
+        <i class="pi pi-exclamation-circle"></i> Add a title and a Youtube Id of
+        the video that will be shown in this part of the section course plus a
+        description that will be shown below.
       </p>
       <input
         placeholder="Title"

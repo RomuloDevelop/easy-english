@@ -6,7 +6,7 @@
       <ul>
         <li><a href="index.html">Home</a></li>
         <li><a href="courses-2-columns-style-1.html">Courses</a></li>
-        <li>{{course.title}}</li>
+        <li>{{ course.title }}</li>
       </ul>
       <h2>Courses</h2>
     </div>
@@ -19,9 +19,9 @@
       <div class="row align-items-center">
         <div class="col-lg-8">
           <div class="courses-title">
-            <h2>{{course.title}}</h2>
+            <h2>{{ course.title }}</h2>
             <p>
-              {{course.subtitle}}
+              {{ course.subtitle }}
             </p>
           </div>
           <div class="courses-meta">
@@ -507,18 +507,23 @@
         </div>
         <div class="courses-sidebar-syllabus">
           <h3>Course Syllabus</h3>
-          <ng-container *ngFor="let section of course.sections; let secIndex=index;">
-            <span class="chapter">Section {{secIndex + 1}}</span>
-            <h4>{{section.title}}</h4>
+          <ng-container
+            *ngFor="let section of course.sections; let secIndex = index"
+          >
+            <span class="chapter">Section {{ secIndex + 1 }}</span>
+            <h4>{{ section.title }}</h4>
             <div class="courses-list">
               <ul>
-                <li *ngFor="let lecture of section.lectures; let lecIndex = index;">
-                  <span class="number">{{lecIndex + 1}}.</span>
-                  <ng-container *ngIf="lecture.type != 'Quiz' else quizItem">
-                    Lesson {{lecIndex + lecture.count}}: {{lecture.data.title}} (4:30)
+                <li
+                  *ngFor="let lecture of section.lectures; let lecIndex = index"
+                >
+                  <span class="number">{{ lecIndex + 1 }}.</span>
+                  <ng-container *ngIf="lecture.type !== 'Quiz'; else quizItem">
+                    Lesson {{ lecIndex + lecture.count }}:
+                    {{ lecture.data.title }} (4:30)
                   </ng-container>
                   <ng-template #quizItem>
-                    Quiz - {{lecture.title}}
+                    Quiz - {{ lecture.title }}
                   </ng-template>
                 </li>
               </ul>
