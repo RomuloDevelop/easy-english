@@ -21,7 +21,7 @@ section {
 }
 
 $sideNavTransition: 0.5s;
-$sideNavWidth: 300px;
+$sideNavWidth: 270px;
 $menuItemPadX: 15px;
 :host ::ng-deep .admin-container {
     display: flex;
@@ -49,6 +49,22 @@ $menuItemPadX: 15px;
         transition: width $sideNavTransition;
         &.active {
             width: $sideNavWidth;
+            min-width: $sideNavWidth;
+        }
+        .admin-side-nav__close {
+          position: absolute;
+          top: 0;
+          right: 0;
+          display: none;
+          justify-content: center;
+          align-items: center;
+          margin: 10px;
+          font-size: 1.2rem;
+          color: white;
+          cursor: pointer;
+          width: 35px;
+          height: 35px;
+          border-radius: 50%;
         }
         .menu-list {
             padding: 20px 0;
@@ -60,7 +76,7 @@ $menuItemPadX: 15px;
             color: white;
             font-size: 0.9rem;
             display: flex;
-            justify-content: end;
+            justify-content: flex-start;
             align-items: center;
             padding: 10px $menuItemPadX;
             width: $sideNavWidth;
@@ -104,14 +120,17 @@ $menuItemPadX: 15px;
     }
 }
 
-@media screen and (max-width: 40rem) {
+@media screen and (max-width: 1000px) {
     .admin-container .admin-side-nav {
-        position: fixed;
-        z-index: 1000;
-        width: 0px;
-        &.active {
-            width: $sideNavWidth;
-        }
+      position: fixed;
+      z-index: 1000;
+      width: 0px;
+      &.active {
+        width: $sideNavWidth;
+      }
+      .admin-side-nav__close {
+        display: flex;
+      }
     }
     .admin-container .overlay.activeOverlay {
         position: fixed;

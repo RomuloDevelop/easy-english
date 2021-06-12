@@ -13,6 +13,6 @@
     box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
   }
   /* For firefox compatibility */
-  scrollbar-color: $color;
+  scrollbar-color: $color #f0f0f0;
   scrollbar-width: thin;
 }

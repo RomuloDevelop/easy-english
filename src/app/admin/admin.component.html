@@ -5,6 +5,9 @@
     (click)="viewMenu = false"
   ></div>
   <div class="admin-side-nav" [class]="{ active: viewMenu }">
+    <div pRipple class="admin-side-nav__close" (click)="viewMenu = false">
+      <i class="pi pi-times"></i>
+    </div>
     <ul class="menu-list">
       <li *ngFor="let item of items" class="menu-item">
         <i [class]="item.icon"></i>
