@@ -7,76 +7,28 @@
     </ul>
     <h2>Edit Course</h2>
   </div>
-  <p-card header="Course home page" styleClass="admin-card p-mt-5">
-    <div class="p-field">
-      <small id="title-help">Enter a title for the course.</small>
-      <input
-        placeholder="Title"
-        id="title"
-        class="p-inputtext-sm"
-        type="text"
-        aria-describedby="title-help"
-        pInputText
-        [(ngModel)]="title"
-      />
-    </div>
-    <div class="p-field">
-      <small id="title-help">Enter a subtitle for the course.</small>
-      <input
-        placeholder="Subtitle"
-        id="title"
-        class="p-inputtext-sm"
-        type="text"
-        aria-describedby="title-help"
-        pInputText
-        [(ngModel)]="subtitle"
-      />
-    </div>
-    <div class="p-field">
-      <small id="title-help">Enter a full description for the course.</small>
-      <p-editor
-        [(ngModel)]="description"
-        [style]="{ height: '200px' }"
-      ></p-editor>
-    </div>
-    <div class="d-flex justify-content-center mt-3">
-      <button
-        class="default-btn"
-        (click)="updateCourse()"
-        [disabled]="disableUpdate(title, subtitle, description)"
-      >
-        <i class="pi pi-pencil icon-arrow before"></i>
-        <span class="label">Update Course</span>
-        <i class="pi pi-pencil icon-arrow after"></i>
-      </button>
-    </div>
-  </p-card>
-  <p-card header="Create Sections" class="create-section">
-    <p class="create-section__description">
-      <i class="pi pi-exclamation-circle"></i>
-      Add your course content, whether it's video sections, surveys, articles,
-      and resources. Click the + icon on the left to create the section.
-    </p>
-    <app-sections
-      *ngFor="let section of sections; let i = index"
-      [count]="i + 1"
-      [data]="section"
-      [course]="courseId"
-      (save)="updateSection($event)"
-    >
-    </app-sections>
-    <div class="d-flex justify-content-center mt-3">
-      <button
-        class="default-btn"
-        (click)="addSection()"
-        [disabled]="disableAdd"
-      >
-        <i class="bx bx-plus-circle icon-arrow before"></i>
-        <span class="label">New Section</span>
-        <i class="bx bx-plus-circle icon-arrow after"></i>
-      </button>
-    </div>
-  </p-card>
+  <app-dashboard-tabs>
+    <ng-container description>
+      <p>
+        Hello <strong>James Anderson</strong> (not
+        <strong>James Anderson</strong>? <a routerLink="/">Log out</a>)
+      </p>
+      <p>
+        From your account dashboard you can view your
+        <a>courses</a>, manage your
+        <a routerLink="edit-address">shipping and billing addresses</a>,
+        <a routerLink="edit-account">edit your password</a>, and
+        <a routerLink="edit-account">account details</a>.
+      </p>
+    </ng-container>
+    <tab icon="bx bx-edit" label="Home page">
+      <app-home-page></app-home-page>
+    </tab>
+    <tab icon="bx bx-edit" label="Sections">
+      <app-create-section></app-create-section>
+    </tab>
+    <tab icon="bx bx-edit" label="Final Quiz"> </tab>
+  </app-dashboard-tabs>
 </div>
 
 <p-toast></p-toast>

@@ -8,7 +8,7 @@ import {
   SimpleChanges,
   OnDestroy
 } from '@angular/core'
-import { AdminService, SectionAction } from '../admin.service'
+import { AdminService, SectionAction } from '../../../admin.service'
 import { ConfirmationService, PrimeNGConfig, Message } from 'primeng/api'
 import { select, Store } from '@ngrx/store'
 import {
@@ -20,9 +20,12 @@ import {
   Question,
   FinalQuiz,
   Answer
-} from '../../state/admin/models'
-import { SectionData, selectLectures } from '../../state/admin/admin.selectores'
-import memoize from '../../decorators/memoize'
+} from '../../../../state/admin/models'
+import {
+  SectionData,
+  selectLectures
+} from '../../../../state/admin/admin.selectores'
+import memoize from '../../../../decorators/memoize'
 import {
   setLecture,
   updateLecture,

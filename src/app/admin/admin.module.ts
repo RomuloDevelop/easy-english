@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core'
-import { CommonModule } from '@angular/common'
 import { FormsModule } from '@angular/forms'
 import { ReactiveFormsModule } from '@angular/forms'
 import { AdminRoutingModule } from './admin-routing.module'
 import { AdminComponent } from './admin.component'
 import { CoursesComponent } from './courses/courses.component'
 import { CreateCourseComponent } from './create-course/create-course.component'
-import { SectionsComponent } from './create-sections/sections.component'
+import { SectionsComponent } from './create-course/create-section/sections/sections.component'
 import { HeaderComponent } from './header/header.component'
 
 import { SharedModule } from '../shared.module'
@@ -31,16 +30,19 @@ import { PanelMenuModule } from 'primeng/panelmenu'
 
 import { ConfirmationService, MessageService } from 'primeng/api'
 import { AdminService } from './admin.service'
+import { HomePageComponent } from './create-course/home-page/home-page.component'
+import { CreateSectionComponent } from './create-course/create-section/create-section.component'
 @NgModule({
   declarations: [
     AdminComponent,
     CoursesComponent,
     CreateCourseComponent,
     SectionsComponent,
-    HeaderComponent
+    HeaderComponent,
+    HomePageComponent,
+    CreateSectionComponent
   ],
   imports: [
-    CommonModule,
     SharedModule,
     AdminRoutingModule,
     FormsModule,

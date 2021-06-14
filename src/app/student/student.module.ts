@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core'
-import { CommonModule } from '@angular/common'
 import { SharedModule } from '../shared.module'
 
 import { StudentRoutingModule } from './student-routing.module'
@@ -29,6 +28,6 @@ import { DetailComponent } from './course/detail/detail.component'
     QuizComponent,
     DetailComponent
   ],
-  imports: [CommonModule, SharedModule, StudentRoutingModule]
+  imports: [SharedModule, StudentRoutingModule]
 })
 export class StudentModule {}

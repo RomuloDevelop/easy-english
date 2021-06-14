@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router'
 import { AdminComponent } from './admin.component'
 import { CoursesComponent } from './courses/courses.component'
 import { CreateCourseComponent } from './create-course/create-course.component'
+import { CreateSectionComponent } from './create-course/create-section/create-section.component'
+import { HomePageComponent } from './create-course/home-page/home-page.component'
 const routes: Routes = [
   {
     path: '',
@@ -14,7 +16,17 @@ const routes: Routes = [
       },
       {
         path: 'create-course/:id',
-        component: CreateCourseComponent
+        component: CreateCourseComponent,
+        children: [
+          {
+            path: 'home-page',
+            component: HomePageComponent
+          },
+          {
+            path: 'create-section',
+            component: CreateSectionComponent
+          }
+        ]
       }
     ]
   }

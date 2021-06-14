@@ -1,0 +1,22 @@
+<p-card header="Create Sections" class="create-section">
+  <p class="create-section__description">
+    <i class="pi pi-exclamation-circle"></i>
+    Add your course content, whether it's video sections, surveys, articles, and
+    resources. Click the + icon on the left to create the section.
+  </p>
+  <app-sections
+    *ngFor="let section of sections; let i = index"
+    [count]="i + 1"
+    [data]="section"
+    [course]="courseId"
+    (save)="updateSection($event)"
+  >
+  </app-sections>
+  <div class="d-flex justify-content-center mt-3">
+    <button class="default-btn" (click)="addSection()" [disabled]="disableAdd">
+      <i class="bx bx-plus-circle icon-arrow before"></i>
+      <span class="label">New Section</span>
+      <i class="bx bx-plus-circle icon-arrow after"></i>
+    </button>
+  </div>
+</p-card>
