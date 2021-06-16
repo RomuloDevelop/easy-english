@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 import { AdminService } from '../../admin.service'
-import { ConfirmationService, PrimeNGConfig, Message } from 'primeng/api'
+import { PrimeNGConfig, MessageService } from 'primeng/api'
 import { select, Store } from '@ngrx/store'
 import { Question, FinalQuiz, Answer } from '../../../state/admin/models'
 import { updateFinalQuiz } from '../../../state/admin/courses/course.actions'
@@ -22,6 +22,7 @@ export class FinalQuizComponent implements OnInit {
   constructor(
     public adminService: AdminService,
     private primengConfig: PrimeNGConfig,
+    private messageService: MessageService,
     private route: ActivatedRoute,
     private store: Store
   ) {}
@@ -29,9 +30,12 @@ export class FinalQuizComponent implements OnInit {
   ngOnInit() {
     this.primengConfig.ripple = true
     this.store.pipe(select(selectCoursesTable)).subscribe((courses) => {
-      this.finalQuiz = courses.find(
-        (course) => course.id === this.courseId
-      ).quiz
+      const { quiz } = courses.find((course) => course.id === this.courseId)
+      this.questions = quiz.questions.map((item) => ({
+        ...item,
+        answers: [...item.answers]
+      }))
+      this.title = quiz.title
     })
   }
 
@@ -39,13 +43,25 @@ export class FinalQuizComponent implements OnInit {
     if (this.questions.length === 0) {
       this.addQuestion()
     } else {
-      this.finalQuiz = {
+      let detail = this.disabledCreateQuiz()
+      if (detail !== '') {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail
+        })
+        return
+      }
+      const quiz = {
         title: this.title,
         questions: this.questions
       }
-      this.store.dispatch(
-        updateFinalQuiz({ id: this.courseId, quiz: this.finalQuiz })
-      )
+      this.store.dispatch(updateFinalQuiz({ id: this.courseId, quiz }))
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'The quiz has been updated'
+      })
     }
   }
 
@@ -78,6 +94,7 @@ export class FinalQuizComponent implements OnInit {
   }
 
   deleteaAnswer(questionId: number, id: number) {
+    console.log(this.questions, questionId, id)
     for (let question of this.questions) {
       if (question.id === questionId) {
         question.answers = question.answers.filter((item) => item.id !== id)
@@ -96,22 +113,48 @@ export class FinalQuizComponent implements OnInit {
     return question == null || question.length <= 0
   }
 
-  @memoize({
-    normalizer: function (args) {
-      return JSON.stringify(args)
+  disabledCreateQuiz() {
+    if (this.title === '') {
+      return 'Quiz must have a title'
     }
-  })
-  disabledCreateQuiz(answers: Answer[], id: number) {
-    let result = true
-    for (let answer of answers) {
-      if (answer.id === id) {
-        result = false
+
+    let message = ''
+
+    for (let question of this.questions) {
+      if (question.question == null || question.question === '') {
+        message = "Questions can't be empty"
+        break
       }
-      if (answer.text === '') {
-        result = true
+
+      let hasCorrectAnswer = false
+      let hasText = true
+      let answersCount = 0
+      for (let answer of question.answers) {
+        if (answer.id === question.correctAnswer) {
+          hasCorrectAnswer = true
+        }
+        if (answer.text === '') {
+          hasText = false
+          break
+        }
+        answersCount++
+      }
+
+      if (!hasText) {
+        message = "Answers can't be empty"
+        break
+      }
+
+      if (!hasCorrectAnswer) {
+        message = 'Questions must have a correct answer'
+        break
+      }
+
+      if (answersCount < 2) {
+        message = 'Questions must have more than 1 answer'
         break
       }
     }
-    return result
+    return message
   }
 }
