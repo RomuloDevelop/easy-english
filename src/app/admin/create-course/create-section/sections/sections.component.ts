@@ -59,7 +59,6 @@ export class SectionsComponent implements OnInit, OnChanges, OnDestroy {
   displayArticle = false
   displayVideo = false
   displayQuiz = false
-  displayFinalQuiz = false
   msgs: Message[] = []
 
   // Video variables
@@ -78,10 +77,6 @@ export class SectionsComponent implements OnInit, OnChanges, OnDestroy {
   question = ''
   answers: Answer[] = []
   correctAnswer: number = null
-
-  //Final quiz
-  finalQuizTitle = ''
-  questions: Question[] = []
 
   //All lectures
   allLectures: Lecture[]
@@ -200,11 +195,6 @@ export class SectionsComponent implements OnInit, OnChanges, OnDestroy {
       this.videoUrl = data.url
       this.videoTitle = data.title
       this.displayVideo = true
-    } else if (item.type === 'Final Quiz') {
-      const data = item.data as FinalQuiz
-      this.finalQuizTitle = data.title
-      this.questions = data.questions
-      this.displayFinalQuiz = true
     }
     this.lectureId = item.id
     this.resources = item?.resources
@@ -321,49 +311,6 @@ export class SectionsComponent implements OnInit, OnChanges, OnDestroy {
       }
     }
     return result
-  }
-
-  // Final Quiz methods
-  createFinalQuiz() {
-    const id = this.lectureId
-    const sectionId = this.data.id
-    const data: FinalQuiz = {
-      title: this.finalQuizTitle,
-      questions: this.questions
-    }
-    this.addLectureOrEdit({ sectionId, id, data, type: 'Final Quiz' })
-    this.clearFinalQuizModal()
-  }
-
-  clearFinalQuizModal() {
-    this.displayFinalQuiz = false
-    this.finalQuizTitle = ''
-    this.questions = []
-    this.clearCommonModalData()
-  }
-
-  addQuestion() {
-    let id = 0
-    if (this.questions.length)
-      id = this.questions[this.questions.length - 1].id + 1
-    this.questions.push({
-      id,
-      question: '',
-      answers: [],
-      correctAnswer: null
-    })
-  }
-
-  addFinalAnswer(questionId) {
-    let id = 0
-    const question = this.questions.find((item) => item.id === questionId)
-    if (question.answers.length)
-      id = question.answers[question.answers.length - 1].id + 1
-    question.answers.push({
-      id,
-      text: '',
-      correct: false
-    })
   }
 
   // General methods
