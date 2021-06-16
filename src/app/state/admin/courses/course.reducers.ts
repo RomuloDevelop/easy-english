@@ -12,7 +12,7 @@ const courseReducers = createReducer(
   on(CourseActions.updateCourse, (state, { course }) =>
     state.map((item) => {
       if (item.id === course.id) {
-        return course
+        return { ...item, ...course }
       }
       return item
     })
@@ -24,6 +24,14 @@ const courseReducers = createReducer(
     state.map((item) => {
       if (item.id === id) {
         return { ...item, status }
+      }
+      return item
+    })
+  ),
+  on(CourseActions.updateFinalQuiz, (state, { id, quiz }) =>
+    state.map((item) => {
+      if (item.id === id) {
+        return { ...item, quiz }
       }
       return item
     })

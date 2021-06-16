@@ -1,0 +1,112 @@
+.p-section-field {
+  margin-bottom: 10px;
+  p-editor, input {
+    display: block;
+    width: 100%;
+  }
+}
+.new-section {
+  background-color: rgb(239, 239, 239);
+  border: 1px solid rgb(200, 200, 200);
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  button {
+      margin-left: 10px;
+  }
+  .edit-buttons {
+      margin-left: 10px;
+      i {
+          cursor: pointer;
+          margin-left: 5px;
+      }
+  }
+}
+
+::ng-deep .lecture-group {
+  .p-accordion-header-link {
+      background-color: white !important;
+      padding-top: 7px !important;
+      padding-bottom: 7px !important;
+  }
+
+  .innerHtml {
+      p {
+          word-wrap: break-word;
+      }
+  }
+}
+
+:host ::ng-deep .answer-item {
+  position: relative;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  padding: 0 10px;
+  margin-bottom: 1rem;
+  .delete-btn {
+    top: -5px;
+  }
+  &:hover .delete-btn {
+    opacity: 1;
+  }
+  .p-inputtextarea {
+      width: 100%;
+  }
+
+  .p-radiobutton {
+      margin-right: 1rem;
+      &.p-radiobutton-focused {
+          outline-color: var(--green-500);
+      }
+      .p-radiobutton-box.p-highlight {
+          background-color: var(--green-500);
+          border-color: var(--green-500);
+      }
+  }
+}
+
+%question-box {
+  border: 1px rgb(206, 212, 218) solid;
+  border-radius: 10px;
+  padding: 15px;
+}
+
+.question-container {
+  margin-top: 1.2rem;
+  margin-bottom: 2rem;
+  position: relative;
+  @extend %question-box;
+  & > .delete-btn {
+    top: -23px;
+  }
+  &:hover > .delete-btn {
+    opacity: 1;
+  }
+}
+
+.answer-container {
+  @extend %question-box;
+  &.empty {
+    border: none;
+  }
+}
+
+.delete-btn {
+  position: absolute;
+  right: -5px;
+  border-radius: 50%;
+  background-color: rgb(200, 200, 200);
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+  color: white;
+}
+.delete-btn i {
+  font-size: 0.8rem;
+}

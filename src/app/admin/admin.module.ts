@@ -31,7 +31,8 @@ import { PanelMenuModule } from 'primeng/panelmenu'
 import { ConfirmationService, MessageService } from 'primeng/api'
 import { AdminService } from './admin.service'
 import { HomePageComponent } from './create-course/home-page/home-page.component'
-import { CreateSectionComponent } from './create-course/create-section/create-section.component'
+import { CreateSectionComponent } from './create-course/create-section/create-section.component';
+import { FinalQuizComponent } from './create-course/final-quiz/final-quiz.component'
 @NgModule({
   declarations: [
     AdminComponent,
@@ -40,7 +41,8 @@ import { CreateSectionComponent } from './create-course/create-section/create-se
     SectionsComponent,
     HeaderComponent,
     HomePageComponent,
-    CreateSectionComponent
+    CreateSectionComponent,
+    FinalQuizComponent
   ],
   imports: [
     SharedModule,

@@ -1,0 +1,109 @@
+<p-card header="Final quiz" styleClass="admin-card p-mt-5">
+  <p>
+    <i class="pi pi-exclamation-circle"></i> Add a title and various question
+    for the quiz. Create as many answers as you want and don't forget to select
+    the correct answer before you're done.
+  </p>
+  <input
+    placeholder="Title"
+    class="p-inputtext-sm mb-3 w-100"
+    type="text"
+    pInputText
+    [(ngModel)]="title"
+  />
+  <div *ngIf="questions.length">
+    <div
+      class="question-container"
+      *ngFor="let questItem of questions; let indexOfelement = index"
+    >
+      <div class="delete-btn" (click)="deleteaQuestion(questItem.id)">
+        <i class="pi pi-times"></i>
+      </div>
+      <div class="p-section-field">
+        <h2 class="h6 mt-1 mb-3">Question {{ indexOfelement + 1 }}</h2>
+        <p-editor
+          [(ngModel)]="questItem.question"
+          [style]="{ height: '150px' }"
+        ></p-editor>
+      </div>
+      <div
+        class="answer-container"
+        [class]="{ empty: questItem.answers.length === 0 }"
+      >
+        <div *ngIf="questItem.answers.length">
+          <h2 class="h6 mt-2 mb-3">Answers</h2>
+          <div class="answer-item" *ngFor="let answerItem of questItem.answers">
+            <div
+              class="delete-btn"
+              (click)="deleteaAnswer(questItem.id, answerItem.id)"
+            >
+              <i class="pi pi-times"></i>
+            </div>
+            <p-radioButton
+              [inputId]="answerItem.id"
+              [name]="'answer' + questItem.id"
+              [value]="answerItem.id"
+              [(ngModel)]="questItem.correctAnswer"
+            ></p-radioButton>
+            <div class="w-100">
+              <small
+                class="d-block"
+                style="color: var(--green-500); transition: all 0.2s"
+                [style]="{
+                  opacity: questItem.correctAnswer === answerItem.id ? 1 : 0
+                }"
+              >
+                Correct Answer!
+              </small>
+              <textarea
+                pInputTextarea
+                placeholder="Add answer"
+                [(ngModel)]="answerItem.text"
+                [style]="{
+                  height: '50px',
+                  'border-color':
+                    questItem.correctAnswer === answerItem.id
+                      ? 'var(--green-500)'
+                      : ''
+                }"
+              >
+              </textarea>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-end">
+          <button
+            pButton
+            pRipple
+            type="button"
+            icon="pi pi-plus"
+            class="p-button-rounded p-button-danger"
+            [disabled]="disableAddAnswer(questItem.question)"
+            (click)="addFinalAnswer(questItem.id)"
+          ></button>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex justify-content-end">
+      <button
+        pButton
+        pRipple
+        type="button"
+        icon="pi pi-plus"
+        class="p-button-rounded p-button-danger"
+        [disabled]="disableAddQuestion(title)"
+        (click)="addQuestion()"
+      ></button>
+    </div>
+  </div>
+  <div class="d-flex justify-content-center mt-3">
+    <button class="default-btn" (click)="addQuestionOrCreateFinalQuiz()">
+      <!-- [disabled]="disableUpdate(title, subtitle, description)" -->
+      <i class="pi pi-pencil icon-arrow before"></i>
+      <span class="label">{{
+        questions.length === 0 ? 'AddQuestion' : 'Update Quiz'
+      }}</span>
+      <i class="pi pi-pencil icon-arrow after"></i>
+    </button>
+  </div>
+</p-card>

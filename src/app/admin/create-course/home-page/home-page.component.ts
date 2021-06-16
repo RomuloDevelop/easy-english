@@ -7,7 +7,6 @@ import { updateCourse } from '../../../state/admin/courses/course.actions'
 import {
   selectCoursesTable,
   CoursesTableRow,
-  selectSectionsData,
   SectionData
 } from '../../../state/admin/admin.selectores'
 import { PrimeNGConfig, MessageService } from 'primeng/api'

@@ -52,6 +52,7 @@ export interface Course {
   subtitle: string
   detail: string
   status: boolean
+  quiz?: FinalQuiz
 }
 
 export interface AppState {
