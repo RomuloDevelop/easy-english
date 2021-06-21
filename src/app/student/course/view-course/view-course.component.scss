@@ -83,6 +83,13 @@ $menuItemPadX: 15px;
     }
     ::ng-deep .view-course__sections__list {
       @include scrollbar(var(--mainColor));
+      &.p-accordion p-accordiontab:first-child .p-accordion-header .p-accordion-header-link {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
+      &.p-accordion p-accordiontab .p-accordion-header .p-accordion-header-link {
+        background-color: white;
+      }
       max-height: calc(100vh - #{$viewCourseSectionsHeader});
       overflow-y: auto;
     }
