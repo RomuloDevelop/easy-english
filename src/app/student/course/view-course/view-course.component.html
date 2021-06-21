@@ -1,4 +1,9 @@
-<div style="width: 100%; height: 10vh; background-color: blue"></div>
+<app-header></app-header>
+<div
+  class="overlay"
+  [class]="{ activeOverlay: sectionPanel }"
+  (click)="toggleSectionPanel()"
+></div>
 <div class="view-course">
   <div
     *ngIf="!sectionPanel"
@@ -13,17 +18,17 @@
   </div>
   <div class="view-course__lesson" [class]="{ active: !sectionPanel }">
     <ng-container *ngIf="actualLesson?.type === 'Video'">
-      <app-video-lesson></app-video-lesson>
+      <app-video-lesson [lesson]="actualLesson"></app-video-lesson>
     </ng-container>
     <ng-container *ngIf="actualLesson?.type === 'Article'">
-      <app-article-lesson></app-article-lesson>
+      <app-article-lesson [lesson]="actualLesson"></app-article-lesson>
     </ng-container>
     <ng-container
       *ngIf="
         actualLesson?.type === 'Quiz' || actualLesson?.type === 'FinalQuiz'
       "
     >
-      <app-quiz></app-quiz>
+      <app-quiz [lesson]="actualLesson"></app-quiz>
     </ng-container>
     <ng-container *ngIf="actualLesson === null">
       <div style="width: 100%; height: 200vh; background-color: black"></div>

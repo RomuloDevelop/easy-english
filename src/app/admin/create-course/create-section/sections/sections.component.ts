@@ -6,7 +6,7 @@ import {
   OnInit,
   OnChanges,
   SimpleChanges,
-  OnDestroy
+  ViewChild
 } from '@angular/core'
 import { AdminService, SectionAction } from '../../../admin.service'
 import { ConfirmationService, PrimeNGConfig, Message } from 'primeng/api'
@@ -31,6 +31,7 @@ import {
   updateLecture,
   deleteLecture
 } from 'src/app/state/admin/lectures/lecture.actions'
+import { YoutubeComponent } from '../../../../components/common/youtube/youtube.component'
 
 @Component({
   selector: 'app-sections',
@@ -38,7 +39,9 @@ import {
   styleUrls: ['./sections.component.scss'],
   providers: [ConfirmationService]
 })
-export class SectionsComponent implements OnInit, OnChanges, OnDestroy {
+export class SectionsComponent implements OnInit, OnChanges {
+  @ViewChild(YoutubeComponent) youtube: YoutubeComponent
+
   @Output('save') saveEvent = new EventEmitter<{
     section: Section
     type: SectionAction
@@ -65,8 +68,6 @@ export class SectionsComponent implements OnInit, OnChanges, OnDestroy {
   videoTitle = ''
   videoUrl = ''
   videoDetail = ''
-  videoHeight = 250
-  videoWidth = 500
 
   // Article variables
   articleTitle = ''
@@ -93,19 +94,6 @@ export class SectionsComponent implements OnInit, OnChanges, OnDestroy {
     this.store
       .pipe(select(selectLectures))
       .subscribe((lectures) => (this.allLectures = lectures))
-
-    // Add Youtube script
-    const tag = document.createElement('script')
-
-    tag.src = 'https://www.youtube.com/iframe_api'
-    document.body.appendChild(tag)
-
-    // Logic for resize video
-    window.addEventListener('resize', this.resizeWindow.bind(this))
-  }
-
-  ngOnDestroy() {
-    window.removeEventListener('resize', this.resizeWindow.bind(this))
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -119,17 +107,8 @@ export class SectionsComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  resizeWindow() {
-    const YTContainer: HTMLDivElement = document.querySelector(
-      '#youtube-container'
-    ) as HTMLDivElement
-    this.videoWidth = YTContainer.clientWidth
-    this.videoHeight = this.videoWidth / 2
-    console.log(this.videoWidth, this.videoHeight)
-  }
-
   onOpen() {
-    setTimeout(this.resizeWindow.bind(this), 300)
+    this.youtube.triggerRezise()
   }
 
   emitEvent(type: SectionAction = 'update') {

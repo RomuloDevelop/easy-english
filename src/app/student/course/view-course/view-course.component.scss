@@ -1,4 +1,10 @@
+@import '../../../../assets/sass/components/scrollbar.scss';
+
+//Vars
 $viewCourseSectionsHeader: 4rem;
+$sideNavTransition: 0.5s;
+$sideNavWidth: 270px;
+$menuItemPadX: 15px;
 
 .show-panel {
   position: absolute;
@@ -41,7 +47,9 @@ $viewCourseSectionsHeader: 4rem;
 .view-course {
   min-height: 100vh;
   display: flex;
+  background-color: #f8f9fa;
   .view-course__lesson {
+    padding: 1.5rem 1rem;
     width: 75%;
     transition: width 0.2s ease-out;
     &.active {
@@ -54,13 +62,14 @@ $viewCourseSectionsHeader: 4rem;
     width: 25%;
     height: 100vh;
     overflow: hidden;
+    background-color: white;
     &.active {
       min-width: 0px;
       width: 0px;
     }
     transition: width 0.2s ease-out;
     .view-course__sections__header {
-      background-color: white;
+      background-color: var(--mainColor);
       height: $viewCourseSectionsHeader;
       display: flex;
       justify-content: space-between;
@@ -69,11 +78,49 @@ $viewCourseSectionsHeader: 4rem;
       white-space: nowrap;
       * {
         margin: 0;
+        color: white;
       }
     }
     ::ng-deep .view-course__sections__list {
+      @include scrollbar(var(--mainColor));
       max-height: calc(100vh - #{$viewCourseSectionsHeader});
       overflow-y: auto;
     }
+  }
+}
+
+.overlay {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #10236077;
+  width: 0px;
+  opacity: 0;
+  transition: opacity $sideNavTransition;
+  z-index: 1000;
+}
+
+@media (max-width: 1000px) {
+  .show-panel {
+    display: none;
+  }
+  .view-course {
+    .view-course__sections {
+      position: fixed;
+      z-index: 1000;
+      width: $sideNavWidth;
+      right: 0;
+      &.active {
+        width: 0px;
+      }
+    }
+    .view-course__lesson {
+      width: 100%;
+    }
+  }
+  .overlay.activeOverlay {
+    position: fixed;
+    width: 100vw;
+    opacity: 1;
   }
 }

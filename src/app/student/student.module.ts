@@ -13,7 +13,13 @@ import { VideoLessonComponent } from './course/view-course/video-lesson/video-le
 import { ArticleLessonComponent } from './course/view-course/article-lesson/article-lesson.component'
 import { QuizComponent } from './course/view-course/quiz/quiz.component'
 import { DetailComponent } from './course/detail/detail.component'
+import { AvatarModule } from 'primeng/avatar'
+import { AvatarGroupModule } from 'primeng/avatargroup'
+import { MenuModule } from 'primeng/menu'
+import { PanelMenuModule } from 'primeng/panelmenu'
 
+import { CourseService } from './course/course.service'
+import { HeaderComponent } from './course/header/header.component'
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -26,8 +32,17 @@ import { DetailComponent } from './course/detail/detail.component'
     VideoLessonComponent,
     ArticleLessonComponent,
     QuizComponent,
-    DetailComponent
+    DetailComponent,
+    HeaderComponent
   ],
-  imports: [SharedModule, StudentRoutingModule]
+  imports: [
+    SharedModule,
+    StudentRoutingModule,
+    AvatarModule,
+    AvatarGroupModule,
+    MenuModule,
+    PanelMenuModule
+  ],
+  providers: [CourseService]
 })
 export class StudentModule {}

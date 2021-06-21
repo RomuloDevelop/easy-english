@@ -107,15 +107,7 @@
             </ng-container>
             <strong class="mt-4">Video</strong>
             <hr class="mt-0" />
-            <div class="d-flex justify-content-center" id="youtube-container">
-              <youtube-player
-                [videoId]="lecture.data.url"
-                suggestedQuality="highres"
-                [height]="videoHeight"
-                [width]="videoWidth"
-              >
-              </youtube-player>
-            </div>
+            <app-youtube [url]="lecture.data.url"></app-youtube>
 
             <div [innerHtml]="lecture.data.detail" class="innerHtml"></div>
           </ng-container>

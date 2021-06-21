@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core'
+import { ActivatedRoute } from '@angular/router'
 import { CourseService } from '../course.service'
 import { CoursesTableRow } from '../../../state/admin/admin.selectores'
 
@@ -11,9 +12,14 @@ import { CoursesTableRow } from '../../../state/admin/admin.selectores'
 export class DetailComponent implements OnInit {
   course: CoursesTableRow = null
 
-  constructor(private courseService: CourseService) {}
+  constructor(
+    private courseService: CourseService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.courseService.getCourseData().subscribe((data) => (this.course = data))
+    this.courseService
+      .getCourseData(this.route)
+      .subscribe((data) => (this.course = data))
   }
 }

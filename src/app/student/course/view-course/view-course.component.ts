@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core'
+import { ActivatedRoute } from '@angular/router'
 import { CourseService } from '../course.service'
 import { CoursesTableRow } from '../../../state/admin/admin.selectores'
 import { Lecture } from 'src/app/state/admin/models'
@@ -6,17 +7,26 @@ import { Lecture } from 'src/app/state/admin/models'
 @Component({
   selector: 'app-view-course',
   templateUrl: './view-course.component.html',
-  styleUrls: ['./view-course.component.scss'],
-  providers: [CourseService]
+  styleUrls: ['./view-course.component.scss']
 })
 export class ViewCourseComponent implements OnInit {
-  constructor(private courseService: CourseService) {}
+  constructor(
+    private courseService: CourseService,
+    private route: ActivatedRoute
+  ) {}
   course: CoursesTableRow = null
   arrayTest = new Array(50)
   actualLesson: Lecture = null
   sectionPanel = true
   ngOnInit(): void {
-    this.courseService.getCourseData().subscribe((data) => (this.course = data))
+    this.courseService.hideMenu$.subscribe((hideMenu) => {
+      this.sectionPanel = hideMenu
+    })
+    this.courseService.getCourseData(this.route).subscribe((data) => {
+      this.course = data
+      this.actualLesson = data.sections[0].lectures[0]
+      console.log(this.actualLesson)
+    })
   }
 
   getLecture(lesson) {
@@ -24,6 +34,6 @@ export class ViewCourseComponent implements OnInit {
   }
 
   toggleSectionPanel() {
-    this.sectionPanel = !this.sectionPanel
+    this.courseService.hideMenuMesage(!this.sectionPanel)
   }
 }

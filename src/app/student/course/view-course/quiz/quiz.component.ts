@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, Input, OnInit } from '@angular/core'
+import { Lecture } from 'src/app/state/admin/models'
 
 @Component({
   selector: 'app-quiz',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core'
   styleUrls: ['./quiz.component.scss']
 })
 export class QuizComponent implements OnInit {
+  @Input() lesson: Lecture = null
   constructor() {}
 
   ngOnInit(): void {}

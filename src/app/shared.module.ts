@@ -16,6 +16,7 @@ import {
   DashboardTabsComponent,
   TabComponent
 } from './components/common/dashboard-tabs/dashboard-tabs.component'
+import { YoutubeComponent } from './components/common/youtube/youtube.component'
 
 @NgModule({
   declarations: [
@@ -24,16 +25,22 @@ import {
     HeaderStyleThreeComponent,
     HeaderStyleFourComponent,
     DashboardTabsComponent,
-    TabComponent
+    TabComponent,
+    YoutubeComponent
   ],
-  imports: [RouterModule, HttpClientModule, StickyNavModule, CommonModule],
+  imports: [
+    RouterModule,
+    HttpClientModule,
+    StickyNavModule,
+    CommonModule,
+    YouTubePlayerModule
+  ],
   exports: [
     LayoutModule,
     HeaderStyleOneComponent,
     HeaderStyleTwoComponent,
     HeaderStyleThreeComponent,
     HeaderStyleFourComponent,
-    YouTubePlayerModule,
     HttpClientModule,
     StickyNavModule,
     RippleModule,
@@ -41,7 +48,8 @@ import {
     AccordionModule,
     DashboardTabsComponent,
     TabComponent,
-    CommonModule
+    CommonModule,
+    YoutubeComponent
   ]
 })
 export class SharedModule {}
