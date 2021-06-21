@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { CourseService } from '../course.service'
 import { CoursesTableRow } from '../../../state/admin/admin.selectores'
-import { Lecture } from 'src/app/state/admin/models'
+import { Lecture, Section } from 'src/app/state/admin/models'
 
 @Component({
   selector: 'app-view-course',
@@ -15,7 +15,6 @@ export class ViewCourseComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
   course: CoursesTableRow = null
-  arrayTest = new Array(50)
   actualLesson: Lecture = null
   sectionPanel = true
   ngOnInit(): void {

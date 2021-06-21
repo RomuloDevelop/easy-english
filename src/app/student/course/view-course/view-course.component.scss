@@ -49,7 +49,7 @@ $menuItemPadX: 15px;
   display: flex;
   background-color: #f8f9fa;
   .view-course__lesson {
-    padding: 1.5rem 1rem;
+    padding: 2rem 1rem 4rem 1rem;
     width: 75%;
     transition: width 0.2s ease-out;
     &.active {
@@ -83,12 +83,30 @@ $menuItemPadX: 15px;
     }
     ::ng-deep .view-course__sections__list {
       @include scrollbar(var(--mainColor));
-      &.p-accordion p-accordiontab:first-child .p-accordion-header .p-accordion-header-link {
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-      }
-      &.p-accordion p-accordiontab .p-accordion-header .p-accordion-header-link {
-        background-color: white;
+      &.p-accordion p-accordiontab {
+        .p-accordion-content {
+          padding: 0;
+        }
+        &:first-child .p-accordion-header .p-accordion-header-link {
+          border-top-left-radius: 0;
+          border-top-right-radius: 0;
+        }
+        &:last-child {
+          & .p-accordion-header .p-accordion-header-link, & .p-accordion-content {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+          }
+        }
+        .p-accordion-header .p-accordion-header-link {
+          background-color: white;
+        }
+        .list-group-item {
+          cursor: pointer;
+          border-radius: 0 !important;
+          border-top: none;
+          border-left: none;
+          border-right: none;
+        }
       }
       max-height: calc(100vh - #{$viewCourseSectionsHeader});
       overflow-y: auto;

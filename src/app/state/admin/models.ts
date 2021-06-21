@@ -7,7 +7,6 @@ export interface Answer {
 }
 export interface Quiz {
   id?: number
-  title: string
   question: string
   answers: Answer[]
   correctAnswer?: number
@@ -21,21 +20,20 @@ export interface FinalQuiz {
 }
 
 export interface Article {
-  title: string
   detail: string
 }
 
 export interface VideoLectue {
-  title: string
   url: string
   detail: string
 }
 
 export interface Lecture {
   id: number
+  title: string
   sectionId: number
-  data: Quiz | Article | VideoLectue | FinalQuiz
-  type: 'Article' | 'Video' | 'Quiz' | 'Final Quiz'
+  data: Quiz | Article | VideoLectue
+  type: 'Article' | 'Video' | 'Quiz'
   resources?: File[]
 }
 

@@ -63,18 +63,16 @@ export class SectionsComponent implements OnInit, OnChanges {
   displayVideo = false
   displayQuiz = false
   msgs: Message[] = []
+  lectureTitle = ''
 
   // Video variables
-  videoTitle = ''
   videoUrl = ''
   videoDetail = ''
 
   // Article variables
-  articleTitle = ''
   articleDetail = ''
 
   //Quiz
-  quizTitle = ''
   question = ''
   answers: Answer[] = []
   correctAnswer: number = null
@@ -159,11 +157,9 @@ export class SectionsComponent implements OnInit, OnChanges {
     if (item.type === 'Article') {
       const data = item.data as Article
       this.articleDetail = data.detail
-      this.articleTitle = data.title
       this.displayArticle = true
     } else if (item.type === 'Quiz') {
       const data = item.data as Quiz
-      this.quizTitle = data.title
       this.question = data.question
       this.answers = data.answers
       this.correctAnswer = this.answers.find((item) => item.correct).id
@@ -172,9 +168,9 @@ export class SectionsComponent implements OnInit, OnChanges {
       const data = item.data as VideoLectue
       this.videoDetail = data.detail
       this.videoUrl = data.url
-      this.videoTitle = data.title
       this.displayVideo = true
     }
+    this.lectureTitle = item.title
     this.lectureId = item.id
     this.resources = item?.resources
   }
@@ -191,11 +187,16 @@ export class SectionsComponent implements OnInit, OnChanges {
     const id = this.lectureId
     const sectionId = this.data.id
     const video: VideoLectue = {
-      title: this.videoTitle,
       url: this.videoUrl,
       detail: this.videoDetail
     }
-    this.addLectureOrEdit({ sectionId, id, data: video, type: 'Video' })
+    this.addLectureOrEdit({
+      title: this.lectureTitle,
+      sectionId,
+      id,
+      data: video,
+      type: 'Video'
+    })
     this.clearVideoModal()
   }
 
@@ -215,17 +216,21 @@ export class SectionsComponent implements OnInit, OnChanges {
     const id = this.lectureId
     const sectionId = this.data.id
     const data: Article = {
-      title: this.articleTitle,
       detail: this.articleDetail
     }
-    this.addLectureOrEdit({ sectionId, id, data, type: 'Article' })
+    this.addLectureOrEdit({
+      title: this.lectureTitle,
+      sectionId,
+      id,
+      data,
+      type: 'Article'
+    })
     this.clearArticleModal()
   }
 
   clearArticleModal() {
     this.displayArticle = false
     this.articleDetail = ''
-    this.articleTitle = ''
     this.clearCommonModalData()
   }
 
@@ -234,20 +239,24 @@ export class SectionsComponent implements OnInit, OnChanges {
     const id = this.lectureId
     const sectionId = this.data.id
     const data: Quiz = {
-      title: this.quizTitle,
       question: this.question,
       answers: this.answers.map((answer) => ({
         ...answer,
         correct: this.correctAnswer === answer.id
       }))
     }
-    this.addLectureOrEdit({ sectionId, id, data, type: 'Quiz' })
+    this.addLectureOrEdit({
+      title: this.lectureTitle,
+      sectionId,
+      id,
+      data,
+      type: 'Quiz'
+    })
     this.clearQuizModal()
   }
 
   clearQuizModal() {
     this.displayQuiz = false
-    this.quizTitle = ''
     this.question = ''
     this.answers = []
     this.correctAnswer = null
@@ -294,6 +303,7 @@ export class SectionsComponent implements OnInit, OnChanges {
 
   // General methods
   clearCommonModalData() {
+    this.lectureTitle = ''
     this.lectureId = undefined
     this.resources = []
   }

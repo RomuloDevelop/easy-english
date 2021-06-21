@@ -107,9 +107,10 @@
             </ng-container>
             <strong class="mt-4">Video</strong>
             <hr class="mt-0" />
-            <app-youtube [url]="lecture.data.url"></app-youtube>
-
-            <div [innerHtml]="lecture.data.detail" class="innerHtml"></div>
+            <div class="mb-3">
+              <app-youtube [url]="lecture.data.url"></app-youtube>
+            </div>
+            <div class="editor-html" [innerHtml]="lecture.data.detail"></div>
           </ng-container>
           <ng-container *ngIf="lecture.type === 'Article'">
             <ng-container *ngIf="lecture.resources?.length">
@@ -123,14 +124,14 @@
             </ng-container>
             <strong class="mt-4">Article</strong>
             <hr class="mt-0" />
-            <span class="h5">{{ lecture.data.title }}</span>
-            <div [innerHtml]="lecture.data.detail" class="innerHtml"></div>
+            <span class="h5">{{ lecture.title }}</span>
+            <div class="editor-html" [innerHtml]="lecture.data.detail"></div>
           </ng-container>
           <ng-container *ngIf="lecture.type === 'Quiz'">
-            <span class="h5">{{ lecture.data.title }}</span>
+            <span class="h5">{{ lecture.title }}</span>
             <div
               [innerHtml]="lecture.data.question"
-              class="mt-3 mb-3 innerHtml"
+              class="mt-3 mb-3 editor-html"
             ></div>
             <ul class="unstyled-list container">
               <li
@@ -235,7 +236,7 @@
       class="p-inputtext-sm mb-3 w-100"
       type="text"
       pInputText
-      [(ngModel)]="articleTitle"
+      [(ngModel)]="lectureTitle"
     />
     <p-editor
       [(ngModel)]="articleDetail"
@@ -274,7 +275,7 @@
         class="p-inputtext-sm mb-3 w-100"
         type="text"
         pInputText
-        [(ngModel)]="videoTitle"
+        [(ngModel)]="lectureTitle"
       />
       <input
         placeholder="Youtube Id"
@@ -324,7 +325,7 @@
       class="p-inputtext-sm mb-3 w-100"
       type="text"
       pInputText
-      [(ngModel)]="quizTitle"
+      [(ngModel)]="lectureTitle"
     />
     <div class="p-section-field">
       <h2 class="h6 mt-4 mb-3">Question</h2>
