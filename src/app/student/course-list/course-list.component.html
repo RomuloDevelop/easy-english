@@ -15,9 +15,14 @@
         <td>{{ row.subtitle }}</td>
         <td>{{ row.sections.length }}</td>
         <td>
-          <a [routerLink]="'course-detail/' + row.id" class="view-button"
-            >View</a
-          >
+          <div class="d-flex justify-content-around" style="width: 200px">
+            <a [routerLink]="'course-detail/' + row.id" class="view-button"
+              >Details</a
+            >
+            <a [routerLink]="'view-course/' + row.id" class="view-button"
+              >View</a
+            >
+          </div>
         </td>
       </tr>
     </tbody>

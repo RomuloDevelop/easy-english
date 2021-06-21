@@ -43,16 +43,11 @@ const routes: Routes = [
   },
   {
     path: 'course-detail/:id',
-    children: [
-      {
-        path: '',
-        component: DetailComponent
-      },
-      {
-        path: 'view-course',
-        component: ViewCourseComponent
-      }
-    ]
+    component: DetailComponent
+  },
+  {
+    path: 'view-course/:id',
+    component: ViewCourseComponent
   }
 ]
 
