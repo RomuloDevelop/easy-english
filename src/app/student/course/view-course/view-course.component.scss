@@ -92,6 +92,9 @@ $menuItemPadX: 15px;
           border-top-right-radius: 0;
         }
         &:last-child {
+          &.final-quiz .p-accordion-toggle-icon {
+            display: none;
+          }
           & .p-accordion-header .p-accordion-header-link, & .p-accordion-content {
             border-bottom-left-radius: 0;
             border-bottom-right-radius: 0;
@@ -151,4 +154,26 @@ $menuItemPadX: 15px;
     width: 100vw;
     opacity: 1;
   }
+}
+
+:host ::ng-deep {
+  .quiz-content {
+    padding: 0 200px;
+    .quiz-content__message {
+      height: 2rem;
+      color: var(--mainColor);
+      &.correct {
+        color: var(--green-500);
+      }
+      * {
+        vertical-align: middle;
+      }
+    }
+  }
+  @media (max-width: 1000px) {
+    .quiz-content {
+      padding: 0 50px;
+    }
+  }
+
 }

@@ -18,9 +18,15 @@ import { AvatarGroupModule } from 'primeng/avatargroup'
 import { MenuModule } from 'primeng/menu'
 import { PanelMenuModule } from 'primeng/panelmenu'
 import { RadioButtonModule } from 'primeng/radiobutton'
+import { ToastModule } from 'primeng/toast'
+
+import { HeaderComponent } from './course/header/header.component'
+import { FinalQuizComponent } from './course/view-course/final-quiz/final-quiz.component'
+import { QuestionComponent } from './course/view-course/question/question.component'
 
 import { CourseService } from './course/course.service'
-import { HeaderComponent } from './course/header/header.component'
+import { MessageService } from 'primeng/api'
+
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -34,7 +40,9 @@ import { HeaderComponent } from './course/header/header.component'
     ArticleLessonComponent,
     QuizComponent,
     DetailComponent,
-    HeaderComponent
+    HeaderComponent,
+    FinalQuizComponent,
+    QuestionComponent
   ],
   imports: [
     SharedModule,
@@ -43,8 +51,9 @@ import { HeaderComponent } from './course/header/header.component'
     AvatarGroupModule,
     MenuModule,
     PanelMenuModule,
-    RadioButtonModule
+    RadioButtonModule,
+    ToastModule
   ],
-  providers: [CourseService]
+  providers: [CourseService, MessageService]
 })
 export class StudentModule {}

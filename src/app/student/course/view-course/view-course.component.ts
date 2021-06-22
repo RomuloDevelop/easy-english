@@ -14,6 +14,7 @@ export class ViewCourseComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
   course: CourseToShow = null
+  showFinalQuiz = false
   actualLesson: Lecture = null
   sectionPanel = true
   ngOnInit(): void {

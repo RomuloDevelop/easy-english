@@ -1,0 +1,30 @@
+<div class="d-flex justify-content-center">
+  <div>
+    <div class="mt-3 mb-3 editor-html" [innerHtml]="question?.question"></div>
+    <ul class="unstyled-list">
+      <li class="d-flex w-100 mb-2" *ngFor="let answer of question?.answers">
+        <p-radioButton
+          [inputId]="answer.id"
+          name="answer-result"
+          [value]="answer.id"
+          [(ngModel)]="selected"
+        ></p-radioButton>
+        <p style="margin-left: 1.2rem">{{ answer.text }}</p>
+      </li>
+    </ul>
+    <div
+      [style.opacity]="showAnswer ? 1 : 0"
+      class="quiz-content__message"
+      [class]="{ correct: message.correct }"
+    >
+      <i
+        class="pi p-mr-1"
+        [class]="{
+          'pi-check-circle': message.correct,
+          'pi-times': !message.correct
+        }"
+      ></i>
+      <span>{{ message.text }}</span>
+    </div>
+  </div>
+</div>

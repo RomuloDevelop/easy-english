@@ -54,7 +54,13 @@ export class FinalQuizComponent implements OnInit {
       }
       const quiz = {
         title: this.title,
-        questions: this.questions
+        questions: this.questions.map((question) => ({
+          ...question,
+          answers: question.answers.map((answer) => ({
+            ...answer,
+            correct: question.correctAnswer === answer.id
+          }))
+        }))
       }
       this.store.dispatch(updateFinalQuiz({ id: this.courseId, quiz }))
       this.messageService.add({

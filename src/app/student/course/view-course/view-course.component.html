@@ -17,22 +17,23 @@
     <span class="h5">Course Content</span>
   </div>
   <div class="view-course__lesson" [class]="{ active: !sectionPanel }">
-    <ng-container *ngIf="actualLesson?.type === 'Video'">
-      <app-video-lesson [lesson]="actualLesson"></app-video-lesson>
+    <ng-container *ngIf="showFinalQuiz; else lesson">
+      <app-final-quiz [quiz]="course.quiz"></app-final-quiz>
     </ng-container>
-    <ng-container *ngIf="actualLesson?.type === 'Article'">
-      <app-article-lesson [lesson]="actualLesson"></app-article-lesson>
-    </ng-container>
-    <ng-container
-      *ngIf="
-        actualLesson?.type === 'Quiz' || actualLesson?.type === 'FinalQuiz'
-      "
-    >
-      <app-quiz [lesson]="actualLesson"></app-quiz>
-    </ng-container>
-    <ng-container *ngIf="actualLesson === null">
-      <div style="width: 100%; height: 200vh; background-color: black"></div>
-    </ng-container>
+    <ng-template #lesson>
+      <ng-container *ngIf="actualLesson?.type === 'Video'">
+        <app-video-lesson [lesson]="actualLesson"></app-video-lesson>
+      </ng-container>
+      <ng-container *ngIf="actualLesson?.type === 'Article'">
+        <app-article-lesson [lesson]="actualLesson"></app-article-lesson>
+      </ng-container>
+      <ng-container *ngIf="actualLesson?.type === 'Quiz'">
+        <app-quiz [lesson]="actualLesson"></app-quiz>
+      </ng-container>
+      <ng-container *ngIf="actualLesson === null">
+        <div style="width: 100%; height: 200vh; background-color: black"></div>
+      </ng-container>
+    </ng-template>
   </div>
   <div class="view-course__sections" [class]="{ active: !sectionPanel }">
     <div class="view-course__sections__header">
@@ -55,13 +56,20 @@
           <li
             class="list-group-item list-group-item-action"
             *ngFor="let lesson of section.lectures; let i = index"
-            (click)="actualLesson = lesson"
+            (click)="actualLesson = lesson; showFinalQuiz = false"
           >
             <strong *ngIf="lesson.type !== 'Quiz'">{{ lesson.count }}.</strong>
             {{ lesson.title }}
           </li>
         </ul>
       </p-accordionTab>
+      <p-accordionTab
+        header="Final quiz"
+        class="final-quiz"
+        (click)="showFinalQuiz = true"
+      >
+      </p-accordionTab>
     </p-accordion>
   </div>
 </div>
+<p-toast></p-toast>

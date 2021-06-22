@@ -1,6 +1,10 @@
 <div class="quiz-content">
-  <h1 class="h3 mb-4">{{ lesson?.title }}</h1>
-  <app-question [question]="lesson?.data"></app-question>
+  <h1 class="h3 mb-4">{{ quiz?.title }}</h1>
+  <app-question
+    #questions
+    *ngFor="let question of quiz.questions"
+    [question]="question"
+  ></app-question>
   <div class="d-flex justify-content-end mt-3">
     <button class="default-btn" (click)="submit()">
       <i class="pi pi-pencil icon-arrow before"></i>
