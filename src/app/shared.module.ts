@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
+import { FormsModule } from '@angular/forms'
 import { LayoutModule } from '@angular/cdk/layout'
 import { RouterModule } from '@angular/router'
 import { HeaderStyleOneComponent } from './components/common/header-style-one/header-style-one.component'
@@ -49,7 +50,8 @@ import { YoutubeComponent } from './components/common/youtube/youtube.component'
     DashboardTabsComponent,
     TabComponent,
     CommonModule,
-    YoutubeComponent
+    YoutubeComponent,
+    FormsModule
   ]
 })
 export class SharedModule {}

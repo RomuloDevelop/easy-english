@@ -17,6 +17,7 @@ import { AvatarModule } from 'primeng/avatar'
 import { AvatarGroupModule } from 'primeng/avatargroup'
 import { MenuModule } from 'primeng/menu'
 import { PanelMenuModule } from 'primeng/panelmenu'
+import { RadioButtonModule } from 'primeng/radiobutton'
 
 import { CourseService } from './course/course.service'
 import { HeaderComponent } from './course/header/header.component'
@@ -41,7 +42,8 @@ import { HeaderComponent } from './course/header/header.component'
     AvatarModule,
     AvatarGroupModule,
     MenuModule,
-    PanelMenuModule
+    PanelMenuModule,
+    RadioButtonModule
   ],
   providers: [CourseService]
 })

@@ -15,7 +15,7 @@
       </li>
     </ul>
   </div>
-  <div class="w-100" style="background-color: #f8f9fa">
+  <div class="admin-content" [class]="{ active: viewMenu }">
     <app-admin-header (openNav)="viewMenu = !viewMenu"></app-admin-header>
     <section>
       <div class="container-lg">

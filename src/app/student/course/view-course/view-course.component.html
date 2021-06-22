@@ -55,8 +55,10 @@
           <li
             class="list-group-item list-group-item-action"
             *ngFor="let lesson of section.lectures; let i = index"
+            (click)="actualLesson = lesson"
           >
-            <strong>{{ lesson.count }}.</strong> {{ lesson.title }}
+            <strong *ngIf="lesson.type !== 'Quiz'">{{ lesson.count }}.</strong>
+            {{ lesson.title }}
           </li>
         </ul>
       </p-accordionTab>

@@ -12,11 +12,9 @@ export interface Quiz {
   correctAnswer?: number
 }
 
-export type Question = Omit<Quiz, 'title'>
-
 export interface FinalQuiz {
   title: string
-  questions: Question[]
+  questions: Quiz[]
 }
 
 export interface Article {
@@ -32,7 +30,7 @@ export interface Lecture {
   id: number
   title: string
   sectionId: number
-  data: Quiz | Article | VideoLectue
+  data: Article | VideoLectue | Quiz
   type: 'Article' | 'Video' | 'Quiz'
   resources?: File[]
 }

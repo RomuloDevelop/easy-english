@@ -7,9 +7,9 @@ import {
 } from '@angular/core'
 import { Lecture, VideoLectue } from 'src/app/state/admin/models'
 import { YoutubeComponent } from '../../../../components/common/youtube/youtube.component'
-import { CourseService } from '../../course.service'
+import { CourseService, LessonToShow } from '../../course.service'
 
-interface VideoLesson extends Lecture {
+interface VideoLesson extends LessonToShow {
   data: VideoLectue
 }
 

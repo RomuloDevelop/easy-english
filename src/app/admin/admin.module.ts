@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core'
-import { FormsModule } from '@angular/forms'
 import { ReactiveFormsModule } from '@angular/forms'
 import { AdminRoutingModule } from './admin-routing.module'
 import { AdminComponent } from './admin.component'
@@ -31,7 +30,7 @@ import { PanelMenuModule } from 'primeng/panelmenu'
 import { ConfirmationService, MessageService } from 'primeng/api'
 import { AdminService } from './admin.service'
 import { HomePageComponent } from './create-course/home-page/home-page.component'
-import { CreateSectionComponent } from './create-course/create-section/create-section.component';
+import { CreateSectionComponent } from './create-course/create-section/create-section.component'
 import { FinalQuizComponent } from './create-course/final-quiz/final-quiz.component'
 @NgModule({
   declarations: [
@@ -47,7 +46,6 @@ import { FinalQuizComponent } from './create-course/final-quiz/final-quiz.compon
   imports: [
     SharedModule,
     AdminRoutingModule,
-    FormsModule,
     ReactiveFormsModule,
     TableModule,
     InputTextModule,

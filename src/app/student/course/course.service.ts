@@ -8,6 +8,9 @@ import {
   CoursesTableRow
 } from '../../state/admin/admin.selectores'
 
+export type CourseToShow = ReturnType<CourseService['addLessonCount']>
+export type LessonToShow = CourseToShow['sections'][0]['lectures'][0]
+
 @Injectable()
 export class CourseService {
   private subHideMenu = new Subject<boolean>()
@@ -21,27 +24,28 @@ export class CourseService {
     this.subHideMenu.next(hideMenu)
   }
 
-  getCourseData(route: ActivatedRoute): Observable<CoursesTableRow> {
+  getCourseData(route: ActivatedRoute): Observable<CourseToShow> {
     return this.store.pipe(
       select(selectCoursesTable),
-      map((data) => {
-        const filtered = data.filter((item) => item.status)
-        const id = parseInt(route.snapshot.paramMap.get('id'))
-        console.log('from service', id)
-        const course = filtered.find((item) => item.id === id)
-        const sections = course.sections.map((item) => {
-          let lastCount = 0
-          let lectures = item.lectures.map((item) => {
-            if (item.type !== 'Quiz') {
-              lastCount++
-              return { ...item, count: lastCount }
-            }
-            return item
-          })
-          return { ...item, lectures }
-        })
-        return { ...course, sections }
-      })
+      map((data) => this.addLessonCount(data, route))
     )
+  }
+
+  addLessonCount(data: CoursesTableRow[], route: ActivatedRoute) {
+    const filtered = data.filter((item) => item.status)
+    const id = parseInt(route.snapshot.paramMap.get('id'))
+    const course = filtered.find((item) => item.id === id)
+    const sections = course.sections.map((item) => {
+      let lastCount = 0
+      let lectures = item.lectures.map((item) => {
+        if (item.type !== 'Quiz') {
+          lastCount++
+        }
+        return { ...item, count: lastCount }
+      })
+      return { ...item, lectures }
+    })
+    const result = { ...course, sections }
+    return result
   }
 }

@@ -118,6 +118,14 @@ $menuItemPadX: 15px;
             }
         }
     }
+    .admin-content {
+      background-color: #f8f9fa;
+      width: 100%;
+      transition: width $sideNavTransition;
+      &.active {
+        width: calc(100% - #{$sideNavWidth});
+      }
+    }
 }
 
 @media screen and (max-width: 1000px) {

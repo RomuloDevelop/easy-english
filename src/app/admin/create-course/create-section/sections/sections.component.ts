@@ -17,8 +17,6 @@ import {
   VideoLectue,
   Article,
   Quiz,
-  Question,
-  FinalQuiz,
   Answer
 } from '../../../../state/admin/models'
 import {

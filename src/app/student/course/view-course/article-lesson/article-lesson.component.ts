@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core'
-import { Lecture, Article } from 'src/app/state/admin/models'
+import { Article } from 'src/app/state/admin/models'
+import { LessonToShow } from '../../course.service'
 
-interface ArticleLesson extends Lecture {
+interface ArticleLesson extends LessonToShow {
   data: Article
 }
 

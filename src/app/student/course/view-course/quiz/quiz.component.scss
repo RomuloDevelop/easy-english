@@ -1,0 +1,19 @@
+.quiz-content {
+  padding: 0 200px;
+  .quiz-content__message {
+    height: 2rem;
+    color: var(--mainColor);
+    &.correct {
+      color: var(--green-500);
+    }
+    * {
+      vertical-align: middle;
+    }
+  }
+}
+
+@media (max-width: 1000px) {
+  .quiz-content {
+    padding: 0 50px;
+  }
+}
