@@ -2,12 +2,8 @@ import { Component, OnInit } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 import { AdminService, SectionAction } from '../../admin.service'
 import { Store, select } from '@ngrx/store'
-import { Section } from '../../../state/admin/models'
-import {
-  deleteSection,
-  setSection,
-  updateSection
-} from '../../../state/admin/sections/section.actions'
+import { SectionService } from '../../../services/section.service'
+import { Section } from '../../../state/models'
 import {
   selectCoursesTable,
   CoursesTableRow,
@@ -15,8 +11,9 @@ import {
   SectionData
 } from '../../../state/admin/admin.selectores'
 import { PrimeNGConfig } from 'primeng/api'
-import { combineLatest } from 'rxjs'
+import { combineLatest, Observable } from 'rxjs'
 import { deleteSectionLecture } from 'src/app/state/admin/lectures/lecture.actions'
+import { deleteSection } from 'src/app/state/admin/sections/section.actions'
 
 @Component({
   selector: 'app-create-section',
@@ -25,13 +22,13 @@ import { deleteSectionLecture } from 'src/app/state/admin/lectures/lecture.actio
 })
 export class CreateSectionComponent implements OnInit {
   disableAdd = null
-  nextSectionId: number = null
   sections: SectionData[] = []
   course: CoursesTableRow = null
   courseId = parseInt(this.route.snapshot.paramMap.get('id'))
 
   constructor(
     public adminService: AdminService,
+    private sectionService: SectionService,
     private store: Store,
     private route: ActivatedRoute,
     private primengConfig: PrimeNGConfig
@@ -45,45 +42,39 @@ export class CreateSectionComponent implements OnInit {
     ]).subscribe((resp) => {
       const [courses, sections] = resp
       this.course = courses.find((item) => item.id === this.courseId)
-      this.sections = sections.filter((item) => item.courseId === this.courseId)
-      this.nextSectionId = this.getLastId(sections)
-      console.log(this.sections)
+      this.sections = sections.filter(
+        (item) => item.course_id === this.courseId
+      )
     })
     this.adminService.sectionToEdit$.subscribe((id) => {
       const item = this.sections.find((item) => item.id === id)
       this.disableAdd = item != null
-      console.log(item, this.disableAdd)
     })
   }
 
   addSection() {
-    const id = this.nextSectionId
-    const section: Section = {
-      courseId: this.courseId,
+    const section: Omit<Section, 'id'> = {
+      course_id: this.courseId,
       title: 'Temporal title',
-      description: 'Temporal subtitle',
-      id
+      subtitle: 'Temporal subtitle'
     }
-    this.store.dispatch(setSection({ section }))
-    this.adminService.nextMessage(id)
-  }
-
-  getLastId(sections) {
-    let lastId = 1
-    if (sections[sections.length - 1]) {
-      lastId = sections[sections.length - 1].id + 1
-    }
-    return lastId
+    this.sectionService.addSection(section).subscribe((data) => {
+      this.adminService.nextMessage(data.id)
+    })
   }
 
   updateSection(item: { section: Section; type: SectionAction }) {
     const { section: newSection, type } = item
     if (type === 'delete') {
       this.deleteSectionAndLectures(newSection)
+      //this.sectionService.addSection(newSection)
     } else if (type === 'update') {
-      this.store.dispatch(updateSection({ section: newSection }))
+      this.sectionService
+        .updateSection(newSection)
+        .subscribe(() => this.adminService.nextMessage(null))
+    } else if (type === 'cancel') {
+      this.adminService.nextMessage(null)
     }
-    this.adminService.nextMessage(null)
   }
 
   deleteSectionAndLectures(section: Section) {

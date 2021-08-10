@@ -13,12 +13,14 @@ import { StickyNavModule } from 'ng2-sticky-nav'
 import { RippleModule } from 'primeng/ripple'
 import { ButtonModule } from 'primeng/button'
 import { AccordionModule } from 'primeng/accordion'
+import { ProgressSpinnerModule } from 'primeng/progressspinner'
 import {
   DashboardTabsComponent,
   TabComponent
 } from './components/common/dashboard-tabs/dashboard-tabs.component'
 import { YoutubeComponent } from './components/common/youtube/youtube.component'
 
+import { httpInterceptorProviders } from './interceptors/base'
 @NgModule({
   declarations: [
     HeaderStyleOneComponent,
@@ -37,6 +39,7 @@ import { YoutubeComponent } from './components/common/youtube/youtube.component'
     YouTubePlayerModule
   ],
   exports: [
+    FormsModule,
     LayoutModule,
     HeaderStyleOneComponent,
     HeaderStyleTwoComponent,
@@ -51,7 +54,8 @@ import { YoutubeComponent } from './components/common/youtube/youtube.component'
     TabComponent,
     CommonModule,
     YoutubeComponent,
-    FormsModule
-  ]
+    ProgressSpinnerModule
+  ],
+  providers: [httpInterceptorProviders]
 })
 export class SharedModule {}

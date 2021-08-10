@@ -18,18 +18,15 @@ import {
   Article,
   Quiz,
   Answer
-} from '../../../../state/admin/models'
+} from '../../../../state/models'
 import {
   SectionData,
   selectLectures
 } from '../../../../state/admin/admin.selectores'
 import memoize from '../../../../decorators/memoize'
-import {
-  setLecture,
-  updateLecture,
-  deleteLecture
-} from 'src/app/state/admin/lectures/lecture.actions'
+import { LessonService } from '../../../../services/lesson.service'
 import { YoutubeComponent } from '../../../../components/common/youtube/youtube.component'
+import { Observable } from 'rxjs'
 
 @Component({
   selector: 'app-sections',
@@ -74,12 +71,14 @@ export class SectionsComponent implements OnInit, OnChanges {
   question = ''
   answers: Answer[] = []
   correctAnswer: number = null
+  questionId: number
 
   //All lectures
   allLectures: Lecture[]
 
   constructor(
     public adminService: AdminService,
+    private lessonService: LessonService,
     private confirmationService: ConfirmationService,
     private primengConfig: PrimeNGConfig,
     private store: Store
@@ -97,7 +96,7 @@ export class SectionsComponent implements OnInit, OnChanges {
       if (name === 'data') {
         const section = changes[name].currentValue as SectionData
         this.title = section.title
-        this.description = section.description
+        this.description = section.subtitle
         this.lectures = section.lectures
       }
     }
@@ -110,9 +109,9 @@ export class SectionsComponent implements OnInit, OnChanges {
   emitEvent(type: SectionAction = 'update') {
     const section: Section = {
       id: this.data.id,
-      courseId: this.courseId,
+      course_id: this.courseId,
       title: this.title,
-      description: this.description
+      subtitle: this.description
     }
     this.saveEvent.emit({ section, type })
   }
@@ -134,8 +133,7 @@ export class SectionsComponent implements OnInit, OnChanges {
       ...lecture,
       resources: this.resources
     }
-    this.addLectureOrEdit(lecture)
-    this.clearResourceModal()
+    this.addLectureOrEdit(lecture).subscribe(() => this.clearResourceModal())
   }
 
   onUpload(event) {
@@ -159,9 +157,12 @@ export class SectionsComponent implements OnInit, OnChanges {
     } else if (item.type === 'Quiz') {
       const data = item.data as Quiz
       this.question = data.question
-      this.answers = data.answers
-      this.correctAnswer = this.answers.find((item) => item.correct).id
+      this.answers = data.answers.length
+        ? data.answers.map<Answer>((item) => ({ ...item }))
+        : []
+      this.correctAnswer = this.answers.find((item) => item.correct)?.id
       this.displayQuiz = true
+      this.questionId = data.id
     } else if (item.type === 'Video') {
       const data = item.data as VideoLectue
       this.videoDetail = data.detail
@@ -177,25 +178,38 @@ export class SectionsComponent implements OnInit, OnChanges {
     $event.stopPropagation()
     this.deleteDialog(() => {
       const { id } = this.lectures.find((item) => item.id === lecture.id)
-      this.store.dispatch(deleteLecture({ id }))
+      return this.lessonService.deleteLesson(id)
     })
+  }
+
+  newVideo() {
+    const section_id = this.data.id
+    this.addLectureOrEdit({
+      id: null,
+      title: 'Temporal title',
+      section_id,
+      data: {
+        url: 'LljIeFJQ7xY',
+        detail: 'Temporal description'
+      },
+      type: 'Video'
+    }).subscribe(() => (this.displayVideo = true))
   }
 
   createVideo() {
     const id = this.lectureId
-    const sectionId = this.data.id
+    const section_id = this.data.id
     const video: VideoLectue = {
       url: this.videoUrl,
       detail: this.videoDetail
     }
     this.addLectureOrEdit({
       title: this.lectureTitle,
-      sectionId,
+      section_id,
       id,
       data: video,
       type: 'Video'
-    })
-    this.clearVideoModal()
+    }).subscribe(() => this.clearVideoModal())
   }
 
   clearVideoModal() {
@@ -206,24 +220,36 @@ export class SectionsComponent implements OnInit, OnChanges {
   }
 
   @memoize()
-  disableCreateVideo(url: string) {
-    return url === ''
+  disableCreateVideo(url: string, detail: string) {
+    return url == '' || detail == null || detail == ''
+  }
+
+  newArticle() {
+    const section_id = this.data.id
+    this.addLectureOrEdit({
+      title: this.lectureTitle,
+      section_id,
+      id: null,
+      data: {
+        detail: this.articleDetail
+      },
+      type: 'Article'
+    }).subscribe(() => (this.displayArticle = true))
   }
 
   createArticle() {
     const id = this.lectureId
-    const sectionId = this.data.id
+    const section_id = this.data.id
     const data: Article = {
       detail: this.articleDetail
     }
     this.addLectureOrEdit({
       title: this.lectureTitle,
-      sectionId,
+      section_id,
       id,
       data,
       type: 'Article'
-    })
-    this.clearArticleModal()
+    }).subscribe(() => this.clearArticleModal())
   }
 
   clearArticleModal() {
@@ -233,11 +259,27 @@ export class SectionsComponent implements OnInit, OnChanges {
   }
 
   // Quiz methods
+  newQuiz() {
+    const section_id = this.data.id
+    this.addLectureOrEdit({
+      title: 'Temporal title',
+      section_id,
+      id: null,
+      data: {
+        question: 'Temporal question',
+        course_id: this.data.course_id,
+        answers: []
+      },
+      type: 'Quiz'
+    }).subscribe(() => (this.displayQuiz = true))
+  }
   createQuiz() {
     const id = this.lectureId
-    const sectionId = this.data.id
+    const section_id = this.data.id
     const data: Quiz = {
+      id: this.questionId,
       question: this.question,
+      course_id: this.data.course_id,
       answers: this.answers.map((answer) => ({
         ...answer,
         correct: this.correctAnswer === answer.id
@@ -245,12 +287,11 @@ export class SectionsComponent implements OnInit, OnChanges {
     }
     this.addLectureOrEdit({
       title: this.lectureTitle,
-      sectionId,
+      section_id,
       id,
       data,
       type: 'Quiz'
-    })
-    this.clearQuizModal()
+    }).subscribe(() => this.clearQuizModal())
   }
 
   clearQuizModal() {
@@ -277,7 +318,7 @@ export class SectionsComponent implements OnInit, OnChanges {
 
   @memoize()
   disableAddAnswer(question: string) {
-    return question.length <= 0
+    return question != null && question.length <= 0
   }
 
   @memoize({
@@ -307,15 +348,14 @@ export class SectionsComponent implements OnInit, OnChanges {
   }
 
   addLectureOrEdit(lecture: Lecture) {
-    const index = this.lectures.findIndex((item) => item.id === lecture.id)
-    if (index > -1) {
-      this.store.dispatch(updateLecture({ lecture }))
+    let request: Observable<any>
+    if (lecture.id != null) {
+      request = this.lessonService.updateLesson(lecture)
     } else {
-      const id = this.allLectures.length
-        ? this.allLectures[this.allLectures.length - 1].id + 1
-        : 1
-      this.store.dispatch(setLecture({ lecture: { ...lecture, id } }))
+      delete lecture.id
+      request = this.lessonService.addLesson(lecture)
     }
+    return request
     //this.emitEvent()
   }
 
@@ -323,23 +363,37 @@ export class SectionsComponent implements OnInit, OnChanges {
     this.adminService.nextMessage(this.data.id)
   }
 
-  deleteDialog(cb: () => void = null) {
+  deleteDialog(cb: () => any = null) {
+    const showMessage = (err = false) => {
+      if (!err) {
+        this.msgs = [
+          { severity: 'info', summary: 'Confirmed', detail: 'Record deleted' }
+        ]
+      } else {
+        this.msgs = [
+          { severity: 'info', summary: 'Rejected', detail: 'You have rejected' }
+        ]
+        console.error(err)
+      }
+    }
     let func = cb == null ? () => this.emitEvent('delete') : cb
     this.confirmationService.confirm({
       message: 'Do you want to delete this record?',
       header: 'Delete Confirmation',
       icon: 'pi pi-info-circle',
       accept: () => {
-        this.msgs = [
-          { severity: 'info', summary: 'Confirmed', detail: 'Record deleted' }
-        ]
-        func()
+        const cbResult = func()
+        if (cbResult.subscribe) {
+          cbResult.subscribe(
+            () => showMessage(),
+            (err) => () => showMessage(err)
+          )
+        } else {
+          showMessage()
+        }
       },
       reject: () => {
-        this.msgs = [
-          { severity: 'info', summary: 'Rejected', detail: 'You have rejected' }
-        ]
-        console.error(this.msgs)
+        showMessage(true)
       }
     })
   }

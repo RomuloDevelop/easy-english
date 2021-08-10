@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core'
-import { Article } from 'src/app/state/admin/models'
+import { Article } from 'src/app/state/models'
 import { LessonToShow } from '../../course.service'
 
 interface ArticleLesson extends LessonToShow {

@@ -1,5 +1,5 @@
 import { createSelector } from '@ngrx/store'
-import { AppState, Course, Section, Lecture, ArrayElement } from './models'
+import { AppState, Course, Section, Lecture, ArrayElement } from '../models'
 
 export const selectCourses = createSelector(
   (state: AppState) => state.courses,
@@ -19,7 +19,7 @@ export const selectLectures = createSelector(
 const cbSectionData = (sections: Array<Section>, lectures: Array<Lecture>) => {
   return sections.map((section) => ({
     ...section,
-    lectures: lectures.filter((lecture) => lecture.sectionId === section.id)
+    lectures: lectures.filter((lecture) => lecture.section_id === section.id)
   }))
 }
 
@@ -37,7 +37,7 @@ const cbCoursesTable = (
 ) => {
   return courses.map((course) => ({
     ...course,
-    sections: sections.filter((section) => section.courseId === course.id)
+    sections: sections.filter((section) => section.course_id === course.id)
   }))
 }
 

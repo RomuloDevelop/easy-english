@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'
-
+import ContactInfo from '../../../../data/networks'
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
@@ -8,5 +8,12 @@ import { Component, OnInit } from '@angular/core'
 export class FooterComponent implements OnInit {
   constructor() {}
 
-  ngOnInit(): void {}
+  rrss = ContactInfo.getNetworks()
+  phones = ContactInfo.getPhones()
+
+  year: number = null
+
+  ngOnInit(): void {
+    this.year = new Date().getFullYear()
+  }
 }

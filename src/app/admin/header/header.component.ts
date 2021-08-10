@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output, OnInit } from '@angular/core'
 import { MenuItem } from 'primeng/api'
+import ContactInfo from '../../../data/networks'
 
 @Component({
   selector: 'app-admin-header',
@@ -16,6 +17,8 @@ export class HeaderComponent implements OnInit {
 
   constructor() {}
 
+  rrss = ContactInfo.getNetworks()
+  phones = ContactInfo.getPhones()
   classApplied = false
   toggleClass() {
     this.classApplied = !this.classApplied

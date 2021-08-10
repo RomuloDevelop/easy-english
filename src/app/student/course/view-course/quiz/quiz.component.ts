@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core'
-import { Quiz } from 'src/app/state/admin/models'
+import { Quiz } from 'src/app/state/models'
 import { LessonToShow } from '../../course.service'
 import { QuestionComponent } from '../question/question.component'
 

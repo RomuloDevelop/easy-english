@@ -6,7 +6,7 @@ import {
   QueryList
 } from '@angular/core'
 import { QuestionComponent } from '../question/question.component'
-import { FinalQuiz } from 'src/app/state/admin/models'
+import { FinalQuiz } from 'src/app/state/models'
 import { MessageService } from 'primeng/api'
 
 @Component({

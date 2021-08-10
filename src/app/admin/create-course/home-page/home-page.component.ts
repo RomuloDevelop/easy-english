@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core'
-import { Router, ActivatedRoute } from '@angular/router'
+import { ActivatedRoute } from '@angular/router'
 import { AdminService, SectionAction } from '../../admin.service'
 import { Store, select } from '@ngrx/store'
-import { Course, Section } from '../../../state/admin/models'
-import { updateCourse } from '../../../state/admin/courses/course.actions'
+import { Course } from '../../../state/models'
 import {
   selectCoursesTable,
   CoursesTableRow,
   SectionData
 } from '../../../state/admin/admin.selectores'
 import { PrimeNGConfig, MessageService } from 'primeng/api'
+import { CourseService } from '../../../services/course.service'
 import memoize from '../../../decorators/memoize'
 
 @Component({
@@ -18,6 +18,7 @@ import memoize from '../../../decorators/memoize'
   styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent implements OnInit {
+  loading = false
   disableAdd = null
   nextSectionId: number = null
   title = ''
@@ -32,7 +33,8 @@ export class HomePageComponent implements OnInit {
     private store: Store,
     private route: ActivatedRoute,
     private primengConfig: PrimeNGConfig,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private courseService: CourseService
   ) {}
 
   ngOnInit() {
@@ -41,7 +43,7 @@ export class HomePageComponent implements OnInit {
       this.course = resp.find((item) => item.id === this.courseId)
       this.title = this.course.title
       this.subtitle = this.course.subtitle
-      this.description = this.course.detail
+      this.description = this.course.description
     })
     this.adminService.sectionToEdit$.subscribe((id) => {
       const item = this.sections.find((item) => item.id === id)
@@ -54,15 +56,29 @@ export class HomePageComponent implements OnInit {
       id: this.course.id,
       title: this.title,
       subtitle: this.subtitle,
-      detail: this.description,
+      description: this.description,
       status: this.course.status
     }
-    this.store.dispatch(updateCourse({ course }))
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Success',
-      detail: 'The course has been updated'
-    })
+    this.loading = true
+    this.courseService
+      .updateCourse(course, () => (this.loading = false))
+      .subscribe(
+        () => {
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Success',
+            detail: 'The course has been updated'
+          })
+        },
+        (err) => {
+          console.error(err)
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'An error occurs while updating course'
+          })
+        }
+      )
   }
 
   @memoize()

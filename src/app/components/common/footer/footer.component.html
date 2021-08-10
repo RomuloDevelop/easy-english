@@ -5,15 +5,23 @@
         <div class="single-footer-widget mb-30">
           <h3>Contact Us</h3>
           <ul class="contact-us-link">
-            <li>
+            <!-- <li>
               <i class="bx bx-map"></i>
               <a href="#" target="_blank"
                 >2750 Quadra Street Victoria Road, New York, United States</a
               >
-            </li>
+            </li> -->
             <li>
               <i class="bx bx-phone-call"></i>
-              <a href="tel:+11234567890">+1 (123) 456 7890</a>
+              <div
+                class="d-inline"
+                *ngFor="let phone of phones; let index = index"
+              >
+                <a [class]="{ 'ml-1': index !== 0 }" [href]="phone.url">{{
+                  phone.number
+                }}</a>
+                {{ index !== phones.length - 1 ? ',' : '' }}
+              </div>
             </li>
             <li>
               <i class="bx bx-envelope"></i>
@@ -21,35 +29,25 @@
             </li>
           </ul>
           <ul class="social-link">
-            <li>
-              <a href="#" class="d-block" target="_blank"
-                ><i class="bx bxl-facebook"></i
+            <li *ngFor="let network of rrss | keyvalue">
+              <a [href]="network.value.url" class="d-block" target="_blank"
+                ><i [class]="network.value.icon"></i
               ></a>
             </li>
-            <li>
-              <a href="#" class="d-block" target="_blank"
-                ><i class="bx bxl-twitter"></i
-              ></a>
-            </li>
-            <li>
-              <a href="#" class="d-block" target="_blank"
-                ><i class="bx bxl-instagram"></i
-              ></a>
-            </li>
-            <li>
+            <!-- <li>
               <a href="#" class="d-block" target="_blank"
                 ><i class="bx bxl-linkedin"></i
               ></a>
-            </li>
-            <li>
+            </li> -->
+            <!-- <li>
               <a href="#" class="d-block" target="_blank"
                 ><i class="bx bxl-pinterest-alt"></i
               ></a>
-            </li>
+            </li> -->
           </ul>
         </div>
       </div>
-      <div class="col-lg-2 col-md-6 col-sm-6">
+      <!-- <div class="col-lg-2 col-md-6 col-sm-6">
         <div class="single-footer-widget mb-30">
           <h3>Support</h3>
           <ul class="support-link">
@@ -61,8 +59,8 @@
             <li><a routerLink="/">Policy</a></li>
           </ul>
         </div>
-      </div>
-      <div class="col-lg-2 col-md-6 col-sm-6">
+      </div> -->
+      <!-- <div class="col-lg-2 col-md-6 col-sm-6">
         <div class="single-footer-widget mb-30">
           <h3>Useful Link</h3>
           <ul class="useful-link">
@@ -74,8 +72,8 @@
             <li><a routerLink="/">Web Development</a></li>
           </ul>
         </div>
-      </div>
-      <div class="col-lg-4 col-md-6 col-sm-6">
+      </div> -->
+      <div class="offset-lg-4 col-lg-4 col-md-6 col-sm-6">
         <div class="single-footer-widget mb-30">
           <h3>Newsletter</h3>
           <div class="newsletter-box">
@@ -99,14 +97,13 @@
     <div class="container">
       <div class="logo">
         <a routerLink="/" class="d-inline-block"
-          ><img src="assets/img/logo.png" alt="image"
+          ><img style="height: 100px" src="assets/img/logoEN.png" alt="image"
         /></a>
       </div>
       <p>
-        <i class="bx bx-copyright"></i>2021
-        <a routerLink="/" target="_blank">Ednuv</a> Designed By
-        <a href="https://envytheme.com/" target="_blank">EnvyTheme</a> | All
-        rights reserved.
+        <i class="bx bx-copyright"></i>{{ year }}
+        <a routerLink="/" target="_blank">Easy English</a> | All rights
+        reserved.
       </p>
     </div>
   </div>

@@ -1,4 +1,4 @@
-import { Lecture } from '../models'
+import { Lecture } from '../../models'
 import { Action, createReducer, on } from '@ngrx/store'
 import * as LectureActions from './lecture.actions'
 
@@ -8,7 +8,8 @@ export const initialState: LectureState = []
 
 const courseReducers = createReducer(
   initialState,
-  on(LectureActions.setLecture, (state, { lecture }) => [...state, lecture]),
+  on(LectureActions.setLectures, (state, { lectures }) => lectures),
+  on(LectureActions.addLecture, (state, { lecture }) => [...state, lecture]),
   on(LectureActions.updateLecture, (state, { lecture }) =>
     state.map((item) => {
       if (item.id === lecture.id) {
@@ -21,7 +22,7 @@ const courseReducers = createReducer(
     state.filter((item) => item.id !== id)
   ),
   on(LectureActions.deleteSectionLecture, (state, { sectionId }) =>
-    state.filter((item) => item.sectionId !== sectionId)
+    state.filter((item) => item.section_id !== sectionId)
   )
 )
 

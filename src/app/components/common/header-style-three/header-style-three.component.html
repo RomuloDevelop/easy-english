@@ -5,10 +5,7 @@
         <div class="col-lg-4">
           <div class="top-header-logo">
             <a routerLink="/" class="d-inline-block"
-              ><img
-                style="height: 70px"
-                src="assets/img/english-logo.png"
-                alt="logo"
+              ><img style="height: 70px" src="assets/img/logoEN.png" alt="logo"
             /></a>
           </div>
         </div>
@@ -18,13 +15,24 @@
             <li>
               <i class="bx bx-phone-call"></i>
               <span>Contact support</span>
-              <a href="tel:502464674">+502 464 674</a>
+              <div
+                class="d-inline"
+                *ngFor="let phone of phones; let index = index"
+              >
+                <a [href]="phone.url">{{ phone.number }}</a>
+                <div
+                  *ngIf="index !== phones.length - 1 ? 'or' : ''"
+                  class="d-inline mx-2"
+                >
+                  or
+                </div>
+              </div>
             </li>
-            <li>
+            <!-- <li>
               <i class="bx bx-map"></i>
               <span>Our location</span>
               <a href="#">New York, USA</a>
-            </li>
+            </li> -->
             <li>
               <i class="bx bx-envelope"></i>
               <span>Contact email</span>
@@ -37,7 +45,6 @@
   </div>
   <div
     class="navbar-area navbar-style-two"
-    ngStickyNav
     stickyClass="sticky-box-shadow"
     ngStickyNav
   >
@@ -47,7 +54,7 @@
         [class.active]="classApplied"
       >
         <a class="navbar-brand" routerLink="/"
-          ><img src="assets/img/logo.png" alt="logo"
+          ><img src="assets/img/logoEN.png" style="height: 70px" alt="logo"
         /></a>
         <button class="navbar-toggler" type="button" (click)="toggleClass()">
           <span class="burger-menu">
@@ -503,6 +510,15 @@
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{ exact: true }"
                 >Contact</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                routerLink="/student"
+                class="nav-link"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                >Student</a
               >
             </li>
             <li class="nav-item">

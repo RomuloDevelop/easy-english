@@ -1,8 +1,13 @@
-import { Course, FinalQuiz } from '../models'
+import { Course, FinalQuiz } from '../../models'
 import { createAction, props } from '@ngrx/store'
 
-export const setCourse = createAction(
-  '[Course] Set Course',
+export const setCourses = createAction(
+  '[Course] Set Courses',
+  props<{ courses: Course[] }>()
+)
+
+export const addCourse = createAction(
+  '[Course] Add Course',
   props<{ course: Course }>()
 )
 export const updateCourse = createAction(

@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router'
 import { AdminService } from '../../admin.service'
 import { PrimeNGConfig, MessageService } from 'primeng/api'
 import { select, Store } from '@ngrx/store'
-import { Quiz, FinalQuiz, Answer } from '../../../state/admin/models'
+import { Quiz, FinalQuiz, Answer } from '../../../state/models'
 import { updateFinalQuiz } from '../../../state/admin/courses/course.actions'
 import { selectCoursesTable } from '../../../state/admin/admin.selectores'
 import memoize from '../../../decorators/memoize'
@@ -79,7 +79,8 @@ export class FinalQuizComponent implements OnInit {
       id,
       question: '',
       answers: [],
-      correctAnswer: null
+      correctAnswer: null,
+      course_id: this.courseId
     })
   }
 

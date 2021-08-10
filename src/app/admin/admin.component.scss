@@ -66,6 +66,11 @@ $menuItemPadX: 15px;
           height: 35px;
           border-radius: 50%;
         }
+        .admin-side-nav__logo {
+          height: 70px;
+          margin: auto;
+          display: none;
+        }
         .menu-list {
             padding: 20px 0;
             width: 100%;
@@ -129,21 +134,29 @@ $menuItemPadX: 15px;
 }
 
 @media screen and (max-width: 1000px) {
-    .admin-container .admin-side-nav {
-      position: fixed;
-      z-index: 1000;
-      width: 0px;
-      &.active {
-        width: $sideNavWidth;
-      }
-      .admin-side-nav__close {
-        display: flex;
-      }
-    }
-    .admin-container .overlay.activeOverlay {
-        position: fixed;
+    .admin-container {
+      .admin-content.active {
         width: 100vw;
-        opacity: 1;
+      }
+      .admin-side-nav {
+        position: fixed;
+        z-index: 1000;
+        width: 0px;
+        &.active {
+          width: $sideNavWidth;
+        }
+        .admin-side-nav__logo {
+          display: block;
+        }
+        .admin-side-nav__close {
+          display: flex;
+        }
+      }
+      .overlay.activeOverlay {
+          position: fixed;
+          width: 100vw;
+          opacity: 1;
+      }
     }
 
 }

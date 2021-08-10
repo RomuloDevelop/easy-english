@@ -54,7 +54,9 @@
     </ng-container>
 
     <ng-template #actualSection>
-      <h3 class="h6" style="display: inline">Section {{ count }}:</h3>
+      <h3 class="h6" style="display: inline; margin-right: 0.2rem">
+        Section {{ count }}:
+      </h3>
       <span>{{ title }}</span>
       <div class="edit-buttons" style="display: inline">
         <i class="pi pi-pencil" (click)="setEdit()"></i>
@@ -152,7 +154,7 @@
       </p-accordion>
       <div class="d-flex justify-content-end flex-wrap">
         <button
-          (click)="displayVideo = true"
+          (click)="newVideo()"
           pButton
           pRipple
           type="button"
@@ -161,7 +163,7 @@
           class="p-mt-2 p-button--sm p-button-outlined p-button-danger"
         ></button>
         <button
-          (click)="displayArticle = true"
+          (click)="newArticle()"
           pButton
           pRipple
           type="button"
@@ -170,7 +172,7 @@
           class="p-mt-2 p-button--sm p-button-outlined p-button-danger"
         ></button>
         <button
-          (click)="displayQuiz = true"
+          (click)="newQuiz()"
           pButton
           pRipple
           type="button"
@@ -294,7 +296,7 @@
       <button
         pButton
         (click)="createVideo()"
-        [disabled]="disableCreateVideo(videoUrl)"
+        [disabled]="disableCreateVideo(videoUrl, videoDetail)"
         label="Accept"
         styleClass="p-button--sm p-button-outlined"
       ></button>
@@ -381,7 +383,7 @@
         pButton
         [disabled]="disabledCreateQuiz(answers, correctAnswer)"
         (click)="createQuiz()"
-        label="Accept"
+        label="Update"
         styleClass="p-button--sm p-button-outlined"
       ></button>
       <button

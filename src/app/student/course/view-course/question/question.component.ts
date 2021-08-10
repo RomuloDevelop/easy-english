@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core'
-import { Quiz } from 'src/app/state/admin/models'
+import { Quiz } from 'src/app/state/models'
 
 @Component({
   selector: 'app-question',

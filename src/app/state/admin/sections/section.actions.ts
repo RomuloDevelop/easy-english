@@ -1,8 +1,12 @@
-import { Section } from '../models'
+import { Section } from '../../models'
 import { createAction, props } from '@ngrx/store'
 
-export const setSection = createAction(
-  '[Section] Set Section',
+export const setSections = createAction(
+  '[Section] Set Sections',
+  props<{ sections: Section[] }>()
+)
+export const addSection = createAction(
+  '[Section] Add Section',
   props<{ section: Section }>()
 )
 export const updateSection = createAction(

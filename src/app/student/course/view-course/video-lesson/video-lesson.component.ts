@@ -5,7 +5,7 @@ import {
   ViewChild,
   AfterViewInit
 } from '@angular/core'
-import { Lecture, VideoLectue } from 'src/app/state/admin/models'
+import { Lecture, VideoLectue } from 'src/app/state/models'
 import { YoutubeComponent } from '../../../../components/common/youtube/youtube.component'
 import { CourseService, LessonToShow } from '../../course.service'
 

@@ -57,9 +57,9 @@ import { EditBillingAddressPageComponent } from './components/pages/edit-billing
 import { EditShippingAddressPageComponent } from './components/pages/edit-shipping-address-page/edit-shipping-address-page.component'
 
 const routes: Routes = [
-  { path: '', component: HomePageOneComponent },
+  { path: '', component: HomePageThreeComponent },
+  { path: 'distant-learning', component: HomePageOneComponent },
   { path: 'course-portal-online', component: HomePageTwoComponent },
-  { path: 'distant-learning', component: HomePageThreeComponent },
   { path: 'modern-teaching', component: HomePageFourComponent },
   { path: 'online-schooling', component: HomePageFiveComponent },
   { path: 'learning-school-online', component: HomePageSixComponent },
