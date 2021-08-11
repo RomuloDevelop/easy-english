@@ -160,6 +160,7 @@
           type="button"
           icon="pi pi-plus"
           label="Video"
+          [disabled]="loadingVideo"
           class="p-mt-2 p-button--sm p-button-outlined p-button-danger"
         ></button>
         <button
@@ -169,6 +170,7 @@
           type="button"
           icon="pi pi-plus"
           label="Article"
+          [disabled]="loadingArticle"
           class="p-mt-2 p-button--sm p-button-outlined p-button-danger"
         ></button>
         <button
@@ -178,6 +180,7 @@
           type="button"
           icon="pi pi-plus"
           label="Quiz"
+          [disabled]="loadingQuiz"
           class="p-mt-2 p-button--sm p-button-outlined p-button-danger"
         ></button>
       </div>

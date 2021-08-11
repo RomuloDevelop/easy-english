@@ -31,11 +31,14 @@ export class FinalQuizComponent implements OnInit {
     this.primengConfig.ripple = true
     this.store.pipe(select(selectCoursesTable)).subscribe((courses) => {
       const { quiz } = courses.find((course) => course.id === this.courseId)
-      this.questions = quiz.questions.map((item) => ({
-        ...item,
-        answers: [...item.answers]
-      }))
-      this.title = quiz.title
+      this.questions =
+        quiz == null
+          ? []
+          : quiz.questions.map((item) => ({
+              ...item,
+              answers: [...item.answers]
+            }))
+      this.title = quiz == null ? '' : quiz.title
     })
   }
 

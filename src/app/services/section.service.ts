@@ -10,6 +10,7 @@ import {
   deleteSection
 } from '../state/admin/sections/section.actions'
 import Endpoints from '../../data/endpoints'
+import { deleteSectionLecture } from '../state/admin/lectures/lecture.actions'
 
 const { courseUrl, sectionUrl } = Endpoints
 
@@ -54,9 +55,14 @@ export class SectionService {
   deleteSection(section: Section) {
     return this.http.delete(`${sectionUrl}/${section.id}`).pipe(
       map((data) => {
-        this.store.dispatch(deleteSection({ id: section.id }))
+        this.deleteSectionAndLectures(section)
         return data
       })
     )
+  }
+
+  deleteSectionAndLectures(section: Section) {
+    this.store.dispatch(deleteSectionLecture({ sectionId: section.id }))
+    this.store.dispatch(deleteSection({ id: section.id }))
   }
 }

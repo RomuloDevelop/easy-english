@@ -21,6 +21,7 @@ import {
 import { YoutubeComponent } from './components/common/youtube/youtube.component'
 
 import { httpInterceptorProviders } from './interceptors/base'
+
 @NgModule({
   declarations: [
     HeaderStyleOneComponent,

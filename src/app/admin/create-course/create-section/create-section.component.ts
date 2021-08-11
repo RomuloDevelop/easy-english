@@ -11,9 +11,7 @@ import {
   SectionData
 } from '../../../state/admin/admin.selectores'
 import { PrimeNGConfig } from 'primeng/api'
-import { combineLatest, Observable } from 'rxjs'
-import { deleteSectionLecture } from 'src/app/state/admin/lectures/lecture.actions'
-import { deleteSection } from 'src/app/state/admin/sections/section.actions'
+import { combineLatest } from 'rxjs'
 
 @Component({
   selector: 'app-create-section',
@@ -21,6 +19,7 @@ import { deleteSection } from 'src/app/state/admin/sections/section.actions'
   styleUrls: ['./create-section.component.scss']
 })
 export class CreateSectionComponent implements OnInit {
+  loading = false
   disableAdd = null
   sections: SectionData[] = []
   course: CoursesTableRow = null
@@ -53,32 +52,32 @@ export class CreateSectionComponent implements OnInit {
   }
 
   addSection() {
+    this.loading = true
     const section: Omit<Section, 'id'> = {
       course_id: this.courseId,
       title: 'Temporal title',
       subtitle: 'Temporal subtitle'
     }
     this.sectionService.addSection(section).subscribe((data) => {
+      this.loading = false
       this.adminService.nextMessage(data.id)
     })
   }
 
   updateSection(item: { section: Section; type: SectionAction }) {
+    this.loading = true
     const { section: newSection, type } = item
     if (type === 'delete') {
-      this.deleteSectionAndLectures(newSection)
-      //this.sectionService.addSection(newSection)
+      this.sectionService.deleteSection(newSection).subscribe(() => {
+        this.loading = false
+      })
     } else if (type === 'update') {
-      this.sectionService
-        .updateSection(newSection)
-        .subscribe(() => this.adminService.nextMessage(null))
+      this.sectionService.updateSection(newSection).subscribe(() => {
+        this.loading = false
+        this.adminService.nextMessage(null)
+      })
     } else if (type === 'cancel') {
       this.adminService.nextMessage(null)
     }
-  }
-
-  deleteSectionAndLectures(section: Section) {
-    this.store.dispatch(deleteSectionLecture({ sectionId: section.id }))
-    this.store.dispatch(deleteSection({ id: section.id }))
   }
 }

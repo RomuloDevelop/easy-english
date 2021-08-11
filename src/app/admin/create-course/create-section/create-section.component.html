@@ -13,10 +13,44 @@
   >
   </app-sections>
   <div class="d-flex justify-content-center mt-3">
-    <button class="default-btn" (click)="addSection()" [disabled]="disableAdd">
-      <i class="bx bx-plus-circle icon-arrow before"></i>
+    <button
+      class="default-btn"
+      (click)="addSection()"
+      [disabled]="disableAdd || loading"
+    >
+      <ng-container *ngIf="!loading">
+        <i class="pi pi-pencil icon-arrow before"></i>
+      </ng-container>
+      <ng-container *ngIf="loading">
+        <ng-container
+          *ngTemplateOutlet="spinner; context: { $implicit: 'before' }"
+        ></ng-container>
+      </ng-container>
+
       <span class="label">New Section</span>
-      <i class="bx bx-plus-circle icon-arrow after"></i>
+
+      <ng-container *ngIf="!loading">
+        <i class="pi pi-pencil icon-arrow after"></i>
+      </ng-container>
+      <ng-container *ngIf="loading">
+        <ng-container
+          *ngTemplateOutlet="spinner; context: { $implicit: 'after' }"
+        ></ng-container
+      ></ng-container>
+
+      <ng-template #spinner let-iClass>
+        <i [class]="iClass" class="icon-arrow">
+          <p-progressSpinner
+            styleClass="custom-spinner"
+            strokeWidth="7"
+            [style]="{
+              width: '22px',
+              height: '22px',
+              color: '#fff !important'
+            }"
+          ></p-progressSpinner>
+        </i>
+      </ng-template>
     </button>
   </div>
 </p-card>

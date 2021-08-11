@@ -6,7 +6,8 @@ import {
   OnInit,
   OnChanges,
   SimpleChanges,
-  ViewChild
+  ViewChild,
+  ChangeDetectorRef
 } from '@angular/core'
 import { AdminService, SectionAction } from '../../../admin.service'
 import { ConfirmationService, PrimeNGConfig, Message } from 'primeng/api'
@@ -61,13 +62,16 @@ export class SectionsComponent implements OnInit, OnChanges {
   lectureTitle = ''
 
   // Video variables
+  loadingVideo = false
   videoUrl = ''
   videoDetail = ''
 
   // Article variables
+  loadingArticle = false
   articleDetail = ''
 
   //Quiz
+  loadingQuiz = false
   question = ''
   answers: Answer[] = []
   correctAnswer: number = null
@@ -81,7 +85,8 @@ export class SectionsComponent implements OnInit, OnChanges {
     private lessonService: LessonService,
     private confirmationService: ConfirmationService,
     private primengConfig: PrimeNGConfig,
-    private store: Store
+    private store: Store,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -183,6 +188,7 @@ export class SectionsComponent implements OnInit, OnChanges {
   }
 
   newVideo() {
+    this.loadingVideo = true
     const section_id = this.data.id
     this.addLectureOrEdit({
       id: null,
@@ -193,10 +199,14 @@ export class SectionsComponent implements OnInit, OnChanges {
         detail: 'Temporal description'
       },
       type: 'Video'
-    }).subscribe(() => (this.displayVideo = true))
+    }).subscribe(() => {
+      this.displayVideo = true
+      this.loadingVideo = false
+    })
   }
 
   createVideo() {
+    this.loadingVideo = true
     const id = this.lectureId
     const section_id = this.data.id
     const video: VideoLectue = {
@@ -213,6 +223,7 @@ export class SectionsComponent implements OnInit, OnChanges {
   }
 
   clearVideoModal() {
+    this.loadingVideo = false
     this.displayVideo = false
     this.videoDetail = ''
     this.videoUrl = ''
@@ -225,6 +236,7 @@ export class SectionsComponent implements OnInit, OnChanges {
   }
 
   newArticle() {
+    this.loadingArticle = true
     const section_id = this.data.id
     this.addLectureOrEdit({
       title: this.lectureTitle,
@@ -234,10 +246,14 @@ export class SectionsComponent implements OnInit, OnChanges {
         detail: this.articleDetail
       },
       type: 'Article'
-    }).subscribe(() => (this.displayArticle = true))
+    }).subscribe(() => {
+      this.loadingArticle = false
+      this.displayArticle = true
+    })
   }
 
   createArticle() {
+    this.loadingArticle = true
     const id = this.lectureId
     const section_id = this.data.id
     const data: Article = {
@@ -253,6 +269,7 @@ export class SectionsComponent implements OnInit, OnChanges {
   }
 
   clearArticleModal() {
+    this.loadingArticle = false
     this.displayArticle = false
     this.articleDetail = ''
     this.clearCommonModalData()
@@ -260,6 +277,7 @@ export class SectionsComponent implements OnInit, OnChanges {
 
   // Quiz methods
   newQuiz() {
+    this.loadingQuiz = true
     const section_id = this.data.id
     this.addLectureOrEdit({
       title: 'Temporal title',
@@ -271,9 +289,14 @@ export class SectionsComponent implements OnInit, OnChanges {
         answers: []
       },
       type: 'Quiz'
-    }).subscribe(() => (this.displayQuiz = true))
+    }).subscribe(() => {
+      this.loadingQuiz = false
+      this.displayQuiz = true
+      this.cdr.markForCheck()
+    })
   }
   createQuiz() {
+    this.loadingQuiz = true
     const id = this.lectureId
     const section_id = this.data.id
     const data: Quiz = {
@@ -295,6 +318,7 @@ export class SectionsComponent implements OnInit, OnChanges {
   }
 
   clearQuizModal() {
+    this.loadingQuiz = false
     this.displayQuiz = false
     this.question = ''
     this.answers = []
@@ -383,7 +407,7 @@ export class SectionsComponent implements OnInit, OnChanges {
       icon: 'pi pi-info-circle',
       accept: () => {
         const cbResult = func()
-        if (cbResult.subscribe) {
+        if (cbResult?.subscribe) {
           cbResult.subscribe(
             () => showMessage(),
             (err) => () => showMessage(err)
