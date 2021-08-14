@@ -41,16 +41,53 @@ export class CourseService {
     )
   }
 
-  getCourses() {
-    return this.http
-      .get<{ data: Course[] }>(`${courseUrl}`)
-      .pipe(map(({ data }) => data))
+  getCourses(finalizeCb = () => {}) {
+    return this.http.get<{ data: Course[] }>(`${courseUrl}`).pipe(
+      map(({ data }) => data),
+      finalize(finalizeCb)
+    )
   }
 
-  getCourse(id: number) {
-    return this.http
-      .get<{ data: Course }>(`${courseUrl}/${id}`)
-      .pipe(map(({ data }) => data))
+  getCourse(id: number, finalizeCb = () => {}) {
+    return this.http.get<{ data: any }>(`${courseUrl}/${id}`).pipe(
+      map(({ data: course }) => {
+        const { sections, final_quizz } = course
+        let lessons = []
+
+        // Obtiene curso final
+        let formatedCourse = course
+        const quizResponse = final_quizz.map((quiz) => ({
+          ...quiz,
+          answers: quiz.quizz_options
+        }))
+        if (quizResponse) {
+          const finalQuiz = DataTransform.formatFinalQuiz(quizResponse)
+          formatedCourse = { ...course, quiz: finalQuiz }
+        }
+
+        // Formatea lesson
+        sections?.forEach((section) => {
+          const formatedLessons = section.lessons.map((lesson) => {
+            const quiz = lesson.quizz
+            if (quiz != null) {
+              quiz[0].answers = quiz[0].quizz_options
+              quiz[0].lesson_id = lesson.id
+              return DataTransform.backendToAppData(lesson, quiz[0])
+            }
+            return DataTransform.backendToAppData(lesson, null)
+          })
+          lessons = lessons.concat(formatedLessons)
+        })
+
+        delete formatedCourse.sections
+        delete formatedCourse.quizz
+        delete sections.lessons
+        this.store.dispatch(setCourses({ courses: [formatedCourse] }))
+        this.store.dispatch(setSections({ sections: sections }))
+        this.store.dispatch(setLectures({ lectures: lessons }))
+      }),
+      finalize(finalizeCb)
+    )
   }
 
   updateCourse(
@@ -66,85 +103,5 @@ export class CourseService {
         }),
         finalize(finalCb)
       )
-  }
-
-  getCourseData(id: number) {
-    return this.getCourse(id).pipe(
-      mergeMap((course) =>
-        this.sectionService.getSectionsByCourse(course.id).pipe(
-          mergeMap((sections) =>
-            from(sections).pipe(
-              mergeMap((section: any) =>
-                this.lessonService.getLessonsBySection(section.id).pipe(
-                  map(({ data: lessons }) => {
-                    return { section, lessons }
-                  }),
-                  mergeMap((courseData) =>
-                    from(courseData.lessons).pipe(
-                      mergeMap((lesson: any) =>
-                        this.quizzService.getQuizzesByLesson(lesson.id).pipe(
-                          map((quizzes) => {
-                            courseData.lessons = courseData.lessons.map(
-                              (item) => {
-                                if (item.id === lesson.id) {
-                                  item.quizzes = quizzes
-                                }
-                                return item
-                              }
-                            )
-                          })
-                        )
-                      ),
-                      toArray(),
-                      map(() => courseData)
-                    )
-                  )
-                )
-              ),
-              toArray()
-            )
-          )
-        )
-      )
-    )
-  }
-
-  getCourseList() {
-    zip(
-      this.getCourses(),
-      this.sectionService.getSections(),
-      this.lessonService.getLessons(),
-      this.quizzService.getQuizzes(),
-      this.quizzService.getAnswers()
-    ).subscribe(([courses, sections, lessons, quizzes, answers]) => {
-      const formatedCourses = courses.map((course) => {
-        const quizResponse = quizzes
-          .filter(
-            (quizz) => quizz.is_final_quiz && quizz.course_id === course.id
-          )
-          .map((quizz) => {
-            const quizz_answers = answers.filter(
-              (answer) => answer.course_quiz_id === quizz.id
-            )
-            return { ...quizz, answers: quizz_answers }
-          })
-        const quiz = DataTransform.formatFinalQuiz(quizResponse)
-        return { ...course, quiz }
-      })
-      console.log('lessons', lessons)
-      const formatedLessons = lessons.map((lesson) => {
-        const quizz = quizzes.find((quizz) => quizz.lesson_id === lesson.id)
-        if (quizz) {
-          const quizz_answers = answers.filter(
-            (answer) => answer.course_quiz_id === quizz.id
-          )
-          quizz.answers = quizz_answers
-        }
-        return DataTransform.backendToAppData(lesson, quizz)
-      })
-      this.store.dispatch(setLectures({ lectures: formatedLessons }))
-      this.store.dispatch(setSections({ sections }))
-      this.store.dispatch(setCourses({ courses: formatedCourses }))
-    })
   }
 }

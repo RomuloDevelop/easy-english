@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
-import { Observable, of, zip } from 'rxjs'
+import { defer, iif, Observable, of, zip } from 'rxjs'
 import { map, mergeMap, take, tap } from 'rxjs/operators'
 import { select, Store } from '@ngrx/store'
 import {
@@ -12,7 +12,7 @@ import {
   Lecture
 } from '../state/models'
 import { selectLectures, selectCourses } from '../state/admin/admin.selectores'
-import { updateCourse } from '../state/admin/courses/course.actions'
+import { updateFinalQuiz } from '../state/admin/courses/course.actions'
 import { DataTransform } from '../utils/DataTransform'
 import Endpoints from '../../data/endpoints'
 import { updateLecture } from '../state/admin/lectures/lecture.actions'
@@ -51,13 +51,13 @@ export class QuizzService {
   addQuizz(
     quiz: Quiz,
     save = true,
-    is_final_quiz = false,
+    is_final_quizz = false,
     lesson_id?: number,
     title?: string
   ) {
     const newFormat = DataTransform.quizzesForPost(
       quiz,
-      is_final_quiz,
+      is_final_quizz,
       lesson_id,
       title
     )
@@ -65,15 +65,16 @@ export class QuizzService {
       map(({ data }) => {
         if (save) {
           let formatedQuiz = DataTransform.formatQuizzes(data)
-          if (is_final_quiz)
+          if (is_final_quizz)
             this.store
               .pipe(take(1), select(selectCourses))
               .subscribe((courses) => {
-                const course = courses.find(
+                const { quiz, id } = courses.find(
                   (course) => course.id === data.course_id
                 )
-                course.quiz.questions.push(formatedQuiz)
-                this.store.dispatch(updateCourse({ course }))
+                const newQuestions = [...quiz.questions, formatedQuiz]
+                const newQuiz = { ...quiz, questions: newQuestions }
+                this.store.dispatch(updateFinalQuiz({ id, quiz: newQuiz }))
               })
           else
             this.store
@@ -93,13 +94,13 @@ export class QuizzService {
 
   updateQuizz(
     quiz: Quiz,
-    is_final_quiz = false,
+    is_final_quizz = false,
     lesson_id: number,
     title?: string
   ) {
     const newFormat = DataTransform.quizzesForPost(
       quiz,
-      is_final_quiz,
+      is_final_quizz,
       lesson_id,
       title
     )
@@ -108,38 +109,108 @@ export class QuizzService {
       .pipe(
         // Comparar answers
         mergeMap(({ data }) =>
-          this.store.pipe(
-            select(selectLectures),
-            mergeMap((lessons) => {
-              let actualLesson = lessons.find((item) => item.id === lesson_id)
+          iif(
+            () => is_final_quizz,
+            defer(() =>
+              this.store.pipe(
+                take(1),
+                select(selectCourses),
+                mergeMap((courses) => {
+                  let course = courses.find(
+                    (item) => item.id === quiz.course_id
+                  )
+                  let finalQuiz = course.quiz
+                  let actualQuiz = finalQuiz.questions.find(
+                    (item) => item.id === quiz.id
+                  )
 
-              // Agrega, actualiza y elimina donde corresponda
-              const { result, deletes } = this.addOrUpdateAnswer(
-                quiz.answers,
-                (actualLesson.data as Quiz).answers,
-                quiz.id
-              )
-              let deleteRequest = deletes.length ? zip(...deletes) : of([])
-              console.log(result)
-              return zip(zip(...result), deleteRequest).pipe(
-                map(([answers]) => {
-                  data.answers = answers
-                  return data
-                }),
-                tap((data) => {
-                  const lecture: Lecture = {
-                    id: actualLesson.id,
-                    title: actualLesson.title,
-                    section_id: actualLesson.section_id,
-                    type: actualLesson.type,
-                    resources: actualLesson.resources,
-                    data: DataTransform.formatQuizzes(data)
-                  }
-                  this.store.dispatch(updateLecture({ lecture }))
+                  // Agrega, actualiza y elimina donde corresponda
+                  const { result, deletes } = this.addOrUpdateAnswer(
+                    quiz.answers,
+                    (actualQuiz as Quiz).answers,
+                    quiz.id
+                  )
+                  console.log('deletes', deletes)
+                  console.log('result', result)
+                  return zip(...result, ...deletes).pipe(
+                    map((answers) => {
+                      const newAnswers = answers.filter(
+                        (item: any) => item?.id
+                      ) as AnswerResponse[] //Obtiene solo respuestas de insertado y actualizado
+                      data.answers = quiz.answers.map((answer) => {
+                        const result = newAnswers.find(
+                          (newAnswer) => newAnswer.id === answer.id
+                        )
+                        if (result != null) return result
+                        else
+                          return DataTransform.answerToPost(
+                            answer,
+                            quiz.course_id
+                          )
+                      })
+                      const newQuiz = DataTransform.formatQuizzes(data)
+                      const questions = finalQuiz.questions.map((item) => {
+                        if (item.id === newQuiz.id) return newQuiz
+                        else return item
+                      })
+                      finalQuiz = { ...finalQuiz, questions: [...questions] }
+                      this.store.dispatch(
+                        updateFinalQuiz({ quiz: finalQuiz, id: course.id })
+                      )
+                      return data
+                    })
+                  )
                 })
               )
-            }),
-            take(1)
+            ),
+            defer(() =>
+              this.store.pipe(
+                take(1),
+                select(selectLectures),
+                mergeMap((lessons) => {
+                  let actualLesson = lessons.find(
+                    (item) => item.id === lesson_id
+                  )
+
+                  // Agrega, actualiza y elimina donde corresponda
+                  const { result, deletes } = this.addOrUpdateAnswer(
+                    quiz.answers,
+                    (actualLesson.data as Quiz).answers,
+                    quiz.id
+                  )
+                  console.log(result)
+                  console.log(deletes)
+                  return zip(...result, ...deletes).pipe(
+                    map((answers) => {
+                      const newAnswers = answers.filter(
+                        (item: any) => item?.id
+                      ) as AnswerResponse[] //Obtiene solo respuestas de insertado y actualizado
+                      data.answers = quiz.answers.map((answer) => {
+                        const result = newAnswers.find(
+                          (newAnswer) => newAnswer.id === answer.id
+                        )
+                        if (result != null) return result
+                        else
+                          return DataTransform.answerToPost(
+                            answer,
+                            quiz.course_id
+                          )
+                      })
+                      const lecture: Lecture = {
+                        id: actualLesson.id,
+                        title: actualLesson.title,
+                        section_id: actualLesson.section_id,
+                        type: actualLesson.type,
+                        resources: actualLesson.resources,
+                        data: DataTransform.formatQuizzes(data)
+                      }
+                      this.store.dispatch(updateLecture({ lecture }))
+                      return data
+                    })
+                  )
+                })
+              )
+            )
           )
         )
       )
@@ -177,14 +248,16 @@ export class QuizzService {
     console.log(newList, answers)
     let result: Observable<AnswerResponse>[] = []
     let deletes: Observable<Object>[] = []
-
+    const founded = []
+    const forDelete = []
     answers.forEach((answer) => {
       //Search for updates
-      const newAnswer = newList.find(
+      const foundedAnswer = newList.find(
         (actualAnswer) => actualAnswer.id === answer.id
       )
-      if (newAnswer.id === answer.id) {
-        newAnswer.founded = true
+      const newAnswer = foundedAnswer != null ? { ...foundedAnswer } : null
+      if (newAnswer?.id === answer.id) {
+        founded.push(newAnswer)
         if (
           newAnswer.correct !== answer.correct ||
           newAnswer.text !== answer.text
@@ -193,20 +266,44 @@ export class QuizzService {
         }
       } else {
         //Search for deletes
-        deletes.push(this.deleteAnswer(answer))
+        forDelete.push(answer)
       }
     })
 
+    deletes = forDelete.map((item) => this.deleteAnswer(item))
+
+    let inserts = []
     //Search for inserts
-    result = result.concat(
-      newList
-        .filter((newAnswer) => !newAnswer.founded)
-        .map((newAnswer) => {
-          delete newAnswer.founded
-          delete newAnswer.id
-          return this.addAnswer(newAnswer, quiz_id)
-        })
-    )
+    if (answers.length <= 0) {
+      inserts = newList.map((answer) =>
+        this.addAnswer(
+          {
+            text: answer.text,
+            correct: answer.correct
+          },
+          quiz_id
+        )
+      )
+    } else {
+      newList.forEach((answer) => {
+        if (
+          founded.find((item) => item.id === answer.id) == null &&
+          forDelete.find((item) => item.id === answer.id) == null
+        ) {
+          inserts.push(
+            this.addAnswer(
+              {
+                text: answer.text,
+                correct: answer.correct
+              },
+              quiz_id
+            )
+          )
+        }
+      })
+    }
+
+    result = result.concat(inserts)
     return { result, deletes }
   }
 }

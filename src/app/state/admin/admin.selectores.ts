@@ -17,10 +17,12 @@ export const selectLectures = createSelector(
 )
 
 const cbSectionData = (sections: Array<Section>, lectures: Array<Lecture>) => {
-  return sections.map((section) => ({
+  const result = sections.map((section) => ({
     ...section,
     lectures: lectures.filter((lecture) => lecture.section_id === section.id)
   }))
+  console.log('result', result)
+  return result
 }
 
 export const selectSectionsData = createSelector(

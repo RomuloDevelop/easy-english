@@ -1,0 +1,67 @@
+@mixin custom-spinner-color($color: white, $suffix: "white") {
+  animation: custom-progress-spinner-dash 1.5s ease-in-out infinite, custom-progress-spinner-#{$suffix} 6s ease-in-out infinite;
+  @keyframes custom-progress-spinner-#{$suffix} {
+    100%,
+    0% {
+        stroke: $color;
+    }
+    40% {
+        stroke: $color;
+    }
+    66% {
+        stroke: $color;
+    }
+    80%,
+    90% {
+        stroke: $color;
+    }
+  }
+}
+
+p-progressspinner {
+  justify-content: center;
+}
+
+.custom-spinner {
+  display: flex;
+  align-self: center;
+  &:not(.blue) .p-progress-spinner-circle {
+    @include custom-spinner-color();
+  }
+  &.blue .p-progress-spinner-circle {
+    @include custom-spinner-color(#007bff, "blue");
+  }
+}
+
+
+@keyframes custom-progress-spinner-dash {
+  0% {
+      stroke-dasharray: 1, 200;
+      stroke-dashoffset: 0;
+  }
+  50% {
+      stroke-dasharray: 89, 200;
+      stroke-dashoffset: -35px;
+  }
+  100% {
+      stroke-dasharray: 89, 200;
+      stroke-dashoffset: -124px;
+  }
+}
+
+@keyframes custom-progress-spinner-color {
+  100%,
+  0% {
+      stroke: var(--optionalColor);
+  }
+  40% {
+      stroke: var(--optionalColor);
+  }
+  66% {
+      stroke: var(--optionalColor);
+  }
+  80%,
+  90% {
+      stroke: var(--optionalColor);
+  }
+}

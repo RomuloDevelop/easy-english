@@ -39,6 +39,7 @@
                   pRipple
                   [pRowToggler]="course"
                   class="p-button-text p-button-rounded p-button-plain"
+                  (click)="getSectionItem(course.id)"
                   [icon]="
                     expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'
                   "
@@ -95,7 +96,21 @@
       <ng-template pTemplate="rowexpansion" let-course>
         <tr>
           <td colspan="8">
-            <div class="p-p-1">
+            <div
+              *ngIf="loadingSection === course.id"
+              class="w-100 d-flex justify-content-center align-items-center"
+            >
+              <p-progressSpinner
+                styleClass="custom-spinner"
+                strokeWidth="7"
+                [style]="{
+                  width: '50px',
+                  height: '50px',
+                  color: '#fff !important'
+                }"
+              ></p-progressSpinner>
+            </div>
+            <div class="p-p-1" *ngIf="loadingSection !== course.id">
               <h2 class="h5 mb-3">Sections:</h2>
               <p-table [value]="course.sections" dataKey="id">
                 <ng-template pTemplate="header">

@@ -35,15 +35,13 @@ export class CreateSectionComponent implements OnInit {
 
   ngOnInit() {
     this.primengConfig.ripple = true
-    combineLatest([
-      this.store.pipe(select(selectCoursesTable)),
-      this.store.pipe(select(selectSectionsData))
-    ]).subscribe((resp) => {
-      const [courses, sections] = resp
-      this.course = courses.find((item) => item.id === this.courseId)
-      this.sections = sections.filter(
-        (item) => item.course_id === this.courseId
-      )
+    this.store.pipe(select(selectCoursesTable)).subscribe((courses) => {
+      this.store.pipe(select(selectSectionsData)).subscribe((sections) => {
+        this.course = courses.find((item) => item.id === this.courseId)
+        this.sections = sections.filter(
+          (item) => item.course_id === this.courseId
+        )
+      })
     })
     this.adminService.sectionToEdit$.subscribe((id) => {
       const item = this.sections.find((item) => item.id === id)

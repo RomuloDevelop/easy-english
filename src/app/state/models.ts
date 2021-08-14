@@ -7,7 +7,7 @@ export interface AnswerResponse {
 
 export interface QuizzResponse {
   id?: number
-  is_final_quiz: boolean
+  is_final_quizz: boolean
   question: string
   course_id: number
   title?: string
@@ -26,7 +26,7 @@ export interface LessonResponse {
 export type SectionAction = 'update' | 'cancel' | 'delete'
 
 export interface Answer {
-  id: number
+  id?: number
   text: string
   correct: boolean
 }

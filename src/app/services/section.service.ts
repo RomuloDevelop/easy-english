@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { BehaviorSubject, Observable, from, zip } from 'rxjs'
-import { map, mergeMap, toArray } from 'rxjs/operators'
+import { finalize, map, mergeMap, toArray } from 'rxjs/operators'
 import { Store, select } from '@ngrx/store'
 import { Section } from '../state/models'
 import {
@@ -26,10 +26,13 @@ export class SectionService {
       .pipe(map(({ data }) => data))
   }
 
-  getSectionsByCourse(courseId: number) {
+  getSectionsByCourse(courseId: number, finalizeCb = () => {}) {
     return this.http
       .get<{ data: Section[] }>(`${courseUrl}/${courseId}/sections`)
-      .pipe(map(({ data }) => data))
+      .pipe(
+        map(({ data }) => data),
+        finalize(finalizeCb)
+      )
   }
 
   addSection(section: Omit<Section, 'id'>) {

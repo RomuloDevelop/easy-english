@@ -39,12 +39,14 @@ export class LessonService {
 
   addLesson(lesson: Lecture) {
     let addQuizz$ = (data: LessonResponse) =>
-      this.quizService.addQuizz(lesson.data as Quiz, false).pipe(
-        map((quiz) => {
-          console.log('quiz', quiz)
-          return DataTransform.backendToAppData(data, quiz)
-        })
-      )
+      this.quizService
+        .addQuizz(lesson.data as Quiz, false, false, data.id)
+        .pipe(
+          map((quiz) => {
+            console.log('quiz', quiz)
+            return DataTransform.backendToAppData(data, quiz)
+          })
+        )
 
     let onlyFormatQuizz$ = (data: LessonResponse) =>
       of(DataTransform.backendToAppData(data, null))

@@ -160,7 +160,7 @@
           type="button"
           icon="pi pi-plus"
           label="Video"
-          [disabled]="loadingVideo"
+          [disabled]="loadingVideo || loadingArticle || loadingQuiz"
           class="p-mt-2 p-button--sm p-button-outlined p-button-danger"
         ></button>
         <button
@@ -170,7 +170,7 @@
           type="button"
           icon="pi pi-plus"
           label="Article"
-          [disabled]="loadingArticle"
+          [disabled]="loadingVideo || loadingArticle || loadingQuiz"
           class="p-mt-2 p-button--sm p-button-outlined p-button-danger"
         ></button>
         <button
@@ -180,12 +180,20 @@
           type="button"
           icon="pi pi-plus"
           label="Quiz"
-          [disabled]="loadingQuiz"
+          [disabled]="loadingVideo || loadingArticle || loadingQuiz"
           class="p-mt-2 p-button--sm p-button-outlined p-button-danger"
         ></button>
       </div>
     </ng-template>
   </div>
+
+  <!--
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+                          DIALOGS
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+-->
 
   <!-- Delete Dialog -->
   <p-confirmDialog
@@ -231,6 +239,7 @@
     [(visible)]="displayArticle"
     [style]="{ width: '50vw' }"
     [baseZIndex]="10000"
+    [closable]="!loadingArticle"
   >
     <p>
       <i class="pi pi-exclamation-circle"></i> Add a title and a description
@@ -248,16 +257,31 @@
       [style]="{ height: '150px' }"
     ></p-editor>
     <ng-template pTemplate="footer">
-      <p-button
+      <button
+        pButton
         (click)="createArticle()"
-        label="Accept"
-        styleClass="p-button--sm p-button-outlined"
-      ></p-button>
-      <p-button
+        class="p-button--sm p-button-outlined"
+        [disabled]="disableCreateArticle(lectureTitle) || loadingArticle"
+      >
+        <ng-container *ngIf="!loadingArticle"> Update </ng-container>
+        <ng-container *ngIf="loadingArticle">
+          <p-progressSpinner
+            styleClass="custom-spinner blue"
+            strokeWidth="7"
+            [style]="{
+              width: '22px',
+              height: '22px'
+            }"
+          ></p-progressSpinner>
+        </ng-container>
+      </button>
+      <button
+        pButton
         (click)="clearArticleModal()"
+        [disabled]="loadingArticle"
         label="Cancel"
-        styleClass="p-button--sm p-button-outlined p-button-secondary cancel-btn"
-      ></p-button>
+        class="p-button--sm p-button-outlined p-button-secondary cancel-btn"
+      ></button>
     </ng-template>
   </p-dialog>
 
@@ -268,6 +292,7 @@
     [(visible)]="displayVideo"
     [style]="{ width: '50vw' }"
     [baseZIndex]="10000"
+    [closable]="!loadingVideo"
   >
     <div class="p-4">
       <p>
@@ -299,15 +324,31 @@
       <button
         pButton
         (click)="createVideo()"
-        [disabled]="disableCreateVideo(videoUrl, videoDetail)"
-        label="Accept"
-        styleClass="p-button--sm p-button-outlined"
-      ></button>
+        [disabled]="
+          disableCreateVideo(lectureTitle, videoUrl, videoDetail) ||
+          loadingVideo
+        "
+        class="p-button--sm p-button-outlined"
+      >
+        <ng-container *ngIf="!loadingVideo"> Update </ng-container>
+        <ng-container *ngIf="loadingVideo">
+          <p-progressSpinner
+            styleClass="custom-spinner blue"
+            strokeWidth="7"
+            [style]="{
+              width: '22px',
+              height: '22px',
+              color: 'var(--optionalColor) !important'
+            }"
+          ></p-progressSpinner>
+        </ng-container>
+      </button>
       <button
         pButton
         (click)="clearVideoModal()"
         label="Cancel"
-        styleClass="p-button--sm p-button-outlined p-button-secondary cancel-btn"
+        [disabled]="loadingVideo"
+        class="p-button--sm p-button-outlined p-button-secondary cancel-btn"
       ></button>
     </ng-template>
   </p-dialog>
@@ -319,6 +360,7 @@
     [(visible)]="displayQuiz"
     [style]="{ width: '50vw' }"
     [baseZIndex]="10000"
+    [closable]="!loadingQuiz"
   >
     <p>
       <i class="pi pi-exclamation-circle"></i> Add a title and a question for
@@ -384,16 +426,32 @@
     <ng-template pTemplate="footer">
       <button
         pButton
-        [disabled]="disabledCreateQuiz(answers, correctAnswer)"
+        [disabled]="
+          disabledCreateQuiz(lectureTitle, answers, correctAnswer) ||
+          loadingQuiz
+        "
         (click)="createQuiz()"
-        label="Update"
-        styleClass="p-button--sm p-button-outlined"
-      ></button>
+        class="p-button--sm p-button-outlined"
+      >
+        <ng-container *ngIf="!loadingQuiz"> Update </ng-container>
+        <ng-container *ngIf="loadingQuiz">
+          <p-progressSpinner
+            styleClass="custom-spinner blue"
+            strokeWidth="7"
+            [style]="{
+              width: '22px',
+              height: '22px',
+              color: 'var(--optionalColor) !important'
+            }"
+          ></p-progressSpinner>
+        </ng-container>
+      </button>
       <button
         pButton
         (click)="clearQuizModal()"
+        [disabled]="loadingQuiz"
         label="Cancel"
-        styleClass="p-button--sm p-button-outlined p-button-secondary cancel-btn"
+        class="p-button--sm p-button-outlined p-button-secondary cancel-btn"
       ></button>
     </ng-template>
   </p-dialog>

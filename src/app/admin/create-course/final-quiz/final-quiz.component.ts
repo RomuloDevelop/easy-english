@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 import { AdminService } from '../../admin.service'
 import { PrimeNGConfig, MessageService } from 'primeng/api'
@@ -6,6 +6,7 @@ import { select, Store } from '@ngrx/store'
 import { Quiz, FinalQuiz, Answer } from '../../../state/models'
 import { updateFinalQuiz } from '../../../state/admin/courses/course.actions'
 import { selectCoursesTable } from '../../../state/admin/admin.selectores'
+import { QuizzService } from '../../../services/quizz.service'
 import memoize from '../../../decorators/memoize'
 
 @Component({
@@ -14,6 +15,7 @@ import memoize from '../../../decorators/memoize'
   styleUrls: ['./final-quiz.component.scss']
 })
 export class FinalQuizComponent implements OnInit {
+  loadingQuiz = false
   finalQuiz: FinalQuiz = null
   title: string = ''
   questions: Quiz[] = []
@@ -24,7 +26,9 @@ export class FinalQuizComponent implements OnInit {
     private primengConfig: PrimeNGConfig,
     private messageService: MessageService,
     private route: ActivatedRoute,
-    private store: Store
+    private store: Store,
+    private quizService: QuizzService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -36,54 +40,75 @@ export class FinalQuizComponent implements OnInit {
           ? []
           : quiz.questions.map((item) => ({
               ...item,
-              answers: [...item.answers]
+              correctAnswer: item.answers.find((item) => item.correct)?.id,
+              answers: [...item.answers.map((item) => ({ ...item }))]
             }))
       this.title = quiz == null ? '' : quiz.title
+      this.cdr.markForCheck()
     })
   }
 
-  addQuestionOrCreateFinalQuiz() {
-    if (this.questions.length === 0) {
-      this.addQuestion()
-    } else {
-      let detail = this.disabledCreateQuiz()
-      if (detail !== '') {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail
-        })
-        return
-      }
-      const quiz = {
-        title: this.title,
-        questions: this.questions.map((question) => ({
-          ...question,
-          answers: question.answers.map((answer) => ({
-            ...answer,
-            correct: question.correctAnswer === answer.id
-          }))
-        }))
-      }
-      this.store.dispatch(updateFinalQuiz({ id: this.courseId, quiz }))
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Success',
-        detail: 'The quiz has been updated'
-      })
-    }
-  }
+  // addQuestionOrCreateFinalQuiz() {
+  //   if (this.questions.length === 0) {
+  //     this.addQuestion()
+  //   } else {
+  //     let detail = this.disabledCreateQuiz()
+  //     if (detail !== '') {
+  //       this.messageService.add({
+  //         severity: 'error',
+  //         summary: 'Error',
+  //         detail
+  //       })
+  //       return
+  //     }
+  //     const quiz = {
+  //       title: this.title,
+  //       questions: this.questions.map((question) => ({
+  //         ...question,
+  //         answers: question.answers.map((answer) => ({
+  //           ...answer,
+  //           correct: question.correctAnswer === answer.id
+  //         }))
+  //       }))
+  //     }
+  //     this.store.dispatch(updateFinalQuiz({ id: this.courseId, quiz }))
+  //     this.messageService.add({
+  //       severity: 'success',
+  //       summary: 'Success',
+  //       detail: 'The quiz has been updated'
+  //     })
+  //   }
+  // }
 
   addQuestion() {
-    let id = 0
-    if (this.questions.length)
-      id = this.questions[this.questions.length - 1].id + 1
-    this.questions.push({
-      id,
-      question: '',
+    this.loadingQuiz = true
+    const quiz = {
+      question: 'Temporal description',
       answers: [],
       correctAnswer: null,
       course_id: this.courseId
+    }
+    this.quizService
+      .addQuizz(quiz, true, true, null, 'Temporal title')
+      .subscribe(
+        (quiz) => {
+          this.loadingQuiz = false
+        },
+        (err) => {
+          console.error(err)
+        }
+      )
+  }
+
+  updateQuiz(quiz: Quiz) {
+    this.loadingQuiz = true
+    if (quiz.correctAnswer != null) {
+      quiz.answers = quiz.answers.map((answer) => {
+        return { ...answer, correct: answer.id === quiz.correctAnswer }
+      })
+    }
+    this.quizService.updateQuizz(quiz, true, null).subscribe((quiz) => {
+      this.loadingQuiz = false
     })
   }
 
@@ -104,7 +129,6 @@ export class FinalQuizComponent implements OnInit {
   }
 
   deleteaAnswer(questionId: number, id: number) {
-    console.log(this.questions, questionId, id)
     for (let question of this.questions) {
       if (question.id === questionId) {
         question.answers = question.answers.filter((item) => item.id !== id)

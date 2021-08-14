@@ -91,9 +91,9 @@ export class SectionsComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.primengConfig.ripple = true
-    this.store
-      .pipe(select(selectLectures))
-      .subscribe((lectures) => (this.allLectures = lectures))
+    this.store.pipe(select(selectLectures)).subscribe((lectures) => {
+      this.allLectures = lectures
+    })
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -231,19 +231,19 @@ export class SectionsComponent implements OnInit, OnChanges {
   }
 
   @memoize()
-  disableCreateVideo(url: string, detail: string) {
-    return url == '' || detail == null || detail == ''
+  disableCreateVideo(title: string, url: string, detail: string) {
+    return !title || title == '' || url == '' || detail == null || detail == ''
   }
 
   newArticle() {
     this.loadingArticle = true
     const section_id = this.data.id
     this.addLectureOrEdit({
-      title: this.lectureTitle,
+      title: 'Temporal title',
       section_id,
       id: null,
       data: {
-        detail: this.articleDetail
+        detail: 'Temporal detail'
       },
       type: 'Article'
     }).subscribe(() => {
@@ -273,6 +273,11 @@ export class SectionsComponent implements OnInit, OnChanges {
     this.displayArticle = false
     this.articleDetail = ''
     this.clearCommonModalData()
+  }
+
+  @memoize()
+  disableCreateArticle(title: string) {
+    return !title || title == ''
   }
 
   // Quiz methods
@@ -350,7 +355,7 @@ export class SectionsComponent implements OnInit, OnChanges {
       return JSON.stringify(args)
     }
   })
-  disabledCreateQuiz(answers: Answer[], id: number) {
+  disabledCreateQuiz(title: string, answers: Answer[], id: number) {
     let result = true
     for (let answer of answers) {
       if (answer.id === id) {
@@ -361,7 +366,7 @@ export class SectionsComponent implements OnInit, OnChanges {
         break
       }
     }
-    return result
+    return result || !title || title == ''
   }
 
   // General methods

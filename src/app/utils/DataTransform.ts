@@ -59,17 +59,17 @@ export class DataTransform {
 
   static quizzesForPost(
     quiz: Quiz,
-    is_final_quiz = false,
+    is_final_quizz = false,
     lesson_id?: number,
-    title: string = 'null'
+    title: string = 'Temporal question'
   ) {
     let result: QuizzResponse = {
       title,
-      is_final_quiz,
+      is_final_quizz,
       course_id: quiz.course_id,
       question: quiz.question
     }
-    if (!is_final_quiz) result = { ...result, lesson_id }
+    if (!is_final_quizz) result = { ...result, lesson_id }
     return result
   }
 

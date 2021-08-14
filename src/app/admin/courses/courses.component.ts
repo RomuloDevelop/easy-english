@@ -1,21 +1,30 @@
 import { Component, OnInit } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 import { Store, select } from '@ngrx/store'
-import { AdminService } from '../admin.service'
 import { CourseService } from '../../services/course.service'
+import { SectionService } from '../../services/section.service'
 import { Course } from '../../state/models'
 import {
   selectCoursesTable,
-  CoursesTableRow
+  CoursesTableRow,
+  selectSections
 } from '../../state/admin/admin.selectores'
 import {
   updateStatus,
   deleteCourse,
-  addCourse
+  addCourse,
+  setCourses
 } from '../../state/admin/courses/course.actions'
 import { ConfirmationService, PrimeNGConfig, Message } from 'primeng/api'
-import { deleteCourseSection } from 'src/app/state/admin/sections/section.actions'
+import {
+  addSection,
+  deleteCourseSection,
+  setSections,
+  updateSection
+} from 'src/app/state/admin/sections/section.actions'
 import { deleteSectionLecture } from 'src/app/state/admin/lectures/lecture.actions'
+import { zip } from 'rxjs'
+import { take } from 'rxjs/operators'
 
 @Component({
   selector: 'app-courses',
@@ -23,6 +32,8 @@ import { deleteSectionLecture } from 'src/app/state/admin/lectures/lecture.actio
   styleUrls: ['./courses.component.scss']
 })
 export class CoursesComponent implements OnInit {
+  loadingCourses = false
+  loadingSection = null
   msgs: Message[] = []
 
   courseCols = ['Id', 'Title', 'Subtitle', 'Sections', 'Status']
@@ -39,15 +50,47 @@ export class CoursesComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private primengConfig: PrimeNGConfig,
     private store: Store,
-    private adminService: AdminService,
-    private courseService: CourseService
+    private courseService: CourseService,
+    private sectionService: SectionService
   ) {}
 
   ngOnInit() {
     this.primengConfig.ripple = true
-    this.courseService.getCourseList()
+    this.getTable()
     this.store.pipe(select(selectCoursesTable)).subscribe((data) => {
       this.courses = data
+    })
+  }
+
+  getTable() {
+    this.loadingCourses = true
+    this.courseService
+      .getCourses(() => (this.loadingCourses = false))
+      .subscribe(
+        (courses) => {
+          this.store.dispatch(setCourses({ courses }))
+        },
+        (err) => {
+          console.error(err)
+        }
+      )
+  }
+
+  getSectionItem(courseId: number) {
+    this.loadingSection = courseId
+    this.courseService
+    zip(
+      this.sectionService.getSectionsByCourse(
+        courseId,
+        () => (this.loadingSection = null)
+      ),
+      this.store.pipe(take(1), select(selectSections))
+    ).subscribe(([response, sections]) => {
+      response.forEach((item) => {
+        if (sections.find((section) => section.id === item.id))
+          this.store.dispatch(updateSection({ section: item }))
+        else this.store.dispatch(addSection({ section: item }))
+      })
     })
   }
 
@@ -72,9 +115,6 @@ export class CoursesComponent implements OnInit {
     this._router.navigate(['create-course', course.id], {
       relativeTo: this.route
     })
-    // this.courseService.getCourseData(course.id).subscribe((response) => {
-    //   console.log(response)
-    // })
   }
 
   changeStatus(e, course: CoursesTableRow) {
