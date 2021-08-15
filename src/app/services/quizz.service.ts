@@ -118,29 +118,24 @@ export class QuizzService {
                   )
 
                   // Agrega, actualiza y elimina donde corresponda
-                  const { result, deletes } = this.addOrUpdateAnswer(
-                    quiz.answers,
-                    (actualQuiz as Quiz).answers,
-                    quiz.id
-                  )
+                  const { results, deletes, withoutChange } =
+                    this.addOrUpdateAnswer(
+                      quiz.answers,
+                      (actualQuiz as Quiz).answers,
+                      quiz.id
+                    )
                   console.log('deletes', deletes)
-                  console.log('result', result)
-                  return zip(...result, ...deletes).pipe(
+                  console.log('result', results)
+                  return zip(...results, ...deletes).pipe(
                     map((answers) => {
                       const newAnswers = answers.filter(
                         (item: any) => item?.id
                       ) as AnswerResponse[] //Obtiene solo respuestas de insertado y actualizado
-                      data.answers = quiz.answers.map((answer) => {
-                        const result = newAnswers.find(
-                          (newAnswer) => newAnswer.id === answer.id
+                      data.answers = withoutChange
+                        .map((item) =>
+                          DataTransform.answerToPost(item, quiz.course_id)
                         )
-                        if (result != null) return result
-                        else
-                          return DataTransform.answerToPost(
-                            answer,
-                            quiz.course_id
-                          )
-                      })
+                        .concat(newAnswers)
                       const newQuiz = DataTransform.formatQuizzes(data)
                       const questions = finalQuiz.questions.map((item) => {
                         if (item.id === newQuiz.id) return newQuiz
@@ -166,29 +161,24 @@ export class QuizzService {
                   )
 
                   // Agrega, actualiza y elimina donde corresponda
-                  const { result, deletes } = this.addOrUpdateAnswer(
-                    quiz.answers,
-                    (actualLesson.data as Quiz).answers,
-                    quiz.id
-                  )
-                  console.log(result)
+                  const { results, deletes, withoutChange } =
+                    this.addOrUpdateAnswer(
+                      quiz.answers,
+                      (actualLesson.data as Quiz).answers,
+                      quiz.id
+                    )
+                  console.log(results)
                   console.log(deletes)
-                  return zip(...result, ...deletes).pipe(
+                  return zip(...results, ...deletes).pipe(
                     map((answers) => {
                       const newAnswers = answers.filter(
                         (item: any) => item?.id
                       ) as AnswerResponse[] //Obtiene solo respuestas de insertado y actualizado
-                      data.answers = quiz.answers.map((answer) => {
-                        const result = newAnswers.find(
-                          (newAnswer) => newAnswer.id === answer.id
+                      data.answers = withoutChange
+                        .map((item) =>
+                          DataTransform.answerToPost(item, quiz.course_id)
                         )
-                        if (result != null) return result
-                        else
-                          return DataTransform.answerToPost(
-                            answer,
-                            quiz.course_id
-                          )
-                      })
+                        .concat(newAnswers)
                       const lecture: Lecture = {
                         id: actualLesson.id,
                         title: actualLesson.title,
@@ -257,15 +247,14 @@ export class QuizzService {
     return this.http.delete(`${answersUrl}/${answer.id}`)
   }
 
-  addOrUpdateAnswer(
-    newList: FoundedAnswer[],
-    answers: Answer[],
-    quiz_id: number
-  ) {
-    console.log(newList, answers)
-    let result: Observable<AnswerResponse>[] = []
+  addOrUpdateAnswer(newList: Answer[], answers: Answer[], quiz_id: number) {
+    const withoutChange: Answer[] = []
+    let results: Observable<AnswerResponse>[] = []
     let deletes: Observable<Object>[] = []
-    const founded = []
+
+    console.log(newList, answers)
+
+    let forUpdates: Answer[] = []
     const forDelete = []
     answers.forEach((answer) => {
       //Search for updates
@@ -274,12 +263,13 @@ export class QuizzService {
       )
       const newAnswer = foundedAnswer != null ? { ...foundedAnswer } : null
       if (newAnswer?.id === answer.id) {
-        founded.push(newAnswer)
         if (
           newAnswer.correct !== answer.correct ||
           newAnswer.text !== answer.text
         ) {
-          result.push(this.updateAnswer(newAnswer, quiz_id))
+          forUpdates.push(newAnswer)
+        } else {
+          withoutChange.push(newAnswer)
         }
       } else {
         //Search for deletes
@@ -302,6 +292,7 @@ export class QuizzService {
         )
       )
     } else {
+      const founded = withoutChange.concat(forUpdates)
       newList.forEach((answer) => {
         if (
           founded.find((item) => item.id === answer.id) == null &&
@@ -320,7 +311,9 @@ export class QuizzService {
       })
     }
 
-    result = result.concat(inserts)
-    return { result, deletes }
+    results = forUpdates
+      .map((item) => this.updateAnswer(item, quiz_id))
+      .concat(inserts)
+    return { results, deletes, withoutChange }
   }
 }
