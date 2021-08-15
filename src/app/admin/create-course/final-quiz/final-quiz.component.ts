@@ -1,25 +1,34 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 import { AdminService } from '../../admin.service'
-import { PrimeNGConfig, MessageService } from 'primeng/api'
+import {
+  ConfirmationService,
+  PrimeNGConfig,
+  MessageService,
+  Message
+} from 'primeng/api'
 import { select, Store } from '@ngrx/store'
 import { Quiz, FinalQuiz, Answer } from '../../../state/models'
-import { updateFinalQuiz } from '../../../state/admin/courses/course.actions'
 import { selectCoursesTable } from '../../../state/admin/admin.selectores'
 import { QuizzService } from '../../../services/quizz.service'
+import { CourseService } from '../../../services/course.service'
 import memoize from '../../../decorators/memoize'
+import { zip } from 'rxjs'
 
 @Component({
   selector: 'app-final-quiz',
   templateUrl: './final-quiz.component.html',
-  styleUrls: ['./final-quiz.component.scss']
+  styleUrls: ['./final-quiz.component.scss'],
+  providers: [ConfirmationService]
 })
 export class FinalQuizComponent implements OnInit {
+  loadingTitle = false
   loadingQuiz = false
   finalQuiz: FinalQuiz = null
   title: string = ''
   questions: Quiz[] = []
   courseId = parseInt(this.route.snapshot.paramMap.get('id'))
+  msgs: Message[] = []
 
   constructor(
     public adminService: AdminService,
@@ -28,13 +37,18 @@ export class FinalQuizComponent implements OnInit {
     private route: ActivatedRoute,
     private store: Store,
     private quizService: QuizzService,
+    private courseService: CourseService,
+    private confirmationService: ConfirmationService,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
     this.primengConfig.ripple = true
     this.store.pipe(select(selectCoursesTable)).subscribe((courses) => {
-      const { quiz } = courses.find((course) => course.id === this.courseId)
+      const { quiz, final_quizz_title } = courses.find(
+        (course) => course.id === this.courseId
+      )
+      console.log('final quiz', quiz)
       this.questions =
         quiz == null
           ? []
@@ -43,42 +57,44 @@ export class FinalQuizComponent implements OnInit {
               correctAnswer: item.answers.find((item) => item.correct)?.id,
               answers: [...item.answers.map((item) => ({ ...item }))]
             }))
-      this.title = quiz == null ? '' : quiz.title
+      this.title = final_quizz_title == null ? '' : final_quizz_title
       this.cdr.markForCheck()
     })
   }
 
-  // addQuestionOrCreateFinalQuiz() {
-  //   if (this.questions.length === 0) {
-  //     this.addQuestion()
-  //   } else {
-  //     let detail = this.disabledCreateQuiz()
-  //     if (detail !== '') {
-  //       this.messageService.add({
-  //         severity: 'error',
-  //         summary: 'Error',
-  //         detail
-  //       })
-  //       return
-  //     }
-  //     const quiz = {
-  //       title: this.title,
-  //       questions: this.questions.map((question) => ({
-  //         ...question,
-  //         answers: question.answers.map((answer) => ({
-  //           ...answer,
-  //           correct: question.correctAnswer === answer.id
-  //         }))
-  //       }))
-  //     }
-  //     this.store.dispatch(updateFinalQuiz({ id: this.courseId, quiz }))
-  //     this.messageService.add({
-  //       severity: 'success',
-  //       summary: 'Success',
-  //       detail: 'The quiz has been updated'
-  //     })
-  //   }
-  // }
+  updateTitleOrAddQuiz() {
+    if (!this.questions?.length) {
+      this.addQuestion()
+    } else {
+      this.updateTitle()
+    }
+  }
+
+  updateTitle() {
+    this.loadingTitle = true
+    this.courseService
+      .updateCourse(
+        { id: this.courseId, title: this.title },
+        () => (this.loadingTitle = false)
+      )
+      .subscribe(
+        () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'The quiz has been updated!'
+          })
+        },
+        (err) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'An error occurs while updating quiz'
+          })
+          console.error(err)
+        }
+      )
+  }
 
   addQuestion() {
     this.loadingQuiz = true
@@ -93,8 +109,18 @@ export class FinalQuizComponent implements OnInit {
       .subscribe(
         (quiz) => {
           this.loadingQuiz = false
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'The quiz has been created'
+          })
         },
         (err) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'An error occurs while adding question'
+          })
           console.error(err)
         }
       )
@@ -107,8 +133,50 @@ export class FinalQuizComponent implements OnInit {
         return { ...answer, correct: answer.id === quiz.correctAnswer }
       })
     }
-    this.quizService.updateQuizz(quiz, true, null).subscribe((quiz) => {
-      this.loadingQuiz = false
+    this.quizService.updateQuizz(quiz, true, null).subscribe(
+      (quiz) => {
+        this.loadingQuiz = false
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'The quiz has been updated!'
+        })
+      },
+      (err) => {
+        this.loadingQuiz = false
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'An error occurs while updating question'
+        })
+        console.error(err)
+      }
+    )
+  }
+
+  deleteQuizz(quiz: Quiz) {
+    if (this.loadingQuiz) return
+    this.deleteDialog(() => {
+      this.loadingQuiz = true
+      this.quizService.deleteQuiz(quiz).subscribe(
+        () => {
+          this.loadingQuiz = false
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'The quiz has been updated!'
+          })
+        },
+        (err) => {
+          this.loadingQuiz = false
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'An error occurs while deleting question'
+          })
+          console.error(err)
+        }
+      )
     })
   }
 
@@ -124,7 +192,7 @@ export class FinalQuizComponent implements OnInit {
     })
   }
 
-  deleteaQuestion(id: number) {
+  deleteQuestion(id: number) {
     this.questions = this.questions.filter((item) => item.id !== id)
   }
 
@@ -146,49 +214,35 @@ export class FinalQuizComponent implements OnInit {
   disableAddAnswer(question: string | null) {
     return question == null || question.length <= 0
   }
-
-  disabledCreateQuiz() {
-    if (this.title === '') {
-      return 'Quiz must have a title'
+  @memoize({
+    normalizer: function (args) {
+      return JSON.stringify(args)
     }
-
-    let message = ''
-
-    for (let question of this.questions) {
-      if (question.question == null || question.question === '') {
-        message = "Questions can't be empty"
-        break
+  })
+  disabledUpdateQuiz(quiz: Quiz) {
+    const { answers, correctAnswer } = quiz
+    let result = true
+    for (let answer of answers) {
+      if (answer.id === correctAnswer) {
+        result = false
       }
-
-      let hasCorrectAnswer = false
-      let hasText = true
-      let answersCount = 0
-      for (let answer of question.answers) {
-        if (answer.id === question.correctAnswer) {
-          hasCorrectAnswer = true
-        }
-        if (answer.text === '') {
-          hasText = false
-          break
-        }
-        answersCount++
-      }
-
-      if (!hasText) {
-        message = "Answers can't be empty"
-        break
-      }
-
-      if (!hasCorrectAnswer) {
-        message = 'Questions must have a correct answer'
-        break
-      }
-
-      if (answersCount < 2) {
-        message = 'Questions must have more than 1 answer'
+      if (answer.text === '') {
+        result = true
         break
       }
     }
-    return message
+    return result
+  }
+
+  deleteDialog(cb: () => any = null) {
+    this.confirmationService.confirm({
+      message: 'Do you want to delete this record?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        cb()
+      },
+      reject: () => {}
+    })
   }
 }

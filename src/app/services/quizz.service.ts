@@ -41,13 +41,6 @@ export class QuizzService {
       .pipe(map(({ data }) => data))
   }
 
-  addFinalQuiz(finalQuiz: FinalQuiz, course_id: number) {
-    const requests = finalQuiz.questions.map((question) =>
-      this.addQuizz(question, true, true, null, finalQuiz.title)
-    )
-    return zip(requests)
-  }
-
   addQuizz(
     quiz: Quiz,
     save = true,
@@ -214,6 +207,30 @@ export class QuizzService {
           )
         )
       )
+  }
+
+  // Solo para examen final
+  deleteQuiz(quiz: Quiz) {
+    return this.http.delete(`${quizzesUrl}/${quiz.id}`).pipe(
+      mergeMap(() =>
+        this.store.pipe(
+          take(1),
+          select(selectCourses),
+          map((courses) => {
+            const course = courses.find((item) => item.id === quiz.course_id)
+            const quizFiltered = course.quiz.questions.filter(
+              (item) => item.id !== quiz.id
+            )
+            this.store.dispatch(
+              updateFinalQuiz({
+                id: course.id,
+                quiz: { questions: quizFiltered }
+              })
+            )
+          })
+        )
+      )
+    )
   }
 
   getAnswers() {

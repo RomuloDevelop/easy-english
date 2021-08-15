@@ -11,12 +11,55 @@
     pInputText
     [(ngModel)]="title"
   />
+  <div class="d-flex justify-content-center mt-3">
+    <button
+      class="default-btn"
+      (click)="updateTitleOrAddQuiz()"
+      [disabled]="loadingQuiz || loadingTitle"
+    >
+      <ng-container *ngIf="!loadingTitle">
+        <i class="pi pi-pencil icon-arrow before"></i>
+      </ng-container>
+      <ng-container *ngIf="loadingTitle">
+        <ng-container
+          *ngTemplateOutlet="spinner; context: { $implicit: 'before' }"
+        ></ng-container>
+      </ng-container>
+
+      <span class="label">{{
+        !questions?.length ? 'Add question' : 'Update title'
+      }}</span>
+
+      <ng-container *ngIf="!loadingTitle">
+        <i class="pi pi-pencil icon-arrow after"></i>
+      </ng-container>
+      <ng-container *ngIf="loadingTitle">
+        <ng-container
+          *ngTemplateOutlet="spinner; context: { $implicit: 'after' }"
+        ></ng-container
+      ></ng-container>
+
+      <ng-template #spinner let-iClass>
+        <i [class]="iClass" class="icon-arrow">
+          <p-progressSpinner
+            styleClass="custom-spinner"
+            strokeWidth="7"
+            [style]="{
+              width: '22px',
+              height: '22px',
+              color: '#fff !important'
+            }"
+          ></p-progressSpinner>
+        </i>
+      </ng-template>
+    </button>
+  </div>
   <div *ngIf="questions.length">
     <div
       class="question-container"
       *ngFor="let questItem of questions; let indexOfelement = index"
     >
-      <div class="delete-btn" (click)="deleteaQuestion(questItem.id)">
+      <div class="delete-btn" (click)="deleteQuizz(questItem)">
         <i class="pi pi-times"></i>
       </div>
       <div class="p-section-field">
@@ -82,11 +125,47 @@
             (click)="addFinalAnswer(questItem.id)"
           ></button>
         </div>
-        <div class="d-flex justify-content-center mt-1">
-          <button class="default-btn" (click)="updateQuiz(questItem)">
-            <i class="pi pi-pencil icon-arrow before"></i>
+        <div
+          class="d-flex justify-content-center mt-1"
+          *ngIf="questItem.answers?.length"
+        >
+          <button
+            class="default-btn"
+            (click)="updateQuiz(questItem)"
+            [disabled]="disabledUpdateQuiz(questItem)"
+          >
+            <ng-container *ngIf="!loadingQuiz">
+              <i class="pi pi-pencil icon-arrow before"></i>
+            </ng-container>
+            <ng-container *ngIf="loadingQuiz">
+              <ng-container
+                *ngTemplateOutlet="spinner; context: { $implicit: 'before' }"
+              ></ng-container>
+            </ng-container>
+
             <span class="label"> Update Answers </span>
-            <i class="pi pi-pencil icon-arrow after"></i>
+
+            <ng-container *ngIf="!loadingQuiz">
+              <i class="pi pi-pencil icon-arrow after"></i>
+            </ng-container>
+            <ng-container *ngIf="loadingQuiz">
+              <ng-container
+                *ngTemplateOutlet="spinner; context: { $implicit: 'after' }"
+              ></ng-container
+            ></ng-container>
+
+            <ng-template #spinner let-iClass>
+              <i [class]="iClass" class="icon-arrow">
+                <p-progressSpinner
+                  styleClass="custom-spinner"
+                  strokeWidth="7"
+                  [style]="{
+                    width: '22px',
+                    height: '22px'
+                  }"
+                ></p-progressSpinner>
+              </i>
+            </ng-template>
           </button>
         </div>
       </div>
@@ -98,50 +177,14 @@
         type="button"
         icon="pi pi-plus"
         class="p-button-rounded p-button-danger"
-        [disabled]="disableAddQuestion(title)"
+        [disabled]="disableAddQuestion(title) || loadingQuiz"
         (click)="addQuestion()"
       ></button>
     </div>
   </div>
-  <div class="d-flex justify-content-center mt-3">
-    <button
-      class="default-btn"
-      *ngIf="questions?.length"
-      (click)="addQuestion()"
-    >
-      <ng-container *ngIf="!loadingQuiz">
-        <i class="pi pi-pencil icon-arrow before"></i>
-      </ng-container>
-      <ng-container *ngIf="loadingQuiz">
-        <ng-container
-          *ngTemplateOutlet="spinner; context: { $implicit: 'before' }"
-        ></ng-container>
-      </ng-container>
-
-      <span class="label">Add Question</span>
-
-      <ng-container *ngIf="!loadingQuiz">
-        <i class="pi pi-pencil icon-arrow after"></i>
-      </ng-container>
-      <ng-container *ngIf="loadingQuiz">
-        <ng-container
-          *ngTemplateOutlet="spinner; context: { $implicit: 'after' }"
-        ></ng-container
-      ></ng-container>
-
-      <ng-template #spinner let-iClass>
-        <i [class]="iClass" class="icon-arrow">
-          <p-progressSpinner
-            styleClass="custom-spinner"
-            strokeWidth="7"
-            [style]="{
-              width: '22px',
-              height: '22px',
-              color: '#fff !important'
-            }"
-          ></p-progressSpinner>
-        </i>
-      </ng-template>
-    </button>
-  </div>
 </p-card>
+<!-- Delete Dialog -->
+<p-confirmDialog
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+></p-confirmDialog>

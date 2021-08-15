@@ -39,7 +39,6 @@ export interface Quiz {
 }
 
 export interface FinalQuiz {
-  title: string
   questions: Quiz[]
 }
 
@@ -78,6 +77,7 @@ export interface Course {
   status: boolean
   level?: string
   quiz?: FinalQuiz
+  final_quizz_title?: string
 }
 
 export interface AppState {

@@ -92,7 +92,6 @@ export class DataTransform {
 
   static formatFinalQuiz(respFinalQuizz: QuizzResponse[]) {
     const newFormat: FinalQuiz = {
-      title: respFinalQuizz[0] ? respFinalQuizz[0].title : '',
       questions: respFinalQuizz.map((item) => this.formatQuizzes(item))
     }
     return newFormat

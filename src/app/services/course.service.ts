@@ -62,6 +62,10 @@ export class CourseService {
         }))
         if (quizResponse) {
           const finalQuiz = DataTransform.formatFinalQuiz(quizResponse)
+          finalQuiz.questions = finalQuiz.questions.map((item) => ({
+            ...item,
+            course_id: course.id
+          }))
           formatedCourse = { ...course, quiz: finalQuiz }
         }
 
@@ -72,6 +76,7 @@ export class CourseService {
             if (quiz != null) {
               quiz[0].answers = quiz[0].quizz_options
               quiz[0].lesson_id = lesson.id
+              quiz[0].course_id = course.id
               return DataTransform.backendToAppData(lesson, quiz[0])
             }
             return DataTransform.backendToAppData(lesson, null)
