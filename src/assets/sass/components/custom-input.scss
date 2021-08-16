@@ -1,0 +1,7 @@
+.p-inputtext:enabled:focus {
+  box-shadow: none !important;
+  border-width: 1px;
+}
+.p-inputtext:enabled:focus:not(.ng-dirty.ng-invalid) {
+  border-color: #0d2b8d !important;
+}

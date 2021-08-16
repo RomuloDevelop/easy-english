@@ -3,5 +3,6 @@ export default {
   sectionUrl: 'course_sections',
   lessonUrl: 'course_lessons',
   quizzesUrl: 'course_quizzes',
-  answersUrl: 'quizz_options'
+  answersUrl: 'quizz_options',
+  usersUrl: 'users'
 }

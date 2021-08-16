@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'
-import { CourseService } from '../../services/course.service'
+import { CourseService } from '../../../services/course.service'
 import { ActivatedRoute } from '@angular/router'
 @Component({
   selector: 'app-create-course',

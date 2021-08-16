@@ -9,7 +9,7 @@ import {
   ViewChild,
   ChangeDetectorRef
 } from '@angular/core'
-import { AdminService, SectionAction } from '../../../admin.service'
+import { AdminService, SectionAction } from '../../../../admin.service'
 import { ConfirmationService, PrimeNGConfig, Message } from 'primeng/api'
 import { select, Store } from '@ngrx/store'
 import {
@@ -19,14 +19,14 @@ import {
   Article,
   Quiz,
   Answer
-} from '../../../../state/models'
+} from '../../../../../state/models'
 import {
   SectionData,
   selectLectures
-} from '../../../../state/admin/admin.selectores'
-import memoize from '../../../../decorators/memoize'
-import { LessonService } from '../../../../services/lesson.service'
-import { YoutubeComponent } from '../../../../components/common/youtube/youtube.component'
+} from '../../../../../state/admin/admin.selectores'
+import memoize from '../../../../../decorators/memoize'
+import { LessonService } from '../../../../../services/lesson.service'
+import { YoutubeComponent } from '../../../../../components/common/youtube/youtube.component'
 import { Observable } from 'rxjs'
 
 @Component({

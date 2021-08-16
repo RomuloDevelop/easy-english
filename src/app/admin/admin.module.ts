@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core'
 import { ReactiveFormsModule } from '@angular/forms'
 import { AdminRoutingModule } from './admin-routing.module'
 import { AdminComponent } from './admin.component'
-import { CoursesComponent } from './courses/courses.component'
-import { CreateCourseComponent } from './create-course/create-course.component'
-import { SectionsComponent } from './create-course/create-section/sections/sections.component'
+import { CoursesComponent } from './course/courses/courses.component'
+import { CreateCourseComponent } from './course/create-course/create-course.component'
+import { SectionsComponent } from './course/create-course/create-section/sections/sections.component'
 import { HeaderComponent } from './header/header.component'
 
 import { SharedModule } from '../shared.module'
@@ -29,9 +29,11 @@ import { PanelMenuModule } from 'primeng/panelmenu'
 
 import { ConfirmationService, MessageService } from 'primeng/api'
 import { AdminService } from './admin.service'
-import { HomePageComponent } from './create-course/home-page/home-page.component'
-import { CreateSectionComponent } from './create-course/create-section/create-section.component'
-import { FinalQuizComponent } from './create-course/final-quiz/final-quiz.component'
+import { HomePageComponent } from './course/create-course/home-page/home-page.component'
+import { CreateSectionComponent } from './course/create-course/create-section/create-section.component'
+import { FinalQuizComponent } from './course/create-course/final-quiz/final-quiz.component'
+import { UsersComponent } from './user/users/users.component'
+import { CreateUserComponent } from './user/create-user/create-user.component'
 @NgModule({
   declarations: [
     AdminComponent,
@@ -41,7 +43,9 @@ import { FinalQuizComponent } from './create-course/final-quiz/final-quiz.compon
     HeaderComponent,
     HomePageComponent,
     CreateSectionComponent,
-    FinalQuizComponent
+    FinalQuizComponent,
+    UsersComponent,
+    CreateUserComponent
   ],
   imports: [
     SharedModule,

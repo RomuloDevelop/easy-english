@@ -1,5 +1,12 @@
 import { createSelector } from '@ngrx/store'
-import { AppState, Course, Section, Lecture, ArrayElement } from '../models'
+import {
+  AppState,
+  Course,
+  Section,
+  Lecture,
+  ArrayElement,
+  User
+} from '../models'
 
 export const selectCourses = createSelector(
   (state: AppState) => state.courses,
@@ -14,6 +21,11 @@ export const selectSections = createSelector(
 export const selectLectures = createSelector(
   (state: AppState) => state.lectures,
   (lectures: Array<Lecture>) => lectures
+)
+
+export const selectUsers = createSelector(
+  (state: AppState) => state.users,
+  (users: Array<User>) => users
 )
 
 const cbSectionData = (sections: Array<Section>, lectures: Array<Lecture>) => {

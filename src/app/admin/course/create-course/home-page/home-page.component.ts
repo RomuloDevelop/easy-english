@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
-import { AdminService, SectionAction } from '../../admin.service'
+import { AdminService, SectionAction } from '../../../admin.service'
 import { Store, select } from '@ngrx/store'
-import { Course } from '../../../state/models'
+import { Course } from '../../../../state/models'
 import {
   selectCoursesTable,
   CoursesTableRow,
   SectionData
-} from '../../../state/admin/admin.selectores'
+} from '../../../../state/admin/admin.selectores'
 import { PrimeNGConfig, MessageService } from 'primeng/api'
-import { CourseService } from '../../../services/course.service'
-import memoize from '../../../decorators/memoize'
+import { CourseService } from '../../../../services/course.service'
+import memoize from '../../../../decorators/memoize'
 
 @Component({
   selector: 'app-home-page',

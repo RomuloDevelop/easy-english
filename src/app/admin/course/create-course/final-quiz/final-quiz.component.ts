@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
-import { AdminService } from '../../admin.service'
+import { AdminService } from '../../../admin.service'
 import {
   ConfirmationService,
   PrimeNGConfig,
@@ -8,11 +8,11 @@ import {
   Message
 } from 'primeng/api'
 import { select, Store } from '@ngrx/store'
-import { Quiz, FinalQuiz, Answer } from '../../../state/models'
-import { selectCoursesTable } from '../../../state/admin/admin.selectores'
-import { QuizzService } from '../../../services/quizz.service'
-import { CourseService } from '../../../services/course.service'
-import memoize from '../../../decorators/memoize'
+import { Quiz, FinalQuiz, Answer } from '../../../../state/models'
+import { selectCoursesTable } from '../../../../state/admin/admin.selectores'
+import { QuizzService } from '../../../../services/quizz.service'
+import { CourseService } from '../../../../services/course.service'
+import memoize from '../../../../decorators/memoize'
 import { zip } from 'rxjs'
 
 @Component({
@@ -48,7 +48,6 @@ export class FinalQuizComponent implements OnInit {
       const { quiz, final_quizz_title } = courses.find(
         (course) => course.id === this.courseId
       )
-      console.log('final quiz', quiz)
       this.questions =
         quiz == null
           ? []

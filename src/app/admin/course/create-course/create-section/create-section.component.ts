@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
-import { AdminService, SectionAction } from '../../admin.service'
+import { AdminService, SectionAction } from '../../../admin.service'
 import { Store, select } from '@ngrx/store'
-import { SectionService } from '../../../services/section.service'
-import { Section } from '../../../state/models'
+import { SectionService } from '../../../../services/section.service'
+import { Section } from '../../../../state/models'
 import {
   selectCoursesTable,
   CoursesTableRow,
   selectSectionsData,
   SectionData
-} from '../../../state/admin/admin.selectores'
+} from '../../../../state/admin/admin.selectores'
 import { PrimeNGConfig } from 'primeng/api'
 import { combineLatest } from 'rxjs'
 

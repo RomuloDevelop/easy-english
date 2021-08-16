@@ -80,10 +80,20 @@ export interface Course {
   final_quizz_title?: string
 }
 
+export interface User {
+  id?: number
+  name: string
+  email: string
+  phone: string
+  is_supervised: boolean
+  dob: string
+}
+
 export interface AppState {
   courses: Course[]
   sections: Section[]
   lectures: Lecture[]
+  users: User[]
 }
 
 export type ArrayElement<ArrayType extends readonly unknown[]> =

@@ -1,0 +1,90 @@
+<div class="container-lg">
+  <div class="page-title-content p-mb-5">
+    <ul>
+      <li><a routerLink="../admin">Admin</a></li>
+      <li>Users</li>
+    </ul>
+    <h2>Users List</h2>
+  </div>
+  <ng-container *ngIf="users?.length; else noData">
+    <p-table
+      [value]="users"
+      dataKey="id"
+      tableStyleClass="p-datatable-responsive"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 3rem"></th>
+          <th *ngFor="let col of userCols">{{ col }}</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-user let-expanded="expanded">
+        <tr>
+          <td style="width: 3rem"></td>
+          <td *ngFor="let row of userRows; let iCol = index">
+            <span class="p-column-title">{{ userCols[iCol] }}</span>
+            <ng-container>
+              {{ user[row] }}
+            </ng-container>
+          </td>
+          <td>
+            <span class="p-column-title">Actions</span>
+            <div class="d-inline-flex justify-content-center flex-wrap">
+              <!-- <button
+                pButton
+                pRipple
+                type="button"
+                icon="pi pi-eye"
+                class="
+                  p-button-rounded p-button-secondary p-button-outlined
+                  btn-action
+                "
+              ></button> -->
+              <button
+                pButton
+                pRipple
+                type="button"
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-outlined btn-action"
+                (click)="editUser(user)"
+              ></button>
+              <button
+                pButton
+                pRipple
+                type="button"
+                icon="pi pi-trash"
+                class="
+                  p-button-rounded p-button-danger p-button-outlined
+                  btn-action
+                "
+                (click)="confirmDeleteUser(user)"
+              ></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </ng-container>
+  <ng-template #noData>
+    <div
+      class="d-flex justify-content-center align-items-center w-100"
+      style="height: 200px"
+    >
+      <span class="h1">No data available</span>
+    </div>
+  </ng-template>
+  <div class="d-flex justify-content-end mt-3">
+    <a (click)="toCreatePage()" class="default-btn"
+      ><i class="bx bx-plus-circle icon-arrow before"></i
+      ><span class="label">Create User</span
+      ><i class="bx bx-plus-circle icon-arrow after"></i
+    ></a>
+  </div>
+</div>
+
+<!-- Delete Dialog -->
+<p-confirmDialog
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+></p-confirmDialog>

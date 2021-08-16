@@ -1,0 +1,15 @@
+:host ::ng-deep .p-field {
+  margin-bottom: 20px;
+  p-editor, input {
+    display: block;
+    width: 100%;
+  }
+}
+:host ::ng-deep .p-card {
+    box-shadow: 0px 8px 16px 0px rgba(146, 184, 255, 0.2);
+    border-radius: 5px;
+}
+
+:host ::ng-deep app-dashboard-tabs > * {
+  margin-top: 3rem;
+}

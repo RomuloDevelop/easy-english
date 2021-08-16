@@ -6,6 +6,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools'
 import { reducer as CourseReducer } from './state/admin/courses/course.reducers'
 import { reducer as SectionReducer } from './state/admin/sections/section.reducers'
 import { reducer as LectureReducer } from './state/admin/lectures/lecture.reducers'
+import { reducer as UserReducer } from './state/admin/users/user.reducers'
 import { CarouselModule } from 'ngx-owl-carousel-o'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { CountUpModule } from 'ngx-countup'
@@ -121,7 +122,8 @@ import { StudentModule } from './student/student.module'
 const store = {
   courses: CourseReducer,
   sections: SectionReducer,
-  lectures: LectureReducer
+  lectures: LectureReducer,
+  users: UserReducer
 }
 @NgModule({
   declarations: [

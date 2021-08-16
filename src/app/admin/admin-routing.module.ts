@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
 import { AdminComponent } from './admin.component'
-import { CoursesComponent } from './courses/courses.component'
-import { CreateCourseComponent } from './create-course/create-course.component'
-import { CreateSectionComponent } from './create-course/create-section/create-section.component'
-import { HomePageComponent } from './create-course/home-page/home-page.component'
+import { CoursesComponent } from './course/courses/courses.component'
+import { CreateCourseComponent } from './course/create-course/create-course.component'
+import { CreateSectionComponent } from './course/create-course/create-section/create-section.component'
+import { HomePageComponent } from './course/create-course/home-page/home-page.component'
+import { CreateUserComponent } from './user/create-user/create-user.component'
+import { UsersComponent } from './user/users/users.component'
 const routes: Routes = [
   {
     path: '',
@@ -25,6 +27,23 @@ const routes: Routes = [
           {
             path: 'create-section',
             component: CreateSectionComponent
+          }
+        ]
+      },
+      {
+        path: 'users/:role',
+        children: [
+          {
+            path: '',
+            component: UsersComponent
+          },
+          {
+            path: 'create',
+            component: CreateUserComponent
+          },
+          {
+            path: 'edit/:id',
+            component: CreateUserComponent
           }
         ]
       }

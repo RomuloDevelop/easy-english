@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 import { Store, select } from '@ngrx/store'
-import { CourseService } from '../../services/course.service'
-import { SectionService } from '../../services/section.service'
-import { Course } from '../../state/models'
+import { CourseService } from '../../../services/course.service'
+import { SectionService } from '../../../services/section.service'
+import { Course } from '../../../state/models'
 import {
   selectCoursesTable,
   CoursesTableRow,
   selectSections
-} from '../../state/admin/admin.selectores'
+} from '../../../state/admin/admin.selectores'
 import {
   updateStatus,
   deleteCourse,
   addCourse,
   setCourses
-} from '../../state/admin/courses/course.actions'
+} from '../../../state/admin/courses/course.actions'
 import { ConfirmationService, PrimeNGConfig, Message } from 'primeng/api'
 import {
   addSection,

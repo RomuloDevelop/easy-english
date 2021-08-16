@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
-import { Observable, from, zip } from 'rxjs'
-import { finalize, map, mergeMap, toArray } from 'rxjs/operators'
+import { Observable } from 'rxjs'
+import { finalize, map } from 'rxjs/operators'
 import { Store } from '@ngrx/store'
 import { Course } from '../state/models'
 import {
@@ -9,9 +9,6 @@ import {
   setCourses,
   updateCourse
 } from '../state/admin/courses/course.actions'
-import { SectionService } from './section.service'
-import { LessonService } from './lesson.service'
-import { QuizzService } from './quizz.service'
 import Endpoints from '../../data/endpoints'
 import { setLectures } from '../state/admin/lectures/lecture.actions'
 import { setSections } from '../state/admin/sections/section.actions'
@@ -23,13 +20,7 @@ const { courseUrl } = Endpoints
   providedIn: 'root'
 })
 export class CourseService {
-  constructor(
-    private http: HttpClient,
-    private sectionService: SectionService,
-    private lessonService: LessonService,
-    private quizzService: QuizzService,
-    private store: Store
-  ) {}
+  constructor(private http: HttpClient, private store: Store) {}
 
   addCourse(course: Course): Observable<any> {
     return this.http.post(courseUrl, course).pipe(
