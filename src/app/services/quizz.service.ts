@@ -124,8 +124,9 @@ export class QuizzService {
                       (actualQuiz as Quiz).answers,
                       quiz.id
                     )
-                  console.log('deletes', deletes)
-                  console.log('result', results)
+                  if (!results?.length && !deletes?.length) {
+                    return of(data)
+                  }
                   return zip(...results, ...deletes).pipe(
                     map((answers) => {
                       const newAnswers = answers.filter(

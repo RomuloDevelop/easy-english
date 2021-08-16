@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core'
-import { Router, ActivatedRoute } from '@angular/router'
+import { ActivatedRoute } from '@angular/router'
 import { AdminService } from '../../../admin.service'
 import {
   ConfirmationService,
@@ -8,12 +8,11 @@ import {
   Message
 } from 'primeng/api'
 import { select, Store } from '@ngrx/store'
-import { Quiz, FinalQuiz, Answer } from '../../../../state/models'
+import { Quiz, FinalQuiz } from '../../../../state/models'
 import { selectCoursesTable } from '../../../../state/admin/admin.selectores'
 import { QuizzService } from '../../../../services/quizz.service'
 import { CourseService } from '../../../../services/course.service'
 import memoize from '../../../../decorators/memoize'
-import { zip } from 'rxjs'
 
 @Component({
   selector: 'app-final-quiz',
@@ -23,7 +22,8 @@ import { zip } from 'rxjs'
 })
 export class FinalQuizComponent implements OnInit {
   loadingTitle = false
-  loadingQuiz = false
+  creatingDeletingQuiz = false
+  updatingQuiz = false
   finalQuiz: FinalQuiz = null
   title: string = ''
   questions: Quiz[] = []
@@ -73,7 +73,7 @@ export class FinalQuizComponent implements OnInit {
     this.loadingTitle = true
     this.courseService
       .updateCourse(
-        { id: this.courseId, title: this.title },
+        { id: this.courseId, final_quizz_title: this.title },
         () => (this.loadingTitle = false)
       )
       .subscribe(
@@ -96,7 +96,7 @@ export class FinalQuizComponent implements OnInit {
   }
 
   addQuestion() {
-    this.loadingQuiz = true
+    this.creatingDeletingQuiz = true
     const quiz = {
       question: 'Temporal description',
       answers: [],
@@ -107,7 +107,7 @@ export class FinalQuizComponent implements OnInit {
       .addQuizz(quiz, true, true, null, 'Temporal title')
       .subscribe(
         (quiz) => {
-          this.loadingQuiz = false
+          this.creatingDeletingQuiz = false
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
@@ -115,6 +115,7 @@ export class FinalQuizComponent implements OnInit {
           })
         },
         (err) => {
+          this.creatingDeletingQuiz = false
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
@@ -126,7 +127,7 @@ export class FinalQuizComponent implements OnInit {
   }
 
   updateQuiz(quiz: Quiz) {
-    this.loadingQuiz = true
+    this.updatingQuiz = true
     if (quiz.correctAnswer != null) {
       quiz.answers = quiz.answers.map((answer) => {
         return { ...answer, correct: answer.id === quiz.correctAnswer }
@@ -134,7 +135,7 @@ export class FinalQuizComponent implements OnInit {
     }
     this.quizService.updateQuizz(quiz, true, null).subscribe(
       (quiz) => {
-        this.loadingQuiz = false
+        this.updatingQuiz = false
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
@@ -142,7 +143,7 @@ export class FinalQuizComponent implements OnInit {
         })
       },
       (err) => {
-        this.loadingQuiz = false
+        this.updatingQuiz = false
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
@@ -154,12 +155,12 @@ export class FinalQuizComponent implements OnInit {
   }
 
   deleteQuizz(quiz: Quiz) {
-    if (this.loadingQuiz) return
+    if (this.creatingDeletingQuiz) return
     this.deleteDialog(() => {
-      this.loadingQuiz = true
+      this.creatingDeletingQuiz = true
       this.quizService.deleteQuiz(quiz).subscribe(
         () => {
-          this.loadingQuiz = false
+          this.creatingDeletingQuiz = false
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
@@ -167,7 +168,7 @@ export class FinalQuizComponent implements OnInit {
           })
         },
         (err) => {
-          this.loadingQuiz = false
+          this.creatingDeletingQuiz = false
           this.messageService.add({
             severity: 'error',
             summary: 'Error',

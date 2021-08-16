@@ -15,7 +15,7 @@
     <button
       class="default-btn"
       (click)="updateTitleOrAddQuiz()"
-      [disabled]="loadingQuiz || loadingTitle"
+      [disabled]="creatingDeletingQuiz || updatingQuiz || loadingTitle"
     >
       <ng-container *ngIf="!loadingTitle">
         <i class="pi pi-pencil icon-arrow before"></i>
@@ -132,23 +132,23 @@
           <button
             class="default-btn"
             (click)="updateQuiz(questItem)"
-            [disabled]="disabledUpdateQuiz(questItem)"
+            [disabled]="disabledUpdateQuiz(questItem) || updatingQuiz"
           >
-            <ng-container *ngIf="!loadingQuiz">
+            <ng-container *ngIf="!updatingQuiz">
               <i class="pi pi-pencil icon-arrow before"></i>
             </ng-container>
-            <ng-container *ngIf="loadingQuiz">
+            <ng-container *ngIf="updatingQuiz">
               <ng-container
                 *ngTemplateOutlet="spinner; context: { $implicit: 'before' }"
               ></ng-container>
             </ng-container>
 
-            <span class="label"> Update Answers </span>
+            <span class="label"> Update Quiz </span>
 
-            <ng-container *ngIf="!loadingQuiz">
+            <ng-container *ngIf="!updatingQuiz">
               <i class="pi pi-pencil icon-arrow after"></i>
             </ng-container>
-            <ng-container *ngIf="loadingQuiz">
+            <ng-container *ngIf="updatingQuiz">
               <ng-container
                 *ngTemplateOutlet="spinner; context: { $implicit: 'after' }"
               ></ng-container
@@ -177,7 +177,7 @@
         type="button"
         icon="pi pi-plus"
         class="p-button-rounded p-button-danger"
-        [disabled]="disableAddQuestion(title) || loadingQuiz"
+        [disabled]="disableAddQuestion(title) || creatingDeletingQuiz"
         (click)="addQuestion()"
       ></button>
     </div>
