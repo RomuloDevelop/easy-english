@@ -3,11 +3,16 @@ import {
   HttpInterceptor,
   HttpRequest,
   HttpHandler,
-  HttpEvent
+  HttpEvent,
+  HttpHeaders
 } from '@angular/common/http'
 import { Observable, throwError } from 'rxjs'
 import { catchError, retry } from 'rxjs/operators'
 import { HttpErrorResponse } from '@angular/common/http'
+
+export interface InterceptorError extends HttpErrorResponse {
+  defaultMessage: string
+}
 
 @Injectable()
 export class CommonOptions implements HttpInterceptor {
@@ -15,7 +20,15 @@ export class CommonOptions implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
+    let headers = req.headers
     const url = 'https://backend.ochoadev.com/api/'
+
+    // Determina si requiere token
+    if (req.url !== 'login' && req.url !== 'register') {
+      const token = `Bearer ${localStorage.getItem('token')}`
+      headers = headers.set('Authorization', token)
+    }
+
     const reqCopy = req.clone({
       url: url + req.url,
       headers: req.headers.set('Content-Type', 'application/json')
@@ -38,6 +51,11 @@ export class CommonOptions implements HttpInterceptor {
       )
     }
     // Return an observable with a user-facing error message.
-    return throwError('Something bad happened; please try again later.')
+    const customError: InterceptorError = {
+      ...error,
+      defaultMessage:
+        'Ocurrió un error al procesar su solicitud, intente de nuevo mas tarde'
+    }
+    return throwError(customError)
   }
 }

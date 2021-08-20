@@ -19,7 +19,6 @@ import { GalleryPageComponent } from './components/pages/gallery-page/gallery-pa
 import { PricingPageComponent } from './components/pages/pricing-page/pricing-page.component'
 import { FeedbackPageComponent } from './components/pages/feedback-page/feedback-page.component'
 import { PartnerPageComponent } from './components/pages/partner-page/partner-page.component'
-import { LoginPageComponent } from './components/pages/login-page/login-page.component'
 import { RegisterPageComponent } from './components/pages/register-page/register-page.component'
 import { FaqPageComponent } from './components/pages/faq-page/faq-page.component'
 import { ErrorPageComponent } from './components/pages/error-page/error-page.component'
@@ -76,7 +75,6 @@ const routes: Routes = [
   { path: 'pricing', component: PricingPageComponent },
   { path: 'feedback', component: FeedbackPageComponent },
   { path: 'partner', component: PartnerPageComponent },
-  { path: 'login', component: LoginPageComponent },
   { path: 'register', component: RegisterPageComponent },
   { path: 'faqs', component: FaqPageComponent },
   { path: 'error-404', component: ErrorPageComponent },

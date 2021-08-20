@@ -4,5 +4,6 @@ export default {
   lessonUrl: 'course_lessons',
   quizzesUrl: 'course_quizzes',
   answersUrl: 'quizz_options',
-  usersUrl: 'users'
+  usersUrl: 'users',
+  loginUrl: 'login'
 }

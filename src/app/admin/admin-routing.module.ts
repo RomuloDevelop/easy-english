@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
+import { LoginPageComponent } from '../components/pages/login-page/login-page.component'
 import { AdminComponent } from './admin.component'
 import { CoursesComponent } from './course/courses/courses.component'
 import { CreateCourseComponent } from './course/create-course/create-course.component'
@@ -7,9 +8,12 @@ import { CreateSectionComponent } from './course/create-course/create-section/cr
 import { HomePageComponent } from './course/create-course/home-page/home-page.component'
 import { CreateUserComponent } from './user/create-user/create-user.component'
 import { UsersComponent } from './user/users/users.component'
+import { LoginGuard } from '../guards/login.guard'
+
 const routes: Routes = [
   {
     path: '',
+    canActivate: [LoginGuard],
     component: AdminComponent,
     children: [
       {
@@ -48,7 +52,8 @@ const routes: Routes = [
         ]
       }
     ]
-  }
+  },
+  { path: 'login', component: LoginPageComponent }
 ]
 
 @NgModule({

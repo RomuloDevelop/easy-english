@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
-import { FormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { LayoutModule } from '@angular/cdk/layout'
 import { RouterModule } from '@angular/router'
 import { HeaderStyleOneComponent } from './components/common/header-style-one/header-style-one.component'
@@ -55,7 +55,8 @@ import { httpInterceptorProviders } from './interceptors/base'
     TabComponent,
     CommonModule,
     YoutubeComponent,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    ReactiveFormsModule
   ],
   providers: [httpInterceptorProviders]
 })

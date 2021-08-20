@@ -13,7 +13,7 @@
 }
 .login-content {
     height: 100vh;
-    
+
     .login-form {
         text-align: center;
         max-width: 500px;
@@ -21,9 +21,16 @@
             left: auto;
             right: auto;
         };
+        .error-message {
+          display: block;
+          width: 100%;
+          color: var(--mainColor);
+          text-align: center;
+          margin: 0.2rem 0;
+        }
         .logo {
             margin-bottom: 30px;
-            
+
             a {
                 display: inline-block;
             }
@@ -85,7 +92,14 @@
                     size: 14.5px;
                     weight: 700;
                 };
-                &:hover, &:focus {
+                &[disabled] {
+                  background-color: mix(#af3a2b, white, 50%);
+                  border-color: mix(#af3a2b, white, 50%);
+                }
+                &:not([disabled]) {
+                  cursor: pointer;
+                }
+                &:hover:not([disabled]), &:focus:not([disabled]) {
                     background-color: var(--optionalColor);
                     color: var(--whiteColor);
                     border-color: var(--optionalColor);
@@ -135,7 +149,7 @@
                         border-color: #3b5998;
                         color: #3b5998;
                         box-shadow: 0px 5px 28.5px 1.5px rgba(59, 89, 152, 0.2);
-                        
+
                         &:hover {
                             background-color: #3b5998;
                             color: var(--whiteColor);
@@ -147,7 +161,7 @@
                         border-color: #1da1f2;
                         color: #1da1f2;
                         box-shadow: 0px 5px 28.5px 1.5px rgba(29, 161, 242, 0.2);
-                        
+
                         &:hover {
                             background-color: #1da1f2;
                             color: var(--whiteColor);
@@ -223,4 +237,8 @@
 }
 @media only screen and (min-width: 1200px) and (max-width: 1275px) {
 
+}
+
+.login-content .login-form form .form-control.ng-invalid.ng-dirty {
+  border: 1px solid var(--mainColor);
 }
