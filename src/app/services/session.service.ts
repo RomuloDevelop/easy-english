@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
+import { Router } from '@angular/router'
 import Endpoints from '../../data/endpoints'
 import { catchError, finalize, map } from 'rxjs/operators'
 import { InterceptorError } from '../interceptors/commonOptions'
 import { throwError } from 'rxjs'
 
-const { loginUrl } = Endpoints
+const { loginUrl, logoutUrl } = Endpoints
 
 export interface Login {
   email: string
@@ -16,7 +17,7 @@ export interface Login {
   providedIn: 'root'
 })
 export class SessionService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   login(data: Login, finalizeCb = () => {}) {
     return this.http
@@ -34,5 +35,21 @@ export class SessionService {
         }),
         finalize(finalizeCb)
       )
+  }
+
+  logout(finalizeCb = () => {}) {
+    return this.http.get(logoutUrl).pipe(
+      map(() => {
+        localStorage.removeItem('token')
+        this.router.navigate(['/'], {
+          replaceUrl: true
+        })
+      }),
+      catchError((error: InterceptorError) => {
+        let message = error.defaultMessage
+        return throwError(message)
+      }),
+      finalize(finalizeCb)
+    )
   }
 }

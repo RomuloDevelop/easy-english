@@ -20,7 +20,7 @@ export class CommonOptions implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    let headers = req.headers
+    let headers = req.headers.set('Content-Type', 'application/json')
     const url = 'https://backend.ochoadev.com/api/'
 
     // Determina si requiere token
@@ -31,7 +31,7 @@ export class CommonOptions implements HttpInterceptor {
 
     const reqCopy = req.clone({
       url: url + req.url,
-      headers: req.headers.set('Content-Type', 'application/json')
+      headers
     })
     return next.handle(reqCopy).pipe(
       // retry(3),

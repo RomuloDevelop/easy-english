@@ -25,16 +25,8 @@ export class LoginGuard implements CanActivate {
     | UrlTree {
     let canActivate = false
     const token = localStorage.getItem('token')
-    // if (token != null) {
-    //   const tokenDeserialized = JSON.parse(atob(token.split('.')[1]))
-    //   const expiry = tokenDeserialized.exp
-    //   const actualDate = Math.floor(new Date().getTime() / 1000)
-    //   canActivate = expiry > actualDate
-    // }
     canActivate = token != null
     if (!canActivate) {
-      localStorage.removeItem('token')
-      localStorage.removeItem('data')
       const actualUrl = route.parent.url.map((item) => item.path).join('/')
       this.router.navigate([`${actualUrl}/login`], {
         relativeTo: this.route

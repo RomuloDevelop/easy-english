@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output, OnInit } from '@angular/core'
+import { SessionService } from '../../services/session.service'
 import { MenuItem } from 'primeng/api'
 import ContactInfo from '../../../data/networks'
 
@@ -15,24 +16,13 @@ export class HeaderComponent implements OnInit {
     this.openNav.emit()
   }
 
-  constructor() {}
+  constructor(private sessionService: SessionService) {}
 
+  loading = false
   rrss = ContactInfo.getNetworks()
   phones = ContactInfo.getPhones()
   classApplied = false
-  toggleClass() {
-    this.classApplied = !this.classApplied
-  }
 
-  classApplied2 = false
-  toggleClass2() {
-    this.classApplied2 = !this.classApplied2
-  }
-
-  classApplied3 = false
-  toggleClass3() {
-    this.classApplied3 = !this.classApplied3
-  }
   ngOnInit() {
     this.items = [
       {
@@ -45,8 +35,27 @@ export class HeaderComponent implements OnInit {
       {
         label: 'Logout',
         icon: 'pi pi-fw pi-power-off',
-        routerLink: '/'
+        command: () => this.logout()
       }
     ]
+  }
+
+  logout() {
+    this.loading = true
+    this.sessionService.logout(() => (this.loading = false)).subscribe()
+  }
+
+  toggleClass() {
+    this.classApplied = !this.classApplied
+  }
+
+  classApplied2 = false
+  toggleClass2() {
+    this.classApplied2 = !this.classApplied2
+  }
+
+  classApplied3 = false
+  toggleClass3() {
+    this.classApplied3 = !this.classApplied3
   }
 }
