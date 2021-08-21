@@ -82,11 +82,18 @@ export interface Course {
 
 export interface User {
   id?: number
+  role: number
   name: string
   email: string
   phone: string
   is_supervised: boolean
   dob: string
+  role_name?: string
+  parent_name?: string
+  parent_phone?: string
+  parent_phone_two?: string
+  parent_email?: string
+  description?: string
 }
 
 export interface AppState {

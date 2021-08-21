@@ -29,7 +29,7 @@ export class AdminComponent implements OnInit {
       {
         label: 'Gestión de Profesores',
         icon: 'pi pi-fw pi-pencil',
-        route: 'users/1'
+        route: 'users/3'
       },
       {
         label: 'Gestión de Alumnos',

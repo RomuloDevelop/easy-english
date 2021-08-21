@@ -4,9 +4,21 @@
       <li><a routerLink="../admin">Admin</a></li>
       <li>Users</li>
     </ul>
-    <h2>Users List</h2>
+    <h2>{{ role === 2 ? 'Students' : 'Teachers' }}</h2>
   </div>
-  <ng-container *ngIf="users?.length; else noData">
+  <ng-container *ngIf="loadingUsers">
+    <div class="d-flex justify-content-center align-items-center w-100">
+      <p-progressSpinner
+        styleClass="custom-spinner blue"
+        strokeWidth="5"
+        [style]="{
+          width: '100px',
+          height: '100px'
+        }"
+      ></p-progressSpinner>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="users?.length && !loadingUsers">
     <p-table
       [value]="users"
       dataKey="id"
@@ -24,9 +36,7 @@
           <td style="width: 3rem"></td>
           <td *ngFor="let row of userRows; let iCol = index">
             <span class="p-column-title">{{ userCols[iCol] }}</span>
-            <ng-container>
-              {{ user[row] }}
-            </ng-container>
+            {{ user[row] }}
           </td>
           <td>
             <span class="p-column-title">Actions</span>
@@ -66,14 +76,14 @@
       </ng-template>
     </p-table>
   </ng-container>
-  <ng-template #noData>
+  <ng-container *ngIf="!users?.length && !loadingUsers">
     <div
       class="d-flex justify-content-center align-items-center w-100"
       style="height: 200px"
     >
       <span class="h1">No data available</span>
     </div>
-  </ng-template>
+  </ng-container>
   <div class="d-flex justify-content-end mt-3">
     <a (click)="toCreatePage()" class="default-btn"
       ><i class="bx bx-plus-circle icon-arrow before"></i

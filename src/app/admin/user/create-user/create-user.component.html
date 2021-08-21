@@ -1,29 +1,107 @@
 <p-card header="User profile" styleClass="admin-card p-mt-5">
-  <form [formGroup]="form">
-    <div class="p-field">
-      <small id="title-help">Enter a title for the course.</small>
+  <form [formGroup]="form" class="row">
+    <div class="p-field col-12 col-md-6">
+      <small id="title-help">Select a role.</small>
+      <p-dropdown
+        [options]="roles"
+        formControlName="role"
+        optionLabel="name"
+        optionValue="id"
+      ></p-dropdown>
+    </div>
+    <div class="p-field col-12 col-md-6">
+      <small id="title-help">Enter an name for your profile.</small>
       <input
-        placeholder="Title"
-        id="title"
+        placeholder="Name"
+        id="name"
         class="p-inputtext-sm"
         type="text"
-        aria-describedby="title-help"
         pInputText
         formControlName="name"
       />
     </div>
-    <div class="p-field">
-      <small id="title-help">Enter a subtitle for the course.</small>
+    <div class="p-field col-12 col-md-6">
+      <small id="title-help">Enter an email for login.</small>
       <input
-        placeholder="Subtitle"
-        id="title"
+        placeholder="Email"
+        id="email"
         class="p-inputtext-sm"
         type="text"
-        aria-describedby="title-help"
         pInputText
         formControlName="email"
       />
     </div>
+    <div class="p-field col-12 col-md-6">
+      <small id="title-help">Enter a date birth of the user.</small>
+      <p-calendar
+        placeholder="Date of birth"
+        class="p-inputtext-sm"
+        formControlName="dob"
+      ></p-calendar>
+    </div>
+    <div class="p-field col-12 col-md-6">
+      <small id="title-help">Enter a phone for contact.</small>
+      <input
+        placeholder="Phone"
+        id="phone"
+        class="p-inputtext-sm"
+        type="text"
+        pInputText
+        formControlName="phone"
+      />
+    </div>
+    <ng-container *ngIf="role === 2">
+      <div class="switch-field col-12 col-md-12">
+        <p-inputSwitch formControlName="is_supervised"></p-inputSwitch>
+        <small id="title-supervided">Is supervised</small>
+      </div>
+      <ng-container *ngIf="form.controls['is_supervised'].value">
+        <div class="p-field col-12 col-md-6">
+          <small id="title-help">Enter an name for the parent.</small>
+          <input
+            placeholder="Parent name"
+            id="parent_name"
+            class="p-inputtext-sm"
+            type="text"
+            pInputText
+            formControlName="parent_name"
+          />
+        </div>
+        <div class="p-field col-12 col-md-6">
+          <small id="title-help">Enter an email for the parent.</small>
+          <input
+            placeholder="Parent email"
+            id="parent_email"
+            class="p-inputtext-sm"
+            type="text"
+            pInputText
+            formControlName="parent_email"
+          />
+        </div>
+        <div class="p-field col-12 col-md-6">
+          <small id="title-help">Enter a parent's phone for contact.</small>
+          <input
+            placeholder="Parent phone"
+            id="parent_phone"
+            class="p-inputtext-sm"
+            type="text"
+            pInputText
+            formControlName="parent_phone"
+          />
+        </div>
+        <div class="p-field col-12 col-md-6">
+          <small id="title-help">Enter a second parent's phone.</small>
+          <input
+            placeholder="Parent phone two"
+            id="parent_phone_two"
+            class="p-inputtext-sm"
+            type="text"
+            pInputText
+            formControlName="parent_phone_two"
+          />
+        </div>
+      </ng-container>
+    </ng-container>
     <div class="d-flex justify-content-center mt-3">
       <button
         class="default-btn"
@@ -67,3 +145,4 @@
     </div>
   </form>
 </p-card>
+<p-toast></p-toast>

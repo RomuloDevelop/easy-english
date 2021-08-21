@@ -26,6 +26,8 @@ import { AvatarModule } from 'primeng/avatar'
 import { AvatarGroupModule } from 'primeng/avatargroup'
 import { MenuModule } from 'primeng/menu'
 import { PanelMenuModule } from 'primeng/panelmenu'
+import { CalendarModule } from 'primeng/calendar'
+import { DropdownModule } from 'primeng/dropdown'
 
 import { ConfirmationService, MessageService } from 'primeng/api'
 import { AdminService } from './admin.service'
@@ -67,7 +69,9 @@ import { CreateUserComponent } from './user/create-user/create-user.component'
     AvatarModule,
     AvatarGroupModule,
     MenuModule,
-    PanelMenuModule
+    PanelMenuModule,
+    CalendarModule,
+    DropdownModule
   ],
   providers: [AdminService, ConfirmationService, MessageService]
 })

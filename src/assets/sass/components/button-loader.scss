@@ -29,7 +29,7 @@ p-progressspinner {
     @include custom-spinner-color();
   }
   &.blue .p-progress-spinner-circle {
-    @include custom-spinner-color(#007bff, "blue");
+    @include custom-spinner-color(var(--optionalColor), "blue");
   }
 }
 

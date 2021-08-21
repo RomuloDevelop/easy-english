@@ -25,8 +25,12 @@ export class UserService {
       .pipe(map(({ data }) => data))
   }
 
-  getUsers(finalizeCb = () => {}) {
-    return this.http.get<{ data: User[] }>(usersUrl).pipe(
+  getUsers(role?: number, finalizeCb = () => {}) {
+    let params = ''
+    if (role != null) {
+      params = `?role=${role}`
+    }
+    return this.http.get<{ data: User[] }>(usersUrl + params).pipe(
       map(({ data: users }) => {
         this.store.dispatch(setUsers({ users }))
         return users
@@ -45,7 +49,9 @@ export class UserService {
   }
 
   updateUser(user: Partial<User>, finalizeCb = () => {}) {
-    return this.http.put<{ data: User }>(`${usersUrl}/${user.id}`, user).pipe(
+    const { id } = user
+    delete user.id
+    return this.http.patch<{ data: User }>(`${usersUrl}/${id}`, user).pipe(
       map(({ data: user }) => {
         this.store.dispatch(updateUser({ user }))
       }),

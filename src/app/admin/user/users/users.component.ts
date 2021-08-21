@@ -15,12 +15,12 @@ export class UsersComponent implements OnInit {
   loadingUsers = false
   msgs: Message[] = []
 
-  userCols = ['Id', 'Name', 'Email', 'Phone', 'Surpervised', 'Day of Birth']
-  userRows = ['id', 'name', 'email', 'phone', 'is_supervised', 'dob']
+  userCols = ['Id', 'Name', 'Email', 'Phone', 'Day of Birth']
+  userRows = ['id', 'name', 'email', 'phone', 'dob']
 
   users: User[]
 
-  role = parseInt(this.route.snapshot.paramMap.get('role'))
+  role: number
 
   constructor(
     private _router: Router,
@@ -33,17 +33,20 @@ export class UsersComponent implements OnInit {
 
   ngOnInit() {
     this.primengConfig.ripple = true
-    this.getTable()
-    this.store.pipe(select(selectUsers)).subscribe((data) => {
-      console.log(data)
-      this.users = data
+    this.route.paramMap.subscribe((params) => {
+      this.role = parseInt(params.get('role'))
+      this.getTable()
+      this.store.pipe(select(selectUsers)).subscribe((data) => {
+        console.log(data)
+        this.users = data
+      })
     })
   }
 
   getTable() {
     this.loadingUsers = true
     this.userService
-      .getUsers(() => (this.loadingUsers = false))
+      .getUsers(this.role, () => (this.loadingUsers = false))
       .subscribe(
         (users) => {},
         (err) => {

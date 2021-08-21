@@ -1,10 +1,27 @@
 :host ::ng-deep .p-field {
   margin-bottom: 20px;
-  p-editor, input {
+  p-editor, input, p-calendar, p-dropdown {
     display: block;
     width: 100%;
   }
+  p-calendar > span {
+    width: 100%;
+  }
+  p-dropdown > div {
+    width: 100%;
+  }
 }
+
+.switch-field {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 1rem;
+  p-inputSwitch {
+    margin-right: 1rem;
+  }
+}
+
 :host ::ng-deep .p-card {
     box-shadow: 0px 8px 16px 0px rgba(146, 184, 255, 0.2);
     border-radius: 5px;

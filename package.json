@@ -26,6 +26,7 @@
     "@ngrx/store-devtools": "^12.0.0",
     "bootstrap": "^5.0.0-beta2",
     "memoizee": "^0.4.15",
+    "moment": "^2.29.1",
     "ng2-sticky-nav": "^9.0.1",
     "ngrx-store-persist": "^1.0.20",
     "ngx-countup": "^7.3.3",
