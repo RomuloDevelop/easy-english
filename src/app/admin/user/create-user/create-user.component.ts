@@ -15,6 +15,7 @@ import * as moment from 'moment'
 export class CreateUserComponent implements OnInit {
   userId = parseInt(this.route.snapshot.paramMap.get('id'))
   role = parseInt(this.route.snapshot.paramMap.get('role'))
+  actualUrl = this.route.snapshot.url.map((segment) => segment.path).join('/')
   loading = false
 
   roles = [
@@ -51,6 +52,24 @@ export class CreateUserComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    if (this.actualUrl.includes('edit')) {
+      this.loading = true
+      this.userService
+        .getUser(this.userId, () => (this.loading = false))
+        .subscribe((user) => {
+          this.form.controls.role.setValue(user.role)
+          this.form.controls.name.setValue(user.name)
+          this.form.controls.email.setValue(user.email)
+          this.form.controls.phone.setValue(user.phone)
+          this.form.controls.dob.setValue(moment(user.dob).toDate())
+          this.form.controls.is_supervised.setValue(user.is_supervised)
+          this.form.controls.parent_name.setValue(user.parent_name)
+          this.form.controls.parent_email.setValue(user.parent_email)
+          this.form.controls.parent_phone.setValue(user.parent_phone)
+          this.form.controls.parent_phone_two.setValue(user.parent_phone_two)
+          this.form.controls.description.setValue(user.description)
+        })
+    }
     console.log('init')
   }
   updateUser() {

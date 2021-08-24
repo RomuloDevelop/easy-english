@@ -20,9 +20,10 @@ export class UserService {
   constructor(private http: HttpClient, private store: Store) {}
 
   getUser(id: number, finalizeCb = () => {}) {
-    return this.http
-      .get<{ data: any }>(`${usersUrl}/${id}`)
-      .pipe(map(({ data }) => data))
+    return this.http.get<{ data: User }>(`${usersUrl}/${id}`).pipe(
+      map(({ data }) => data),
+      finalize(finalizeCb)
+    )
   }
 
   getUsers(role?: number, finalizeCb = () => {}) {
