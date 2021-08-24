@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
-import { finalize, map } from 'rxjs/operators'
+import { catchError, finalize, map } from 'rxjs/operators'
 import { Store } from '@ngrx/store'
+import { InterceptorError } from '../interceptors/commonOptions'
 import Endpoints from '../../data/endpoints'
 import { User } from '../state/models'
 import {
@@ -10,6 +11,7 @@ import {
   setUsers,
   updateUser
 } from '../state/admin/users/user.actions'
+import { throwError } from 'rxjs'
 
 const { usersUrl } = Endpoints
 
@@ -44,6 +46,14 @@ export class UserService {
     return this.http.post<{ data: User }>(usersUrl, user).pipe(
       map(({ data: user }) => {
         this.store.dispatch(addUser({ user }))
+      }),
+      catchError((error: InterceptorError) => {
+        let message = error.defaultMessage
+        if (error.error?.errors) {
+          const errorField = Object.keys(error.error.errors)[0]
+          message = error.error.errors[errorField][0]
+        }
+        return throwError(message)
       }),
       finalize(finalizeCb)
     )

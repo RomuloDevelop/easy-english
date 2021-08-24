@@ -50,8 +50,13 @@
         formControlName="phone"
       />
     </div>
+    <div class="col-0 col-md-6"></div>
+    <div class="switch-field col-12 col-md-6">
+      <p-inputSwitch formControlName="is_active"></p-inputSwitch>
+      <small id="title-supervided">Is active</small>
+    </div>
     <ng-container *ngIf="role === 2">
-      <div class="switch-field col-12 col-md-12">
+      <div class="switch-field col-12 col-md-6">
         <p-inputSwitch formControlName="is_supervised"></p-inputSwitch>
         <small id="title-supervided">Is supervised</small>
       </div>
@@ -102,6 +107,33 @@
         </div>
       </ng-container>
     </ng-container>
+    <ng-container *ngIf="!willUpdate">
+      <div class="p-field col-12 col-md-6">
+        <small id="title-help">Enter a new password.</small>
+        <input
+          placeholder="Password"
+          id="parent_name"
+          class="p-inputtext-sm"
+          type="password"
+          pInputText
+          formControlName="password"
+        />
+      </div>
+      <div class="p-field col-12 col-md-6">
+        <small id="title-help">Confirm passwword.</small>
+        <input
+          placeholder="Repeat password"
+          id="parent_name"
+          class="p-inputtext-sm"
+          type="password"
+          pInputText
+          formControlName="repeat_password"
+          [class]="{
+            'ng-invalid': form.errors?.notEqual
+          }"
+        />
+      </div>
+    </ng-container>
     <div class="d-flex justify-content-center mt-3">
       <button
         class="default-btn"
@@ -117,7 +149,9 @@
           ></ng-container>
         </ng-container>
 
-        <span class="label">Update User</span>
+        <span class="label">{{
+          willUpdate ? 'Update User' : 'Create User'
+        }}</span>
 
         <ng-container *ngIf="!loading">
           <i class="pi pi-pencil icon-arrow after"></i>

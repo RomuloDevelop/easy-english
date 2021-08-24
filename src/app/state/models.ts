@@ -94,6 +94,8 @@ export interface User {
   parent_phone_two?: string
   parent_email?: string
   description?: string
+  password?: string
+  is_active?: boolean
 }
 
 export interface AppState {
