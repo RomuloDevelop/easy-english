@@ -70,6 +70,12 @@ export class UserService {
     )
   }
 
+  updatePassword(id: number, password: string, finalizeCb = () => {}) {
+    return this.http
+      .put(`${usersUrl}/${id}/update_password`, { password })
+      .pipe(finalize(finalizeCb))
+  }
+
   deleteUser(id: number, finalizeCb = () => {}) {
     return this.http.delete(`${usersUrl}/${id}`).pipe(
       map(() => {

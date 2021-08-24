@@ -36,6 +36,7 @@ export class CreateUserComponent implements OnInit {
   actualUrl = this.route.snapshot.url.map((segment) => segment.path).join('/')
   willUpdate = false
   loading = false
+  loadingPassword = false
 
   roles = [
     {
@@ -62,6 +63,14 @@ export class CreateUserComponent implements OnInit {
       parent_phone: [null],
       parent_phone_two: [null],
       description: [null]
+    },
+    { validators: passworfValidator }
+  )
+
+  form2 = this.formBuilder.group(
+    {
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      repeat_password: ['', [Validators.required]]
     },
     { validators: passworfValidator }
   )
@@ -106,6 +115,32 @@ export class CreateUserComponent implements OnInit {
     }
     console.log('init')
   }
+  updatePassword() {
+    this.loadingPassword = true
+    this.userService
+      .updatePassword(
+        this.userId,
+        this.form2.get('password').value,
+        () => (this.loadingPassword = false)
+      )
+      .subscribe(
+        () => {
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Success',
+            detail: 'The password has been updated'
+          })
+        },
+        (err) => {
+          console.error(err)
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'An error ocurred when updating password'
+          })
+        }
+      )
+  }
   updateUser() {
     const user: User = {
       id: this.userId,
@@ -133,10 +168,6 @@ export class CreateUserComponent implements OnInit {
               summary: 'Success',
               detail: 'The user has been updated'
             })
-            this.navigationService.back(
-              `../../../../users/${this.role}`,
-              this.route
-            )
           },
           (err) => {
             console.error(err)
