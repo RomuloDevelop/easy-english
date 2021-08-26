@@ -6,5 +6,6 @@ export default {
   answersUrl: 'quizz_options',
   usersUrl: 'users',
   loginUrl: 'login',
-  logoutUrl: 'logout'
+  logoutUrl: 'logout',
+  enrollmentUrl: 'enrollments'
 }

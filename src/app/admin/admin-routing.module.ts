@@ -9,6 +9,8 @@ import { HomePageComponent } from './course/create-course/home-page/home-page.co
 import { CreateUserComponent } from './user/create-user/create-user.component'
 import { UsersComponent } from './user/users/users.component'
 import { LoginGuard } from '../guards/login.guard'
+import { EnrollmentsComponent } from './enrollment/enrollments/enrollments.component'
+import { CreateEnrollmentComponent } from './enrollment/create-enrollment/create-enrollment.component'
 
 const routes: Routes = [
   {
@@ -48,6 +50,19 @@ const routes: Routes = [
           {
             path: 'edit/:id',
             component: CreateUserComponent
+          }
+        ]
+      },
+      {
+        path: 'enrollments',
+        children: [
+          {
+            path: '',
+            component: EnrollmentsComponent
+          },
+          {
+            path: 'edit/:id',
+            component: CreateEnrollmentComponent
           }
         ]
       }

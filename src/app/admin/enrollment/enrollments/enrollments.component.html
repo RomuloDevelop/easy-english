@@ -1,0 +1,79 @@
+<div class="container-lg">
+  <div class="page-title-content p-mb-5">
+    <ul>
+      <li><a routerLink="../../admin">Admin</a></li>
+      <li>Enrollments</li>
+    </ul>
+    <h2>Enrollments List</h2>
+  </div>
+  <ng-container *ngIf="courses.length; else noData">
+    <p-table
+      [value]="courses"
+      dataKey="id"
+      tableStyleClass="p-datatable-responsive"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 3rem"></th>
+          <th *ngFor="let col of courseCols">{{ col }}</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-course let-expanded="expanded">
+        <tr>
+          <td style="width: 3rem"></td>
+          <td *ngFor="let row of courseRows; let iCol = index">
+            <span class="p-column-title">{{ courseCols[iCol] }}</span>
+            <ng-container *ngIf="row !== 'status' && row !== 'sections'">
+              {{ course[row] }}
+            </ng-container>
+            <ng-container *ngIf="row === 'sections'">
+              <div class="section-expand">
+                <span style="vertical-align: center">
+                  {{ course[row].length }} Sect.
+                </span>
+                <button
+                  type="button"
+                  pButton
+                  pRipple
+                  [pRowToggler]="course"
+                  class="p-button-text p-button-rounded p-button-plain"
+                ></button>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="row === 'status'">
+              {{ course[row] ? 'Active' : 'Inactive' }}
+            </ng-container>
+          </td>
+          <td>
+            <span class="p-column-title">Actions</span>
+            <div class="d-inline-flex justify-content-center flex-wrap">
+              <button
+                pButton
+                pRipple
+                type="button"
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-outlined btn-action"
+                (click)="editCourse(course)"
+              ></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </ng-container>
+  <ng-template #noData>
+    <div
+      class="d-flex justify-content-center align-items-center w-100"
+      style="height: 200px"
+    >
+      <span class="h1">No data available</span>
+    </div>
+  </ng-template>
+</div>
+
+<!-- Delete Dialog -->
+<p-confirmDialog
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+></p-confirmDialog>

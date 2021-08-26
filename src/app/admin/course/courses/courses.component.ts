@@ -10,16 +10,13 @@ import {
   selectSections
 } from '../../../state/admin/admin.selectores'
 import {
-  updateStatus,
   deleteCourse,
-  addCourse,
   setCourses
 } from '../../../state/admin/courses/course.actions'
 import { ConfirmationService, PrimeNGConfig, Message } from 'primeng/api'
 import {
   addSection,
   deleteCourseSection,
-  setSections,
   updateSection
 } from 'src/app/state/admin/sections/section.actions'
 import { deleteSectionLecture } from 'src/app/state/admin/lectures/lecture.actions'

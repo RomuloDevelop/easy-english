@@ -37,6 +37,11 @@ export class AdminComponent implements OnInit {
         route: 'users/2'
       },
       {
+        label: 'Gestión de Inscripciónes',
+        icon: 'pi pi-fw pi-question',
+        route: 'enrollments'
+      },
+      {
         label: 'Gestión de Pagos',
         icon: 'pi pi-fw pi-cog'
       }

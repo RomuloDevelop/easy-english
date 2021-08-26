@@ -1,0 +1,140 @@
+<div class="container-lg">
+  <div class="page-title-content p-mb-5">
+    <ul>
+      <li><a routerLink="../../../../admin">Admin</a></li>
+      <li><a routerLink="../../../enrollments">Enrollments</a></li>
+      <li>Edit Course</li>
+    </ul>
+    <h2>Edit Course</h2>
+  </div>
+  <p-card styleClass="admin-card p-mt-5">
+    <div class="d-flex justify-content-between mb-2">
+      <h2 class="p-card-title">Enrolled users</h2>
+      <button class="default-btn" (click)="showModal = true">
+        <i class="pi pi-pencil icon-arrow before"></i>
+        <span class="label">Update Password</span>
+        <i class="pi pi-pencil icon-arrow after"></i>
+      </button>
+    </div>
+    <ng-container *ngIf="loadingUsers">
+      <div class="d-flex justify-content-center align-items-center w-100">
+        <p-progressSpinner
+          styleClass="custom-spinner blue"
+          strokeWidth="5"
+          [style]="{
+            width: '100px',
+            height: '100px'
+          }"
+        ></p-progressSpinner>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!loadingUsers && usersEnrolled.length">
+      <p-table
+        [value]="usersEnrolled"
+        dataKey="id"
+        tableStyleClass="p-datatable-responsive"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 3rem"></th>
+            <th *ngFor="let col of userCols">{{ col }}</th>
+            <th>Actions</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-user let-expanded="expanded">
+          <tr>
+            <td style="width: 3rem"></td>
+            <td *ngFor="let row of userRows; let iCol = index">
+              <span class="p-column-title">{{ userCols[iCol] }}</span>
+              {{ user[row] }}
+            </td>
+            <td>
+              <span class="p-column-title">Actions</span>
+              <div class="d-inline-flex justify-content-center flex-wrap">
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  icon="pi pi-trash"
+                  class="
+                    p-button-rounded p-button-danger p-button-outlined
+                    btn-action
+                  "
+                  (click)="confirmDeleteUser(user)"
+                ></button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </ng-container>
+    <ng-container *ngIf="!loadingUsers && !usersEnrolled.length">
+      <div
+        class="d-flex justify-content-center align-items-center w-100"
+        style="height: 200px"
+      >
+        <span class="h1">No data available</span>
+      </div>
+    </ng-container>
+  </p-card>
+</div>
+
+<!-- Video dialog -->
+<p-dialog
+  header="Enroll Users"
+  [modal]="true"
+  [(visible)]="showModal"
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+  [closable]="!loadingEnrollment"
+>
+  <div class="p-4">
+    <p>
+      <i class="pi pi-exclamation-circle"></i>
+      Select multiple users to the list and add it to the course at once.
+    </p>
+    <p-multiSelect
+      [options]="usersNotEnrolled"
+      [(ngModel)]="usersToEnroll"
+      defaultLabel="Select users"
+      optionLabel="name"
+      display="chip"
+    ></p-multiSelect>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      (click)="enrollUser()"
+      [disabled]="loadingEnrollment || usersToEnroll.length <= 0"
+      class="p-button--sm p-button-outlined"
+    >
+      <ng-container *ngIf="!loadingEnrollment"> Update </ng-container>
+      <ng-container *ngIf="loadingEnrollment">
+        <p-progressSpinner
+          styleClass="custom-spinner blue"
+          strokeWidth="7"
+          [style]="{
+            width: '22px',
+            height: '22px',
+            color: 'var(--optionalColor) !important'
+          }"
+        ></p-progressSpinner>
+      </ng-container>
+    </button>
+    <button
+      pButton
+      (click)="showModal = false"
+      label="Cancel"
+      [disabled]="loadingEnrollment"
+      class="p-button--sm p-button-outlined p-button-secondary cancel-btn"
+    ></button>
+  </ng-template>
+</p-dialog>
+
+<!-- Delete Dialog -->
+<p-confirmDialog
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+></p-confirmDialog>
+<p-toast></p-toast>
