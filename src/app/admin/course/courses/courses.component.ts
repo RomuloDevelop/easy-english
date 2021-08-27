@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router'
 import { Store, select } from '@ngrx/store'
 import { CourseService } from '../../../services/course.service'
 import { SectionService } from '../../../services/section.service'
-import { Course } from '../../../state/models'
+import { Course, User } from '../../../state/models'
 import {
   selectCoursesTable,
   CoursesTableRow,
@@ -20,8 +20,9 @@ import {
   updateSection
 } from 'src/app/state/admin/sections/section.actions'
 import { deleteSectionLecture } from 'src/app/state/admin/lectures/lecture.actions'
-import { zip } from 'rxjs'
+import { combineLatest, zip } from 'rxjs'
 import { take } from 'rxjs/operators'
+import { selectActualUser } from 'src/app/state/session/session.selectors'
 
 @Component({
   selector: 'app-courses',
@@ -40,6 +41,7 @@ export class CoursesComponent implements OnInit {
   sectionRows = ['id', 'title', 'subtitle', 'lectures']
 
   courses: CoursesTableRow[]
+  actualUser: User
 
   constructor(
     private _router: Router,
@@ -54,8 +56,12 @@ export class CoursesComponent implements OnInit {
   ngOnInit() {
     this.primengConfig.ripple = true
     this.getTable()
-    this.store.pipe(select(selectCoursesTable)).subscribe((data) => {
-      this.courses = data
+    combineLatest([
+      this.store.pipe(select(selectActualUser)),
+      this.store.pipe(select(selectCoursesTable))
+    ]).subscribe(([actualUser, courses]) => {
+      this.actualUser = actualUser
+      this.courses = courses
     })
   }
 
@@ -98,7 +104,7 @@ export class CoursesComponent implements OnInit {
       description: 'Temporal detail',
       status: false,
       level: 'Easy',
-      user_id: 1,
+      user_id: this.actualUser.id,
       students_count: 0
     }
     this.courseService.addCourse(newCourse).subscribe((course: Course) =>

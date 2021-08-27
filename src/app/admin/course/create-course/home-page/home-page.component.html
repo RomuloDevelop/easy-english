@@ -24,6 +24,16 @@
     />
   </div>
   <div class="p-field">
+    <small id="title-help">Select a teacher for the course.</small>
+    <p-dropdown
+      id="teacher"
+      [options]="teachers"
+      [(ngModel)]="teacher"
+      optionLabel="name"
+      optionValue="id"
+    ></p-dropdown>
+  </div>
+  <div class="p-field">
     <small id="title-help">Enter a full description for the course.</small>
     <p-editor
       [(ngModel)]="description"

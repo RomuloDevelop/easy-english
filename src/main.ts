@@ -14,7 +14,7 @@ if (environment.production) {
 }
 
 getAllDataFromLocalForage({
-  keys: ['courses', 'sections', 'lectures']
+  keys: ['courses', 'sections', 'lectures', 'session']
 }).then(() => {
   platformBrowserDynamic()
     .bootstrapModule(AppModule)

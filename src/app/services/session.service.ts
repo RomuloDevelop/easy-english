@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Router } from '@angular/router'
 import Endpoints from '../../data/endpoints'
-import { catchError, finalize, map } from 'rxjs/operators'
+import { catchError, finalize, map, mergeMap } from 'rxjs/operators'
 import { InterceptorError } from '../interceptors/commonOptions'
 import { throwError } from 'rxjs'
+import { UserService } from './user.service'
 
 const { loginUrl, logoutUrl } = Endpoints
 
@@ -17,15 +18,27 @@ export interface Login {
   providedIn: 'root'
 })
 export class SessionService {
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private userService: UserService
+  ) {}
 
   login(data: Login, finalizeCb = () => {}) {
     return this.http
       .post<{ access_token: string; token_type: string }>(loginUrl, data)
       .pipe(
-        map((data) => {
-          localStorage.setItem('token', data.access_token)
+        map(({ access_token }) => {
+          localStorage.setItem('token', access_token)
+          return access_token
         }),
+        mergeMap((access_token) =>
+          this.userService.getActualUser().pipe(
+            map((user) => {
+              return { user, access_token }
+            })
+          )
+        ),
         catchError((error: InterceptorError) => {
           let message = error.defaultMessage
           if (error.status === 401) {

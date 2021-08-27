@@ -98,11 +98,15 @@ export interface User {
   is_active?: boolean
 }
 
+export interface Session {
+  actualUser: User
+}
 export interface AppState {
   courses: Course[]
   sections: Section[]
   lectures: Lecture[]
   users: User[]
+  session: Session
 }
 
 export type ArrayElement<ArrayType extends readonly unknown[]> =

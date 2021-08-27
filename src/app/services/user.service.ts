@@ -12,6 +12,7 @@ import {
   updateUser
 } from '../state/admin/users/user.actions'
 import { throwError } from 'rxjs'
+import { setActualUser } from '../state/session/session.actions'
 
 const { usersUrl } = Endpoints
 
@@ -24,6 +25,16 @@ export class UserService {
   getUser(id: number, finalizeCb = () => {}) {
     return this.http.get<{ data: User }>(`${usersUrl}/${id}`).pipe(
       map(({ data }) => data),
+      finalize(finalizeCb)
+    )
+  }
+
+  getActualUser(finalizeCb = () => {}) {
+    return this.http.get<User>('user').pipe(
+      map((data) => {
+        this.store.dispatch(setActualUser({ user: data }))
+        return data
+      }),
       finalize(finalizeCb)
     )
   }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { AdminService, SectionAction } from '../../../admin.service'
 import { Store, select } from '@ngrx/store'
-import { Course } from '../../../../state/models'
+import { Course, User } from '../../../../state/models'
 import {
   selectCoursesTable,
   CoursesTableRow,
@@ -11,6 +11,8 @@ import {
 import { PrimeNGConfig, MessageService } from 'primeng/api'
 import { CourseService } from '../../../../services/course.service'
 import memoize from '../../../../decorators/memoize'
+import { UserService } from 'src/app/services/user.service'
+import { combineLatest } from 'rxjs'
 
 @Component({
   selector: 'app-home-page',
@@ -23,10 +25,12 @@ export class HomePageComponent implements OnInit {
   nextSectionId: number = null
   title = ''
   subtitle = ''
+  teacher: number = null
   description = ''
   sections: SectionData[] = []
   course: CoursesTableRow = null
   courseId = parseInt(this.route.snapshot.paramMap.get('id'))
+  teachers: User[] = []
 
   constructor(
     public adminService: AdminService,
@@ -34,16 +38,30 @@ export class HomePageComponent implements OnInit {
     private route: ActivatedRoute,
     private primengConfig: PrimeNGConfig,
     private messageService: MessageService,
-    private courseService: CourseService
+    private courseService: CourseService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
     this.primengConfig.ripple = true
-    this.store.pipe(select(selectCoursesTable)).subscribe((resp) => {
-      this.course = resp.find((item) => item.id === this.courseId)
-      this.title = this.course.title
-      this.subtitle = this.course.subtitle
-      this.description = this.course.description
+    combineLatest([
+      this.store.pipe(select(selectCoursesTable)),
+      this.userService.getUsers(3)
+    ]).subscribe(([courses, teachers]) => {
+      if (courses != null && teachers != null) {
+        this.teachers = teachers
+        this.course = courses.find((item) => item.id === this.courseId)
+        this.title = this.course.title
+        this.subtitle = this.course.subtitle
+        this.description = this.course.description
+
+        // Comprueba si el usuario del curso es profesor
+        if (
+          this.teachers.find((item) => item.id === this.course.user_id) != null
+        ) {
+          this.teacher = this.course.user_id
+        }
+      }
     })
     this.adminService.sectionToEdit$.subscribe((id) => {
       const item = this.sections.find((item) => item.id === id)
