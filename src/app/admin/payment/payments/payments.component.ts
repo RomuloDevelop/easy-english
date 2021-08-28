@@ -1,54 +1,42 @@
 import { Component, OnInit } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
-import { Store, select } from '@ngrx/store'
 import { User } from '../../../state/models'
-import { selectUsers } from '../../../state/admin/admin.selectores'
 import { ConfirmationService, PrimeNGConfig, Message } from 'primeng/api'
-import { UserService } from 'src/app/services/user.service'
+import { PaymentsService, Payment } from 'src/app/services/payments.service'
 
 @Component({
-  selector: 'app-users',
-  templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss']
+  selector: 'app-payments',
+  templateUrl: './payments.component.html',
+  styleUrls: ['./payments.component.scss']
 })
-export class UsersComponent implements OnInit {
-  loadingUsers = false
+export class PaymentsComponent implements OnInit {
+  loadingPayments = false
   msgs: Message[] = []
 
-  userCols = ['Id', 'Name', 'Email', 'Phone', 'Day of Birth']
-  userRows = ['id', 'name', 'email', 'phone', 'dob']
+  paymentCols = ['Id', 'Name', 'Email', 'Phone', 'Day of Payment']
+  paymentRows = ['id', 'name', 'email', 'phone', 'dateFormated']
 
-  users: User[]
-
-  role: number
+  payments: Payment[]
 
   constructor(
     private _router: Router,
     private route: ActivatedRoute,
     private confirmationService: ConfirmationService,
     private primengConfig: PrimeNGConfig,
-    private store: Store,
-    private userService: UserService
+    private paymentService: PaymentsService
   ) {}
 
   ngOnInit() {
     this.primengConfig.ripple = true
-    this.route.paramMap.subscribe((params) => {
-      this.role = parseInt(params.get('role'))
-      this.getTable()
-      this.store.pipe(select(selectUsers)).subscribe((data) => {
-        console.log(data)
-        this.users = data
-      })
-    })
+    this.getTable()
   }
 
   getTable() {
-    this.loadingUsers = true
-    this.userService
-      .getUsers(this.role, () => (this.loadingUsers = false))
+    this.loadingPayments = true
+    this.paymentService
+      .getPayments(() => (this.loadingPayments = false))
       .subscribe(
-        (users) => {},
+        (payments) => (this.payments = payments),
         (err) => {
           console.error(err)
         }
@@ -61,13 +49,13 @@ export class UsersComponent implements OnInit {
     })
   }
 
-  editUser(user: User) {
-    this._router.navigate(['edit', user.id], {
+  editPayment(payment: Payment) {
+    this._router.navigate(['edit', payment.id], {
       relativeTo: this.route
     })
   }
 
-  confirmDeleteUser(user: User) {
+  confirmDeletePayment(payment: Payment) {
     this.confirmationService.confirm({
       message: 'Do you want to delete this record?',
       header: 'Delete Confirmation',
@@ -76,7 +64,7 @@ export class UsersComponent implements OnInit {
         this.msgs = [
           { severity: 'info', summary: 'Confirmed', detail: 'Record deleted' }
         ]
-        this.deleteUser(user)
+        this.deletePayment(payment)
       },
       reject: () => {
         this.msgs = [
@@ -87,8 +75,8 @@ export class UsersComponent implements OnInit {
     })
   }
 
-  deleteUser(user: User) {
-    this.userService.deleteUser(user.id).subscribe(
+  deletePayment(payment: Payment) {
+    this.paymentService.deletePayment(payment.id).subscribe(
       () => {},
       (err) => {
         console.error(err)

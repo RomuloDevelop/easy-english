@@ -1,0 +1,90 @@
+<div class="container-lg">
+  <div class="page-title-content p-mb-5">
+    <ul>
+      <li><a routerLink="../admin">Admin</a></li>
+      <li>Payment</li>
+    </ul>
+    <h2>Payments</h2>
+  </div>
+  <ng-container *ngIf="loadingPayments">
+    <div class="d-flex justify-content-center align-items-center w-100">
+      <p-progressSpinner
+        styleClass="custom-spinner blue"
+        strokeWidth="5"
+        [style]="{
+          width: '100px',
+          height: '100px'
+        }"
+      ></p-progressSpinner>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="payments?.length && !loadingPayments">
+    <p-table
+      [value]="payments"
+      dataKey="id"
+      tableStyleClass="p-datatable-responsive"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 3rem"></th>
+          <th *ngFor="let col of paymentCols">{{ col }}</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-payment let-expanded="expanded">
+        <tr>
+          <td style="width: 3rem"></td>
+          <td *ngFor="let row of paymentRows; let iCol = index">
+            <span class="p-column-title">{{ paymentCols[iCol] }}</span>
+            {{ payment[row] }}
+          </td>
+          <td>
+            <span class="p-column-title">Actions</span>
+            <div class="d-inline-flex justify-content-center flex-wrap">
+              <button
+                pButton
+                pRipple
+                type="button"
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-outlined btn-action"
+                (click)="editPayment(payment)"
+              ></button>
+              <button
+                pButton
+                pRipple
+                type="button"
+                icon="pi pi-trash"
+                class="
+                  p-button-rounded p-button-danger p-button-outlined
+                  btn-action
+                "
+                (click)="confirmDeletePayment(payment)"
+              ></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </ng-container>
+  <ng-container *ngIf="!payments?.length && !loadingPayments">
+    <div
+      class="d-flex justify-content-center align-items-center w-100"
+      style="height: 200px"
+    >
+      <span class="h1">No data available</span>
+    </div>
+  </ng-container>
+  <div class="d-flex justify-content-end mt-3">
+    <a (click)="toCreatePage()" class="default-btn"
+      ><i class="bx bx-plus-circle icon-arrow before"></i
+      ><span class="label">Register Payment</span
+      ><i class="bx bx-plus-circle icon-arrow after"></i
+    ></a>
+  </div>
+</div>
+
+<!-- Delete Dialog -->
+<p-confirmDialog
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+></p-confirmDialog>

@@ -7,5 +7,6 @@ export default {
   usersUrl: 'users',
   loginUrl: 'login',
   logoutUrl: 'logout',
-  enrollmentUrl: 'enrollments'
+  enrollmentUrl: 'enrollments',
+  paymentUrl: 'payments'
 }

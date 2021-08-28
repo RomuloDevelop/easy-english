@@ -35,7 +35,8 @@ export class AdminComponent implements OnInit {
     },
     {
       label: 'Gestión de Pagos',
-      icon: 'pi pi-fw pi-cog'
+      icon: 'pi pi-fw pi-cog',
+      route: 'payments'
     }
   ]
 

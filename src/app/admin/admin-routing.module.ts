@@ -11,6 +11,8 @@ import { UsersComponent } from './user/users/users.component'
 import { LoginGuard } from '../guards/login.guard'
 import { EnrollmentsComponent } from './enrollment/enrollments/enrollments.component'
 import { CreateEnrollmentComponent } from './enrollment/create-enrollment/create-enrollment.component'
+import { PaymentsComponent } from './payment/payments/payments.component'
+import { CreatePaymentComponent } from './payment/create-payment/create-payment.component'
 
 const routes: Routes = [
   {
@@ -50,6 +52,23 @@ const routes: Routes = [
           {
             path: 'edit/:id',
             component: CreateUserComponent
+          }
+        ]
+      },
+      {
+        path: 'payments',
+        children: [
+          {
+            path: '',
+            component: PaymentsComponent
+          },
+          {
+            path: 'create',
+            component: CreatePaymentComponent
+          },
+          {
+            path: 'edit/:id',
+            component: CreatePaymentComponent
           }
         ]
       },

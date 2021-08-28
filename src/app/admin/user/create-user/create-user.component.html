@@ -1,113 +1,199 @@
-<p-card header="User profile" styleClass="admin-card p-mt-5">
-  <form [formGroup]="form" class="row">
-    <div class="p-field col-12 col-md-6">
-      <small id="title-help">Select a role.</small>
-      <p-dropdown
-        [options]="roles"
-        formControlName="role"
-        optionLabel="name"
-        optionValue="id"
-      ></p-dropdown>
-    </div>
-    <div class="p-field col-12 col-md-6">
-      <small id="title-help">Enter an name for your profile.</small>
-      <input
-        placeholder="Name"
-        id="name"
-        class="p-inputtext-sm"
-        type="text"
-        pInputText
-        formControlName="name"
-      />
-    </div>
-    <div class="p-field col-12 col-md-6">
-      <small id="title-help">Enter an email for login.</small>
-      <input
-        placeholder="Email"
-        id="email"
-        class="p-inputtext-sm"
-        type="text"
-        pInputText
-        formControlName="email"
-      />
-    </div>
-    <div class="p-field col-12 col-md-6">
-      <small id="title-help">Enter a date birth of the user.</small>
-      <p-calendar
-        placeholder="Date of birth"
-        class="p-inputtext-sm"
-        formControlName="dob"
-      ></p-calendar>
-    </div>
-    <div class="p-field col-12 col-md-6">
-      <small id="title-help">Enter a phone for contact.</small>
-      <input
-        placeholder="Phone"
-        id="phone"
-        class="p-inputtext-sm"
-        type="text"
-        pInputText
-        formControlName="phone"
-      />
-    </div>
-    <div class="col-0 col-md-6"></div>
-    <div class="switch-field col-12 col-md-6">
-      <p-inputSwitch formControlName="is_active"></p-inputSwitch>
-      <small id="title-supervided">Is active</small>
-    </div>
-    <ng-container *ngIf="role === 2">
-      <div class="switch-field col-12 col-md-6">
-        <p-inputSwitch formControlName="is_supervised"></p-inputSwitch>
-        <small id="title-supervided">Is supervised</small>
+<div class="container-lg">
+  <div class="page-title-content p-mb-5">
+    <ul>
+      <li><a routerLink="../../../../admin">Admin</a></li>
+      <li><a routerLink="../../../users">Users</a></li>
+      <li>{{ willUpdate ? 'Edit' : 'Create' }} User</li>
+    </ul>
+    <h2>{{ willUpdate ? 'Edit' : 'Create' }} User</h2>
+  </div>
+  <p-card header="User profile" styleClass="admin-card p-mt-5">
+    <form [formGroup]="form" class="row">
+      <div class="p-field col-12 col-md-6">
+        <small id="title-help">Select a role.</small>
+        <p-dropdown
+          [options]="roles"
+          formControlName="role"
+          optionLabel="name"
+          optionValue="id"
+        ></p-dropdown>
       </div>
-      <ng-container *ngIf="form.controls['is_supervised'].value">
+      <div class="p-field col-12 col-md-6">
+        <small id="title-help">Enter an name for your profile.</small>
+        <input
+          placeholder="Name"
+          id="name"
+          class="p-inputtext-sm"
+          type="text"
+          pInputText
+          formControlName="name"
+        />
+      </div>
+      <div class="p-field col-12 col-md-6">
+        <small id="title-help">Enter an email for login.</small>
+        <input
+          placeholder="Email"
+          id="email"
+          class="p-inputtext-sm"
+          type="text"
+          pInputText
+          formControlName="email"
+        />
+      </div>
+      <div class="p-field col-12 col-md-6">
+        <small id="title-help">Enter a date birth of the user.</small>
+        <p-calendar
+          placeholder="Date of birth"
+          class="p-inputtext-sm"
+          formControlName="dob"
+        ></p-calendar>
+      </div>
+      <div class="p-field col-12 col-md-6">
+        <small id="title-help">Enter a phone for contact.</small>
+        <input
+          placeholder="Phone"
+          id="phone"
+          class="p-inputtext-sm"
+          type="text"
+          pInputText
+          formControlName="phone"
+        />
+      </div>
+      <div class="col-0 col-md-6"></div>
+      <div class="switch-field col-12 col-md-6">
+        <p-inputSwitch formControlName="is_active"></p-inputSwitch>
+        <small id="title-supervided">Is active</small>
+      </div>
+      <ng-container *ngIf="role === 2">
+        <div class="switch-field col-12 col-md-6">
+          <p-inputSwitch formControlName="is_supervised"></p-inputSwitch>
+          <small id="title-supervided">Is supervised</small>
+        </div>
+        <ng-container *ngIf="form.controls['is_supervised'].value">
+          <div class="p-field col-12 col-md-6">
+            <small id="title-help">Enter an name for the parent.</small>
+            <input
+              placeholder="Parent name"
+              id="parent_name"
+              class="p-inputtext-sm"
+              type="text"
+              pInputText
+              formControlName="parent_name"
+            />
+          </div>
+          <div class="p-field col-12 col-md-6">
+            <small id="title-help">Enter an email for the parent.</small>
+            <input
+              placeholder="Parent email"
+              id="parent_email"
+              class="p-inputtext-sm"
+              type="text"
+              pInputText
+              formControlName="parent_email"
+            />
+          </div>
+          <div class="p-field col-12 col-md-6">
+            <small id="title-help">Enter a parent's phone for contact.</small>
+            <input
+              placeholder="Parent phone"
+              id="parent_phone"
+              class="p-inputtext-sm"
+              type="text"
+              pInputText
+              formControlName="parent_phone"
+            />
+          </div>
+          <div class="p-field col-12 col-md-6">
+            <small id="title-help">Enter a second parent's phone.</small>
+            <input
+              placeholder="Parent phone two"
+              id="parent_phone_two"
+              class="p-inputtext-sm"
+              type="text"
+              pInputText
+              formControlName="parent_phone_two"
+            />
+          </div>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngIf="!willUpdate">
         <div class="p-field col-12 col-md-6">
-          <small id="title-help">Enter an name for the parent.</small>
+          <small id="title-help">Enter a new password.</small>
           <input
-            placeholder="Parent name"
+            placeholder="Password"
             id="parent_name"
             class="p-inputtext-sm"
-            type="text"
+            type="password"
             pInputText
-            formControlName="parent_name"
+            formControlName="password"
           />
         </div>
         <div class="p-field col-12 col-md-6">
-          <small id="title-help">Enter an email for the parent.</small>
+          <small id="title-help">Confirm passwword.</small>
           <input
-            placeholder="Parent email"
-            id="parent_email"
+            placeholder="Repeat password"
+            id="parent_name"
             class="p-inputtext-sm"
-            type="text"
+            type="password"
             pInputText
-            formControlName="parent_email"
-          />
-        </div>
-        <div class="p-field col-12 col-md-6">
-          <small id="title-help">Enter a parent's phone for contact.</small>
-          <input
-            placeholder="Parent phone"
-            id="parent_phone"
-            class="p-inputtext-sm"
-            type="text"
-            pInputText
-            formControlName="parent_phone"
-          />
-        </div>
-        <div class="p-field col-12 col-md-6">
-          <small id="title-help">Enter a second parent's phone.</small>
-          <input
-            placeholder="Parent phone two"
-            id="parent_phone_two"
-            class="p-inputtext-sm"
-            type="text"
-            pInputText
-            formControlName="parent_phone_two"
+            formControlName="repeat_password"
+            [class]="{
+              'ng-invalid': form.errors?.notEqual
+            }"
           />
         </div>
       </ng-container>
-    </ng-container>
-    <ng-container *ngIf="!willUpdate">
+      <div class="d-flex justify-content-center mt-3">
+        <button
+          class="default-btn"
+          (click)="updateUser()"
+          [disabled]="form.invalid"
+        >
+          <ng-container *ngIf="!loading">
+            <i class="pi pi-pencil icon-arrow before"></i>
+          </ng-container>
+          <ng-container *ngIf="loading">
+            <ng-container
+              *ngTemplateOutlet="spinner; context: { $implicit: 'before' }"
+            ></ng-container>
+          </ng-container>
+
+          <span class="label">{{
+            willUpdate ? 'Update User' : 'Create User'
+          }}</span>
+
+          <ng-container *ngIf="!loading">
+            <i class="pi pi-pencil icon-arrow after"></i>
+          </ng-container>
+          <ng-container *ngIf="loading">
+            <ng-container
+              *ngTemplateOutlet="spinner; context: { $implicit: 'after' }"
+            ></ng-container
+          ></ng-container>
+
+          <ng-template #spinner let-iClass>
+            <i [class]="iClass" class="icon-arrow">
+              <p-progressSpinner
+                styleClass="custom-spinner"
+                strokeWidth="7"
+                [style]="{
+                  width: '22px',
+                  height: '22px',
+                  color: '#fff !important'
+                }"
+              ></p-progressSpinner>
+            </i>
+          </ng-template>
+        </button>
+      </div>
+    </form>
+  </p-card>
+  <p-card
+    *ngIf="willUpdate"
+    header="User password"
+    styleClass="admin-card p-mt-5"
+  >
+    <form [formGroup]="form2" class="row">
       <div class="p-field col-12 col-md-6">
         <small id="title-help">Enter a new password.</small>
         <input
@@ -133,124 +219,48 @@
           }"
         />
       </div>
-    </ng-container>
-    <div class="d-flex justify-content-center mt-3">
-      <button
-        class="default-btn"
-        (click)="updateUser()"
-        [disabled]="form.invalid"
-      >
-        <ng-container *ngIf="!loading">
-          <i class="pi pi-pencil icon-arrow before"></i>
-        </ng-container>
-        <ng-container *ngIf="loading">
-          <ng-container
-            *ngTemplateOutlet="spinner; context: { $implicit: 'before' }"
+      <div class="d-flex justify-content-center mt-3">
+        <button
+          class="default-btn"
+          (click)="updatePassword()"
+          [disabled]="form2.invalid"
+        >
+          <ng-container *ngIf="!loadingPassword">
+            <i class="pi pi-pencil icon-arrow before"></i>
+          </ng-container>
+          <ng-container *ngIf="loadingPassword">
+            <ng-container
+              *ngTemplateOutlet="spinner; context: { $implicit: 'before' }"
+            ></ng-container>
+          </ng-container>
+
+          <span class="label">Update Password</span>
+
+          <ng-container *ngIf="!loadingPassword">
+            <i class="pi pi-pencil icon-arrow after"></i>
+          </ng-container>
+          <ng-container *ngIf="loadingPassword">
+            <ng-container
+              *ngTemplateOutlet="spinner; context: { $implicit: 'after' }"
+            ></ng-container
           ></ng-container>
-        </ng-container>
 
-        <span class="label">{{
-          willUpdate ? 'Update User' : 'Create User'
-        }}</span>
-
-        <ng-container *ngIf="!loading">
-          <i class="pi pi-pencil icon-arrow after"></i>
-        </ng-container>
-        <ng-container *ngIf="loading">
-          <ng-container
-            *ngTemplateOutlet="spinner; context: { $implicit: 'after' }"
-          ></ng-container
-        ></ng-container>
-
-        <ng-template #spinner let-iClass>
-          <i [class]="iClass" class="icon-arrow">
-            <p-progressSpinner
-              styleClass="custom-spinner"
-              strokeWidth="7"
-              [style]="{
-                width: '22px',
-                height: '22px',
-                color: '#fff !important'
-              }"
-            ></p-progressSpinner>
-          </i>
-        </ng-template>
-      </button>
-    </div>
-  </form>
-</p-card>
-<p-card
-  *ngIf="willUpdate"
-  header="User password"
-  styleClass="admin-card p-mt-5"
->
-  <form [formGroup]="form2" class="row">
-    <div class="p-field col-12 col-md-6">
-      <small id="title-help">Enter a new password.</small>
-      <input
-        placeholder="Password"
-        id="parent_name"
-        class="p-inputtext-sm"
-        type="password"
-        pInputText
-        formControlName="password"
-      />
-    </div>
-    <div class="p-field col-12 col-md-6">
-      <small id="title-help">Confirm passwword.</small>
-      <input
-        placeholder="Repeat password"
-        id="parent_name"
-        class="p-inputtext-sm"
-        type="password"
-        pInputText
-        formControlName="repeat_password"
-        [class]="{
-          'ng-invalid': form.errors?.notEqual
-        }"
-      />
-    </div>
-    <div class="d-flex justify-content-center mt-3">
-      <button
-        class="default-btn"
-        (click)="updatePassword()"
-        [disabled]="form2.invalid"
-      >
-        <ng-container *ngIf="!loadingPassword">
-          <i class="pi pi-pencil icon-arrow before"></i>
-        </ng-container>
-        <ng-container *ngIf="loadingPassword">
-          <ng-container
-            *ngTemplateOutlet="spinner; context: { $implicit: 'before' }"
-          ></ng-container>
-        </ng-container>
-
-        <span class="label">Update Password</span>
-
-        <ng-container *ngIf="!loadingPassword">
-          <i class="pi pi-pencil icon-arrow after"></i>
-        </ng-container>
-        <ng-container *ngIf="loadingPassword">
-          <ng-container
-            *ngTemplateOutlet="spinner; context: { $implicit: 'after' }"
-          ></ng-container
-        ></ng-container>
-
-        <ng-template #spinner let-iClass>
-          <i [class]="iClass" class="icon-arrow">
-            <p-progressSpinner
-              styleClass="custom-spinner"
-              strokeWidth="7"
-              [style]="{
-                width: '22px',
-                height: '22px',
-                color: '#fff !important'
-              }"
-            ></p-progressSpinner>
-          </i>
-        </ng-template>
-      </button>
-    </div>
-  </form>
-</p-card>
+          <ng-template #spinner let-iClass>
+            <i [class]="iClass" class="icon-arrow">
+              <p-progressSpinner
+                styleClass="custom-spinner"
+                strokeWidth="7"
+                [style]="{
+                  width: '22px',
+                  height: '22px',
+                  color: '#fff !important'
+                }"
+              ></p-progressSpinner>
+            </i>
+          </ng-template>
+        </button>
+      </div>
+    </form>
+  </p-card>
+</div>
 <p-toast></p-toast>

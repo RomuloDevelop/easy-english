@@ -1,0 +1,105 @@
+<div class="container-lg">
+  <div class="page-title-content p-mb-5">
+    <ul>
+      <li><a routerLink="../../../../admin">Admin</a></li>
+      <li><a routerLink="../../../payments">Payments</a></li>
+      <li>{{ willUpdate ? 'Edit' : 'Register' }} Payment</li>
+    </ul>
+    <h2>{{ willUpdate ? 'Edit' : 'Register' }} Payment</h2>
+  </div>
+  <p-card header="Payment" styleClass="admin-card p-mt-5">
+    <form [formGroup]="form" class="row">
+      <div class="p-field col-12 col-md-6">
+        <small id="title-help">Select a user.</small>
+        <p-dropdown
+          placeholder="Select a user"
+          [options]="users"
+          formControlName="user_id"
+          optionLabel="name"
+          optionValue="id"
+        ></p-dropdown>
+      </div>
+      <div class="p-field col-12 col-md-6">
+        <small id="title-help">Type a percentage for the payment.</small>
+        <p-inputNumber
+          formControlName="percentage"
+          class="p-inputtext-sm"
+          inputId="percent"
+          prefix="%"
+        >
+        </p-inputNumber>
+      </div>
+      <div class="p-field col-12 col-md-6">
+        <small id="title-help">Select a status for actual payment.</small>
+        <p-dropdown
+          [options]="statusList"
+          formControlName="status"
+          optionLabel="description"
+          optionValue="id"
+        ></p-dropdown>
+      </div>
+      <div class="p-field col-12 col-md-6">
+        <small id="title-help">Enter a date for payment.</small>
+        <p-calendar
+          placeholder="Date of payment"
+          class="p-inputtext-sm"
+          formControlName="date"
+        ></p-calendar>
+      </div>
+      <div class="p-field col-12 col-md-6">
+        <small id="title-help">Enter the payment's detail.</small>
+        <textarea
+          rows="5"
+          cols="30"
+          pInputTextarea
+          placeholder="Description"
+          formControlName="description"
+        ></textarea>
+      </div>
+      <div class="d-flex justify-content-center mt-3">
+        <button
+          class="default-btn"
+          (click)="updatePayment()"
+          [disabled]="form.invalid"
+        >
+          <ng-container *ngIf="!loading">
+            <i class="pi pi-pencil icon-arrow before"></i>
+          </ng-container>
+          <ng-container *ngIf="loading">
+            <ng-container
+              *ngTemplateOutlet="spinner; context: { $implicit: 'before' }"
+            ></ng-container>
+          </ng-container>
+
+          <span class="label">{{
+            willUpdate ? 'Update Payment' : 'Create Payment'
+          }}</span>
+
+          <ng-container *ngIf="!loading">
+            <i class="pi pi-pencil icon-arrow after"></i>
+          </ng-container>
+          <ng-container *ngIf="loading">
+            <ng-container
+              *ngTemplateOutlet="spinner; context: { $implicit: 'after' }"
+            ></ng-container
+          ></ng-container>
+
+          <ng-template #spinner let-iClass>
+            <i [class]="iClass" class="icon-arrow">
+              <p-progressSpinner
+                styleClass="custom-spinner"
+                strokeWidth="7"
+                [style]="{
+                  width: '22px',
+                  height: '22px',
+                  color: '#fff !important'
+                }"
+              ></p-progressSpinner>
+            </i>
+          </ng-template>
+        </button>
+      </div>
+    </form>
+  </p-card>
+</div>
+<p-toast></p-toast>

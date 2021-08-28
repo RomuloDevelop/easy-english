@@ -29,6 +29,7 @@ import { PanelMenuModule } from 'primeng/panelmenu'
 import { CalendarModule } from 'primeng/calendar'
 import { DropdownModule } from 'primeng/dropdown'
 import { MultiSelectModule } from 'primeng/multiselect'
+import { InputNumberModule } from 'primeng/inputnumber'
 
 import { ConfirmationService, MessageService } from 'primeng/api'
 import { AdminService } from './admin.service'
@@ -39,6 +40,8 @@ import { UsersComponent } from './user/users/users.component'
 import { CreateUserComponent } from './user/create-user/create-user.component'
 import { EnrollmentsComponent } from './enrollment/enrollments/enrollments.component'
 import { CreateEnrollmentComponent } from './enrollment/create-enrollment/create-enrollment.component'
+import { PaymentsComponent } from './payment/payments/payments.component'
+import { CreatePaymentComponent } from './payment/create-payment/create-payment.component'
 
 @NgModule({
   declarations: [
@@ -53,7 +56,9 @@ import { CreateEnrollmentComponent } from './enrollment/create-enrollment/create
     UsersComponent,
     CreateUserComponent,
     EnrollmentsComponent,
-    CreateEnrollmentComponent
+    CreateEnrollmentComponent,
+    PaymentsComponent,
+    CreatePaymentComponent
   ],
   imports: [
     SharedModule,
@@ -78,7 +83,8 @@ import { CreateEnrollmentComponent } from './enrollment/create-enrollment/create
     PanelMenuModule,
     CalendarModule,
     DropdownModule,
-    MultiSelectModule
+    MultiSelectModule,
+    InputNumberModule
   ],
   providers: [AdminService, ConfirmationService, MessageService]
 })
