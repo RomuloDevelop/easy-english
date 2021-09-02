@@ -23,7 +23,7 @@
         </div>
         <div class="col-lg-8 col-md-7">
           <div class="profile-content">
-            <h3>James Anderson</h3>
+            <h3>{{ user.name }}</h3>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Labore
               atque officiis maxime suscipit expedita obcaecati nulla in
@@ -32,18 +32,16 @@
             <ul class="contact-info">
               <li>
                 <i class="bx bx-envelope"></i>
-                <a href="mailto:hello@jamesanderson.com"
-                  >hello@jamesanderson.com</a
-                >
+                <a href="mailto:hello@jamesanderson.com">{{ user.email }}</a>
               </li>
-              <li>
+              <li *ngIf="user.phone">
                 <i class="bx bx-phone"></i>
-                <a href="tel:+502464674">+502 464 674</a>
+                <a [href]="user.phone">{{ user.phone }}</a>
               </li>
-              <li>
+              <!-- <li>
                 <i class="bx bx-world"></i>
                 <a href="#" target="_blank">www.jamesanderson.com</a>
-              </li>
+              </li> -->
             </ul>
             <ul class="social">
               <li>
@@ -72,7 +70,18 @@
                 ></a>
               </li>
             </ul>
-            <a routerLink="/" class="myDashboard-logout">Logout</a>
+            <a (click)="logoutButton()" class="myDashboard-logout">
+              Logout
+              <p-progressSpinner
+                *ngIf="loadingLogOutButton"
+                styleClass="custom-spinner"
+                strokeWidth="7"
+                [style]="{
+                  width: '22px',
+                  height: '22px'
+                }"
+              ></p-progressSpinner>
+            </a>
           </div>
         </div>
       </div>
@@ -98,7 +107,20 @@
           >
         </li>
         <li>
-          <a routerLink="/"><i class="bx bx-log-out"></i> Logout</a>
+          <a (click)="logoutPanel()" style="cursor: pointer"
+            ><i class="bx bx-log-out"></i>
+            <span style="vertical-align: middle">Logout</span>
+            <p-progressSpinner
+              *ngIf="loadingLogOutPanel"
+              styleClass="custom-spinner blue ml-1"
+              strokeWidth="7"
+              [style]="{
+                verticalAlign: 'middle',
+                width: '22px',
+                height: '22px'
+              }"
+            ></p-progressSpinner>
+          </a>
         </li>
       </ul>
     </div>

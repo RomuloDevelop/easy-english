@@ -91,18 +91,21 @@
             }
         }
         .myDashboard-logout {
+          cursor: pointer;
             display: inline-block;
             margin-top: 20px;
-            background-color: #d9534f;
+            background-color: var(--mainColor);
             color: var(--whiteColor);
             padding: 7px 20px 8px;
             border-radius: 3px;
+            * {
+              vertical-align: middle;
+            }
             font: {
                 size: var(--fontSize);
                 weight: 500;
             };
             &:hover {
-                background-color: red;
                 color: var(--whiteColor);
             }
         }

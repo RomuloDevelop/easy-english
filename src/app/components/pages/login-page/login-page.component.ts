@@ -34,7 +34,7 @@ export class LoginPageComponent {
       .login(data, () => (this.loading = false))
       .subscribe(
         () => {
-          this.router.navigate(['../../admin'], {
+          this.router.navigate(['../'], {
             relativeTo: this.route
           })
         },
