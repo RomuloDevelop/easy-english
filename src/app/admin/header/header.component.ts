@@ -10,18 +10,14 @@ import ContactInfo from '../../../data/networks'
 })
 export class HeaderComponent implements OnInit {
   @Output() openNav = new EventEmitter()
+  @Output() logout = new EventEmitter()
   items: MenuItem[]
   viewProfile = false
-  open() {
-    this.openNav.emit()
-  }
-
-  constructor(private sessionService: SessionService) {}
-
-  loading = false
   rrss = ContactInfo.getNetworks()
   phones = ContactInfo.getPhones()
   classApplied = false
+
+  constructor() {}
 
   ngOnInit() {
     this.items = [
@@ -35,14 +31,13 @@ export class HeaderComponent implements OnInit {
       {
         label: 'Logout',
         icon: 'pi pi-fw pi-power-off',
-        command: () => this.logout()
+        command: () => this.logout.emit()
       }
     ]
   }
 
-  logout() {
-    this.loading = true
-    this.sessionService.logout(() => (this.loading = false)).subscribe()
+  open() {
+    this.openNav.emit()
   }
 
   toggleClass() {

@@ -1,6 +1,6 @@
 :host ::ng-deep .p-field {
   margin-bottom: 20px;
-  p-editor, input, p-calendar, p-dropdown {
+  p-editor, input, p-calendar, p-dropdown, textarea {
     display: block;
     width: 100%;
   }
@@ -16,7 +16,6 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-bottom: 1rem;
   p-inputSwitch {
     margin-right: 1rem;
   }

@@ -21,6 +21,7 @@ import {
 import { YoutubeComponent } from './components/common/youtube/youtube.component'
 
 import { httpInterceptorProviders } from './interceptors/base'
+import { LoaderModule } from './components/common/loader/loader.module'
 
 @NgModule({
   declarations: [
@@ -37,7 +38,9 @@ import { httpInterceptorProviders } from './interceptors/base'
     HttpClientModule,
     StickyNavModule,
     CommonModule,
-    YouTubePlayerModule
+    YouTubePlayerModule,
+    ProgressSpinnerModule,
+    LoaderModule
   ],
   exports: [
     FormsModule,
@@ -56,7 +59,8 @@ import { httpInterceptorProviders } from './interceptors/base'
     CommonModule,
     YoutubeComponent,
     ProgressSpinnerModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    LoaderModule
   ],
   providers: [httpInterceptorProviders]
 })

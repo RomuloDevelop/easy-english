@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { select, Store } from '@ngrx/store'
+import { SessionService } from '../services/session.service'
+import { LoaderService } from '../components/common/loader/loader.service'
 import { selectActualUser } from '../state/session/session.selectors'
 @Component({
   selector: 'app-admin',
@@ -40,7 +42,11 @@ export class AdminComponent implements OnInit {
     }
   ]
 
-  constructor(private store: Store) {}
+  constructor(
+    private store: Store,
+    private sessionService: SessionService,
+    private loader: LoaderService
+  ) {}
 
   ngOnInit() {
     this.store.pipe(select(selectActualUser)).subscribe((user) => {
@@ -52,5 +58,10 @@ export class AdminComponent implements OnInit {
         })
       }
     })
+  }
+
+  logout() {
+    this.loader.show()
+    this.sessionService.logout(() => this.loader.show(false)).subscribe()
   }
 }

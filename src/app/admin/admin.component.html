@@ -21,7 +21,10 @@
     </ul>
   </div>
   <div class="admin-content" [class]="{ active: viewMenu }">
-    <app-admin-header (openNav)="viewMenu = !viewMenu"></app-admin-header>
+    <app-admin-header
+      (openNav)="viewMenu = !viewMenu"
+      (logout)="logout()"
+    ></app-admin-header>
     <section>
       <div class="container-lg">
         <router-outlet></router-outlet>
@@ -29,3 +32,4 @@
     </section>
   </div>
 </div>
+<app-loader></app-loader>

@@ -5,9 +5,9 @@ import { map } from 'rxjs/operators'
 import {
   selectCoursesTable,
   CoursesTableRow
-} from '../../state/admin/admin.selectores'
-import { CourseService } from '../../services/course.service'
-import { setCourses } from '../../state/admin/courses/course.actions'
+} from '../../../state/admin/admin.selectores'
+import { CourseService } from '../../../services/course.service'
+import { setCourses } from '../../../state/admin/courses/course.actions'
 
 @Component({
   selector: 'app-course-list',

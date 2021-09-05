@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core'
+import { Router, NavigationEnd } from '@angular/router'
 import { select, Store } from '@ngrx/store'
 import { Observable } from 'rxjs'
 import { User } from 'src/app/state/models'
@@ -12,10 +13,14 @@ import { SessionService } from '../../services/session.service'
 })
 export class DashboardComponent implements OnInit {
   user: User
-  loadingLogOutPanel = false
+  loadingLogOutPanel = null
   loadingLogOutButton = false
 
-  constructor(private sessionService: SessionService, private store: Store) {}
+  constructor(
+    private sessionService: SessionService,
+    private store: Store,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.store
@@ -28,8 +33,8 @@ export class DashboardComponent implements OnInit {
     this.logout()
   }
 
-  logoutPanel() {
-    this.loadingLogOutPanel = true
+  logoutPanel(index) {
+    this.loadingLogOutPanel = index
     this.logout()
   }
 

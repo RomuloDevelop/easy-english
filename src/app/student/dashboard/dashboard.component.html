@@ -25,9 +25,7 @@
           <div class="profile-content">
             <h3>{{ user.name }}</h3>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Labore
-              atque officiis maxime suscipit expedita obcaecati nulla in
-              ducimus.
+              {{ user.description }}
             </p>
             <ul class="contact-info">
               <li>
@@ -86,57 +84,37 @@
         </div>
       </div>
     </div>
-    <div class="myDashboard-navigation">
-      <ul>
-        <li>
-          <a
-            routerLink="/student"
-            [routerLinkActive]="['active']"
-            [routerLinkActiveOptions]="{ exact: true }"
-            ><i class="bx bxs-dashboard"></i> Dashboard</a
-          >
-        </li>
-        <li>
-          <a routerLink="edit-address" [routerLinkActive]="['active']"
-            ><i class="bx bx-home-alt"></i> Addresses</a
-          >
-        </li>
-        <li>
-          <a routerLink="edit-account" [routerLinkActive]="['active']"
-            ><i class="bx bx-edit"></i> Account Details</a
-          >
-        </li>
-        <li>
-          <a (click)="logoutPanel()" style="cursor: pointer"
-            ><i class="bx bx-log-out"></i>
-            <span style="vertical-align: middle">Logout</span>
-            <p-progressSpinner
-              *ngIf="loadingLogOutPanel"
-              styleClass="custom-spinner blue ml-1"
-              strokeWidth="7"
-              [style]="{
-                verticalAlign: 'middle',
-                width: '22px',
-                height: '22px'
-              }"
-            ></p-progressSpinner>
-          </a>
-        </li>
-      </ul>
-    </div>
-    <div class="myDashboard-content">
-      <p>
-        Hello <strong>James Anderson</strong> (not
-        <strong>James Anderson</strong>? <a routerLink="/">Log out</a>)
-      </p>
-      <p>
-        From your account dashboard you can view your
-        <a>courses</a>, manage your
-        <a routerLink="edit-address">shipping and billing addresses</a>,
-        <a routerLink="edit-account">edit your password</a>, and
-        <a routerLink="edit-account">account details</a>.
-      </p>
-      <router-outlet></router-outlet>
-    </div>
+    <app-dashboard-tabs
+      class="myDashboard-content"
+      [tabLoading]="loadingLogOutPanel"
+    >
+      <ng-container description>
+        <p>
+          Hello <strong>{{ user.name }}</strong> (not
+          <strong>{{ user.name }}</strong
+          >? <a routerLink="/">Log out</a>)
+        </p>
+        <p>
+          From your account dashboard you can view your
+          <a>courses</a>, manage your <a>shipping and billing addresses</a>,
+          <a>edit your password</a>, and <a>account details</a>.
+        </p>
+      </ng-container>
+      <tab icon="bx bxs-dashboard" label="Courses">
+        <app-course-list></app-course-list>
+      </tab>
+      <tab icon="bx bx-edit" label="Your profile">
+        <app-edit-account></app-edit-account>
+      </tab>
+      <tab icon="bx bx-edit" label="Billing Details">
+        <app-edit-billing></app-edit-billing>
+      </tab>
+      <tab
+        icon="bx bx-log-out"
+        label="Logout"
+        [notDisplay]="true"
+        (tabClick)="logoutPanel(4)"
+      ></tab>
+    </app-dashboard-tabs>
   </div>
 </div>

@@ -2,8 +2,22 @@
   <div class="myDashboard-navigation">
     <ul>
       <li *ngFor="let tab of tabs; let i = index">
-        <a [class]="{ active: selected === i }" (click)="getTabForChange(i)"
-          ><i [class]="tab.icon"></i> {{ tab.text }}
+        <a
+          [class]="{ active: selected === i }"
+          style="vertical-align: middle"
+          (click)="getTabForChange(i)"
+          ><i [class]="tab.icon"></i>
+          {{ tab.text }}
+          <p-progressSpinner
+            *ngIf="tabLoading === i + 1"
+            styleClass="custom-spinner blue ml-1"
+            strokeWidth="7"
+            [style]="{
+              verticalAlign: 'middle',
+              width: '22px',
+              height: '22px'
+            }"
+          ></p-progressSpinner>
         </a>
       </li>
     </ul>

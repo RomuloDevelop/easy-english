@@ -2,7 +2,7 @@
   <div class="page-title-content p-mb-5">
     <ul>
       <li><a routerLink="../../../../admin">Admin</a></li>
-      <li><a routerLink="../../../users">Users</a></li>
+      <li><a routerLink="../../">Users</a></li>
       <li>{{ willUpdate ? 'Edit' : 'Create' }} User</li>
     </ul>
     <h2>{{ willUpdate ? 'Edit' : 'Create' }} User</h2>
@@ -59,13 +59,22 @@
           formControlName="phone"
         />
       </div>
-      <div class="col-0 col-md-6"></div>
       <div class="switch-field col-12 col-md-6">
         <p-inputSwitch formControlName="is_active"></p-inputSwitch>
         <small id="title-supervided">Is active</small>
       </div>
+      <div class="p-field col-12 col-md-6">
+        <small id="title-help">Enter the users's detail.</small>
+        <textarea
+          rows="5"
+          cols="30"
+          pInputTextarea
+          placeholder="Description"
+          formControlName="description"
+        ></textarea>
+      </div>
       <ng-container *ngIf="role === 2">
-        <div class="switch-field col-12 col-md-6">
+        <div class="switch-field col-12 col-md-12 mb-1">
           <p-inputSwitch formControlName="is_supervised"></p-inputSwitch>
           <small id="title-supervided">Is supervised</small>
         </div>
