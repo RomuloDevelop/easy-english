@@ -4,8 +4,9 @@ import { Router } from '@angular/router'
 import Endpoints from '../../data/endpoints'
 import { catchError, finalize, map, mergeMap } from 'rxjs/operators'
 import { InterceptorError } from '../interceptors/commonOptions'
-import { throwError } from 'rxjs'
+import { of, throwError } from 'rxjs'
 import { UserService } from './user.service'
+import roles from '../../data/roles'
 
 const { loginUrl, logoutUrl } = Endpoints
 
@@ -24,7 +25,7 @@ export class SessionService {
     private userService: UserService
   ) {}
 
-  login(data: Login, finalizeCb = () => {}) {
+  login(data: Login, requiredRole: number, finalizeCb = () => {}) {
     return this.http
       .post<{ access_token: string; token_type: string }>(loginUrl, data)
       .pipe(
@@ -34,8 +35,26 @@ export class SessionService {
         }),
         mergeMap((access_token) =>
           this.userService.getActualUser().pipe(
-            map((user) => {
-              return { user, access_token }
+            mergeMap((user) => {
+              if (user.role !== requiredRole && user.role !== 1) {
+                return this.logout(() => {}, false).pipe(
+                  map(() => {
+                    let roleName = ''
+                    for (let role in roles) {
+                      if (roles[role] === requiredRole) {
+                        roleName = role.toLowerCase()
+                        break
+                      }
+                    }
+                    throw {
+                      defaultMessage: `The user is not a${
+                        roleName[0] === 'a' ? 'n' : ''
+                      } ${roleName}`
+                    }
+                  })
+                )
+              }
+              return of({ user, access_token })
             })
           )
         ),
@@ -50,13 +69,15 @@ export class SessionService {
       )
   }
 
-  logout(finalizeCb = () => {}) {
+  logout(finalizeCb = () => {}, redirect = true) {
     return this.http.get(logoutUrl).pipe(
       map(() => {
         localStorage.removeItem('token')
-        this.router.navigate(['/'], {
-          replaceUrl: true
-        })
+        if (redirect) {
+          this.router.navigate(['/'], {
+            replaceUrl: true
+          })
+        }
       }),
       catchError((error: InterceptorError) => {
         let message = error.defaultMessage

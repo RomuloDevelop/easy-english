@@ -2,15 +2,17 @@ import { Component, OnInit } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 import { FormBuilder, Validators } from '@angular/forms'
 import { Login, SessionService } from '../../../services/session.service'
+import roles from '../../../../data/roles'
 
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.scss']
 })
-export class LoginPageComponent {
+export class LoginPageComponent implements OnInit {
   errorMessage: string = null
   loading = false
+  requiredRole = null
 
   form = this.formBuilder.group({
     email: ['', [Validators.required, Validators.pattern(/^.+@.+\..+$/)]],
@@ -24,6 +26,15 @@ export class LoginPageComponent {
     private sessionService: SessionService
   ) {}
 
+  ngOnInit() {
+    this.getRole()
+  }
+
+  getRole() {
+    const url = this.route.snapshot.pathFromRoot[1].url
+    this.requiredRole = roles[url[0].path]
+  }
+
   submit() {
     this.loading = true
     const data: Login = {
@@ -31,7 +42,7 @@ export class LoginPageComponent {
       password: this.form.get('password').value
     }
     this.sessionService
-      .login(data, () => (this.loading = false))
+      .login(data, this.requiredRole, () => (this.loading = false))
       .subscribe(
         () => {
           this.router.navigate(['../'], {

@@ -7,13 +7,33 @@ import {
   UrlTree,
   Router
 } from '@angular/router'
+import { select, Store } from '@ngrx/store'
 import { Observable } from 'rxjs'
+import { selectActualUser } from '../state/session/session.selectors'
+import roles from '../../data/roles'
+import { map } from 'rxjs/operators'
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginGuard implements CanActivate {
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private store: Store
+  ) {}
+
+  redirectToLogin(route: ActivatedRouteSnapshot) {
+    const actualUrl = route.parent.url.map((item) => item.path).join('/')
+    this.router.navigate([`${actualUrl}/login`], {
+      relativeTo: this.route
+    })
+  }
+
+  getRole(route: ActivatedRouteSnapshot) {
+    const url = route.parent.url
+    return roles[url[0].path]
+  }
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -23,15 +43,21 @@ export class LoginGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    let canActivate = false
     const token = localStorage.getItem('token')
-    canActivate = token != null
-    if (!canActivate) {
-      const actualUrl = route.parent.url.map((item) => item.path).join('/')
-      this.router.navigate([`${actualUrl}/login`], {
-        relativeTo: this.route
-      })
+    if (token != null) {
+      return this.store.pipe(
+        select(selectActualUser),
+        map((user) => {
+          const result = user.role === 1 || user.role === this.getRole(route)
+          if (!result) {
+            this.redirectToLogin(route)
+          }
+          return result
+        })
+      )
+    } else {
+      this.redirectToLogin(route)
+      return false
     }
-    return canActivate
   }
 }
