@@ -2,6 +2,8 @@ section {
     background-color: #f8f9fa;
     padding-top: 70px;
     padding-bottom: 100px;
+    overflow-x: hidden;
+    position: relative;
 }
 
 :host ::ng-deep .page-title-content {

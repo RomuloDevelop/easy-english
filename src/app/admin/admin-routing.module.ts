@@ -4,8 +4,6 @@ import { LoginPageComponent } from '../components/pages/login-page/login-page.co
 import { AdminComponent } from './admin.component'
 import { CoursesComponent } from './course/courses/courses.component'
 import { CreateCourseComponent } from './course/create-course/create-course.component'
-import { CreateSectionComponent } from './course/create-course/create-section/create-section.component'
-import { HomePageComponent } from './course/create-course/home-page/home-page.component'
 import { CreateUserComponent } from './user/create-user/create-user.component'
 import { UsersComponent } from './user/users/users.component'
 import { LoginGuard } from '../guards/login.guard'
@@ -22,66 +20,90 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: CoursesComponent
+        component: CoursesComponent,
+        data: { animation: 'Courses' }
       },
       {
         path: 'create-course/:id',
         component: CreateCourseComponent,
+        data: { animation: 'Course' }
+      },
+      {
+        path: 'students',
+        data: { animation: 'Student', role: 2 },
         children: [
           {
-            path: 'home-page',
-            component: HomePageComponent
+            path: '',
+            component: UsersComponent,
+            data: { animation: 'Students', role: 2 }
           },
           {
-            path: 'create-section',
-            component: CreateSectionComponent
+            path: 'create',
+            component: CreateUserComponent,
+            data: { animation: 'CreateStudents', role: 2 }
+          },
+          {
+            path: 'edit/:id',
+            component: CreateUserComponent,
+            data: { animation: 'EditStudents', role: 2 }
           }
         ]
       },
       {
-        path: 'users/:role',
+        path: 'teachers',
+        data: { animation: 'Teacher', role: 3 },
         children: [
           {
             path: '',
-            component: UsersComponent
+            component: UsersComponent,
+            data: { animation: 'Teachers', role: 3 }
           },
           {
             path: 'create',
-            component: CreateUserComponent
+            component: CreateUserComponent,
+            data: { animation: 'CreateTeacher', role: 3 }
           },
           {
             path: 'edit/:id',
-            component: CreateUserComponent
+            component: CreateUserComponent,
+            data: { animation: 'EditTeacher', role: 3 }
           }
         ]
       },
       {
         path: 'payments',
+        data: { animation: 'Payment' },
         children: [
           {
             path: '',
-            component: PaymentsComponent
+            component: PaymentsComponent,
+            data: { animation: 'Payments' }
           },
           {
             path: 'create',
-            component: CreatePaymentComponent
+            component: CreatePaymentComponent,
+            data: { animation: 'CreatePayment' }
           },
           {
             path: 'edit/:id',
-            component: CreatePaymentComponent
+            component: CreatePaymentComponent,
+            data: { animation: 'EditPayment' }
           }
         ]
       },
       {
         path: 'enrollments',
+        data: { animation: 'Enrollment' },
         children: [
           {
             path: '',
-            component: EnrollmentsComponent
+            component: EnrollmentsComponent,
+            data: { animation: 'Enrollments' }
           },
           {
             path: 'edit/:id',
-            component: CreateEnrollmentComponent
+            component: CreateEnrollmentComponent,
+            data: { animation: 'CreateEnrollment' }
           }
         ]
       }

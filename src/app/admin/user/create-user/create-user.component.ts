@@ -32,7 +32,7 @@ const passworfValidator: ValidatorFn = (
 })
 export class CreateUserComponent implements OnInit {
   userId = parseInt(this.route.snapshot.paramMap.get('id'))
-  role = parseInt(this.route.snapshot.paramMap.get('role'))
+  role = parseInt(this.route.snapshot.data.role)
   actualUrl = this.route.snapshot.url.map((segment) => segment.path).join('/')
   willUpdate = false
   loading = false

@@ -33,8 +33,9 @@ export class UsersComponent implements OnInit {
 
   ngOnInit() {
     this.primengConfig.ripple = true
-    this.route.paramMap.subscribe((params) => {
-      this.role = parseInt(params.get('role'))
+    this.route.data.subscribe((data) => {
+      this.role = parseInt(data.role)
+      console.log(data)
       this.getTable()
       this.store.pipe(select(selectUsers)).subscribe((data) => {
         console.log(data)

@@ -10,9 +10,13 @@ export class RouterAnimations {
   static routerForwardAnimation() {
     return trigger('routeAnimations', [
       transition('* <=> *', [
-        query(':enter, :leave', style({ position: 'fixed', width: '100%' }), {
-          optional: true
-        }),
+        query(
+          ':enter, :leave',
+          style({ position: 'absolute', width: '100%' }),
+          {
+            optional: true
+          }
+        ),
         group([
           query(
             ':enter',

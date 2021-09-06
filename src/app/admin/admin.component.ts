@@ -3,10 +3,12 @@ import { select, Store } from '@ngrx/store'
 import { SessionService } from '../services/session.service'
 import { LoaderService } from '../components/common/loader/loader.service'
 import { selectActualUser } from '../state/session/session.selectors'
+import { RouterAnimations } from '../utils/Animations'
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.scss']
+  styleUrls: ['./admin.component.scss'],
+  animations: [RouterAnimations.routerForwardAnimation()]
 })
 export class AdminComponent implements OnInit {
   viewMenu = true
@@ -28,12 +30,12 @@ export class AdminComponent implements OnInit {
     {
       label: 'Gestión de Profesores',
       icon: 'pi pi-fw pi-pencil',
-      route: 'users/3'
+      route: 'teachers'
     },
     {
       label: 'Gestión de Alumnos',
       icon: 'pi pi-fw pi-question',
-      route: 'users/2'
+      route: 'students'
     },
     {
       label: 'Gestión de Pagos',
