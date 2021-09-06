@@ -139,16 +139,22 @@ const routes: Routes = [
   { path: 'single-products', component: ProductsDetailsPageComponent },
   { path: 'cart', component: CartPageComponent },
   { path: 'checkout', component: CheckoutPageComponent },
-  { path: 'contact', component: ContactPageComponent },
+  {
+    path: 'contact',
+    component: ContactPageComponent,
+    data: { animation: 'Contact' }
+  },
   {
     path: 'admin',
     loadChildren: () =>
-      import('./admin/admin.module').then((m) => m.AdminModule)
+      import('./admin/admin.module').then((m) => m.AdminModule),
+    data: { animation: 'Admin' }
   },
   {
     path: 'student',
     loadChildren: () =>
-      import('./student/student.module').then((m) => m.StudentModule)
+      import('./student/student.module').then((m) => m.StudentModule),
+    data: { animation: 'Student' }
   },
   { path: '**', component: ErrorPageComponent }
 ]

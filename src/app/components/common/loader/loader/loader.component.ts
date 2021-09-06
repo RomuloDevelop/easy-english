@@ -1,7 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { trigger, style, animate, transition } from '@angular/animations'
 import { LoaderService } from '../loader.service'
-import { Subscriber, Subscription } from 'rxjs'
+import { Subscription } from 'rxjs'
 
 @Component({
   selector: 'app-loader',

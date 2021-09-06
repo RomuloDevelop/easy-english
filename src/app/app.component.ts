@@ -6,6 +6,7 @@ import {
   PathLocationStrategy
 } from '@angular/common'
 import { filter } from 'rxjs/operators'
+import { RouterAnimations } from './utils/Animations'
 declare let $: any
 
 @Component({
@@ -18,7 +19,8 @@ declare let $: any
       provide: LocationStrategy,
       useClass: PathLocationStrategy
     }
-  ]
+  ],
+  animations: [RouterAnimations.routerForwardAnimation()]
 })
 export class AppComponent {
   location: any
