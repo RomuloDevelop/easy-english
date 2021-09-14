@@ -25,7 +25,11 @@
     </ng-container>
     <ng-container *ngIf="!showFinalQuiz">
       <ng-container *ngFor="let lesson of lessonList">
-        <div @fadeInOut *ngIf="actualLesson.id === lesson.id">
+        <div
+          @fadeInOut
+          (@fadeInOut.done)="animationDone($event)"
+          *ngIf="actualLesson.id === lesson.id"
+        >
           <ng-container *ngTemplateOutlet="lessonPage"></ng-container>
         </div>
       </ng-container>

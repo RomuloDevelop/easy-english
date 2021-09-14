@@ -29,20 +29,23 @@ export class VideoLessonComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.studentService.hideMenu$.subscribe(
       (hideMenu) => {
-        console.log(hideMenu, 'video')
-        this.youtube.triggerRezise()
+        this.resize()
       },
       (error) => console.error(error)
     )
   }
 
   ngAfterViewInit() {
-    this.youtube.triggerRezise()
+    this.resize()
   }
 
   videoChange(event: YT.OnStateChangeEvent) {
     if (event.data === YT.PlayerState.ENDED) {
       this.videoEnded.emit(this.lesson)
     }
+  }
+
+  resize() {
+    this.youtube.triggerRezise()
   }
 }

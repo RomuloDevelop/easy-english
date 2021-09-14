@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ViewChild } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { StudentService, CourseToShow } from '../student.service'
 import { Lecture } from 'src/app/state/models'
 import { LoaderService } from '../../../components/common/loader/loader.service'
 import { SessionService } from 'src/app/services/session.service'
 import { RouterAnimations } from 'src/app/utils/Animations'
-
+import { VideoLessonComponent } from './video-lesson/video-lesson.component'
 @Component({
   selector: 'app-view-course',
   templateUrl: './view-course.component.html',
@@ -13,6 +13,8 @@ import { RouterAnimations } from 'src/app/utils/Animations'
   animations: [RouterAnimations.viewCourseTransition()]
 })
 export class ViewCourseComponent implements OnInit {
+  @ViewChild(VideoLessonComponent, { static: false })
+  video: VideoLessonComponent = null
   loadingCourse = false
   course: CourseToShow = null
   showFinalQuiz = false
@@ -66,6 +68,12 @@ export class ViewCourseComponent implements OnInit {
 
   toggleSectionPanel() {
     this.studentService.hideMenuMesage(!this.sectionPanel)
+  }
+
+  animationDone(event) {
+    if (this.actualLesson.type === 'Video') {
+      this.video.resize()
+    }
   }
 
   logout() {
