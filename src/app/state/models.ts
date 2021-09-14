@@ -100,7 +100,17 @@ export interface User {
 
 export interface Session {
   actualUser: User
+  userNotes: UserQuiz[]
 }
+export interface UserQuiz {
+  id?: number
+  course_quiz_id: number
+  user_id: number
+  approved: boolean
+  total_ok: number
+  total_bad: number
+}
+
 export interface AppState {
   courses: Course[]
   sections: Section[]

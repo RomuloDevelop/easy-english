@@ -24,7 +24,7 @@ import { HeaderComponent } from './course/header/header.component'
 import { FinalQuizComponent } from './course/view-course/final-quiz/final-quiz.component'
 import { QuestionComponent } from './course/view-course/question/question.component'
 
-import { CourseService } from './course/course.service'
+import { StudentService } from './course/student.service'
 import { MessageService } from 'primeng/api'
 
 @NgModule({
@@ -54,6 +54,6 @@ import { MessageService } from 'primeng/api'
     RadioButtonModule,
     ToastModule
   ],
-  providers: [CourseService, MessageService]
+  providers: [StudentService, MessageService]
 })
 export class StudentModule {}

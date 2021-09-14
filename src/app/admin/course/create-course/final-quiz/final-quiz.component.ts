@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core'
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { AdminService } from '../../../admin.service'
 import {
@@ -21,6 +21,7 @@ import memoize from '../../../../decorators/memoize'
   providers: [ConfirmationService]
 })
 export class FinalQuizComponent implements OnInit {
+  @ViewChild('editor') editor
   loadingTitle = false
   creatingDeletingQuiz = false
   updatingQuiz = false
@@ -29,6 +30,13 @@ export class FinalQuizComponent implements OnInit {
   questions: Quiz[] = []
   courseId = parseInt(this.route.snapshot.paramMap.get('id'))
   msgs: Message[] = []
+  quillOptions = {
+    toolbar: [
+      [{ size: ['small', false, 'large', 'huge'] }],
+      ['bold', 'italic', 'underline'],
+      ['image', 'code-block']
+    ]
+  }
 
   constructor(
     public adminService: AdminService,

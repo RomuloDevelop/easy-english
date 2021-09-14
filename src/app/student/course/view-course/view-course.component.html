@@ -1,10 +1,10 @@
-<app-header></app-header>
+<app-header (logout)="logout()"></app-header>
 <div
   class="overlay"
   [class]="{ activeOverlay: sectionPanel }"
   (click)="toggleSectionPanel()"
 ></div>
-<div class="view-course">
+<div class="view-course" *ngIf="course">
   <div
     *ngIf="!sectionPanel"
     class="show-panel"
@@ -17,12 +17,25 @@
     <span class="h5">Course Content</span>
   </div>
   <div class="view-course__lesson" [class]="{ active: !sectionPanel }">
-    <ng-container *ngIf="showFinalQuiz; else lesson">
-      <app-final-quiz [quiz]="course.quiz"></app-final-quiz>
+    <ng-container *ngIf="showFinalQuiz">
+      <app-final-quiz
+        [quiz]="course.quiz"
+        [title]="course.final_quizz_title"
+      ></app-final-quiz>
     </ng-container>
-    <ng-template #lesson>
+    <ng-container *ngIf="!showFinalQuiz">
+      <ng-container *ngFor="let lesson of lessonList">
+        <div @fadeInOut *ngIf="actualLesson.id === lesson.id">
+          <ng-container *ngTemplateOutlet="lessonPage"></ng-container>
+        </div>
+      </ng-container>
+    </ng-container>
+    <ng-template #lessonPage>
       <ng-container *ngIf="actualLesson?.type === 'Video'">
-        <app-video-lesson [lesson]="actualLesson"></app-video-lesson>
+        <app-video-lesson
+          (videoEnded)="nextLesson($event)"
+          [lesson]="actualLesson"
+        ></app-video-lesson>
       </ng-container>
       <ng-container *ngIf="actualLesson?.type === 'Article'">
         <app-article-lesson [lesson]="actualLesson"></app-article-lesson>
@@ -51,15 +64,27 @@
       <p-accordionTab
         [header]="'Section ' + (i + 1)"
         *ngFor="let section of course.sections; let i = index"
+        [(selected)]="sectionTabs[i]"
       >
         <ul class="list-group">
           <li
             class="list-group-item list-group-item-action"
+            [class]="{ 'lesson-selected': actualLesson.id === lesson.id }"
             *ngFor="let lesson of section.lectures; let i = index"
             (click)="actualLesson = lesson; showFinalQuiz = false"
           >
             <strong *ngIf="lesson.type !== 'Quiz'">{{ lesson.count }}.</strong>
             {{ lesson.title }}
+            <span
+              *ngIf="lesson.answered"
+              class="p-ml-3"
+              [class]="lesson.testOk ? 'quiz-correct' : 'quiz-incorrect'"
+              >{{ lesson.testOk ? 'Correct' : 'Incorrect' }}
+              <i
+                class="pi"
+                [class]="lesson.testOk ? 'pi-check-circle' : 'pi-times'"
+              ></i
+            ></span>
           </li>
         </ul>
       </p-accordionTab>

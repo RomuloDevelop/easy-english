@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
 import { finalize, map } from 'rxjs/operators'
 import { Store } from '@ngrx/store'
-import { Course } from '../state/models'
+import { Course, Lecture, Section } from '../state/models'
 import {
   addCourse,
   setCourses,
@@ -39,7 +39,14 @@ export class CourseService {
     )
   }
 
-  getCourse(id: number, finalizeCb = () => {}) {
+  getCourse(
+    id: number,
+    finalizeCb = () => {}
+  ): Observable<{
+    courses: Course[]
+    sections: Section[]
+    lessons: Lecture[]
+  }> {
     return this.http.get<{ data: any }>(`${courseUrl}/${id}`).pipe(
       map(({ data: course }) => {
         const { sections, final_quizz } = course
@@ -81,6 +88,7 @@ export class CourseService {
         this.store.dispatch(setCourses({ courses: [formatedCourse] }))
         this.store.dispatch(setSections({ sections: sections }))
         this.store.dispatch(setLectures({ lectures: lessons }))
+        return { courses: formatedCourse, sections, lessons }
       }),
       finalize(finalizeCb)
     )

@@ -65,9 +65,12 @@
       <div class="p-section-field">
         <h2 class="h6 mt-1 mb-3">Question {{ indexOfelement + 1 }}</h2>
         <p-editor
+          #editor
           [(ngModel)]="questItem.question"
           [style]="{ height: '150px' }"
-        ></p-editor>
+          [modules]="quillOptions"
+        >
+        </p-editor>
       </div>
       <div
         class="answer-container"

@@ -16,12 +16,10 @@
         <td>{{ row.sections.length }}</td>
         <td>
           <div class="d-flex justify-content-around" style="width: 200px">
-            <a [routerLink]="'course-detail/' + row.id" class="view-button"
+            <!-- <a [routerLink]="'course-detail/' + row.id" class="view-button"
               >Details</a
-            >
-            <a [routerLink]="'view-course/' + row.id" class="view-button"
-              >View</a
-            >
+            > -->
+            <a (click)="toCourse(row.id)" class="view-button"> View </a>
           </div>
         </td>
       </tr>

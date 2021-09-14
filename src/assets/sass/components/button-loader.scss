@@ -23,7 +23,7 @@ p-progressspinner {
 }
 
 .custom-spinner {
-  display: flex;
+  display: flex !important;
   align-self: center;
   &:not(.blue) .p-progress-spinner-circle {
     @include custom-spinner-color();

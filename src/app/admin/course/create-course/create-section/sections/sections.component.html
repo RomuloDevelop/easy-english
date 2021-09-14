@@ -126,15 +126,12 @@
             </ng-container>
             <strong class="mt-4">Article</strong>
             <hr class="mt-0" />
-            <span class="h5 mb-3">{{ lecture.title }}</span>
+            <span class="h2">{{ lecture.title }}</span>
             <div class="editor-html" [innerHtml]="lecture.data.detail"></div>
           </ng-container>
           <ng-container *ngIf="lecture.type === 'Quiz'">
-            <span class="h5">{{ lecture.title }}</span>
-            <div
-              [innerHtml]="lecture.data.question"
-              class="mt-3 mb-3 editor-html"
-            ></div>
+            <span class="h2">{{ lecture.title }}</span>
+            <div [innerHtml]="lecture.data.question" class="editor-html"></div>
             <ul class="unstyled-list container">
               <li
                 class="d-flex w-100 mb-2"

@@ -54,13 +54,7 @@ export class HomePageComponent implements OnInit {
         this.title = this.course.title
         this.subtitle = this.course.subtitle
         this.description = this.course.description
-
-        // Comprueba si el usuario del curso es profesor
-        if (
-          this.teachers.find((item) => item.id === this.course.user_id) != null
-        ) {
-          this.teacher = this.course.user_id
-        }
+        this.teacher = this.course.user_id
       }
     })
     this.adminService.sectionToEdit$.subscribe((id) => {
@@ -75,7 +69,8 @@ export class HomePageComponent implements OnInit {
       title: this.title,
       subtitle: this.subtitle,
       description: this.description,
-      status: this.course.status
+      status: this.course.status,
+      user_id: this.teacher
     }
     this.loading = true
     this.courseService

@@ -112,6 +112,9 @@ $menuItemPadX: 15px;
           &:last-child {
             border-bottom: none;
           }
+          &.lesson-selected {
+            background-color: #e9ecef;
+          }
         }
       }
       max-height: calc(100vh - #{$viewCourseSectionsHeader});
@@ -154,6 +157,14 @@ $menuItemPadX: 15px;
     width: 100vw;
     opacity: 1;
   }
+}
+
+.quiz-correct {
+  color: var(--green-500)
+}
+
+.quiz-incorrect {
+  color: var(--mainColor)
 }
 
 :host ::ng-deep {

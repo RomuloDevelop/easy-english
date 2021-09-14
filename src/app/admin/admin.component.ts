@@ -19,27 +19,27 @@ export class AdminComponent implements OnInit {
   }[] = [
     {
       label: 'Dashboard',
-      icon: 'pi pi-pw pi-file',
+      icon: 'pi pi-pw pi-chart-bar',
       route: '/admin'
     },
     {
       label: 'Gestión de Cursos',
-      icon: 'pi pi-pw pi-file',
+      icon: 'pi pi-pw pi-book',
       route: '/admin'
     },
     {
       label: 'Gestión de Profesores',
-      icon: 'pi pi-fw pi-pencil',
+      icon: 'pi pi-fw pi-user-edit',
       route: 'teachers'
     },
     {
       label: 'Gestión de Alumnos',
-      icon: 'pi pi-fw pi-question',
+      icon: 'pi pi-fw pi-user',
       route: 'students'
     },
     {
       label: 'Gestión de Pagos',
-      icon: 'pi pi-fw pi-cog',
+      icon: 'pi pi-fw pi-credit-card',
       route: 'payments'
     }
   ]
@@ -55,7 +55,7 @@ export class AdminComponent implements OnInit {
       if (user.role === 1) {
         this.items.push({
           label: 'Gestión de Inscripciónes',
-          icon: 'pi pi-fw pi-question',
+          icon: 'pi pi-fw pi-users',
           route: 'enrollments'
         })
       }

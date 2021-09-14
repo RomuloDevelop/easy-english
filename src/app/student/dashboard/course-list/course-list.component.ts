@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, Input, OnInit } from '@angular/core'
 import { Store, select } from '@ngrx/store'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
@@ -8,6 +8,7 @@ import {
 } from '../../../state/admin/admin.selectores'
 import { CourseService } from '../../../services/course.service'
 import { setCourses } from '../../../state/admin/courses/course.actions'
+import { ActivatedRoute, Router } from '@angular/router'
 
 @Component({
   selector: 'app-course-list',
@@ -20,7 +21,12 @@ export class CourseListComponent implements OnInit {
 
   list: Observable<CoursesTableRow[]>
 
-  constructor(private store: Store, private courseService: CourseService) {}
+  constructor(
+    private store: Store,
+    private courseService: CourseService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
     this.getTable()
@@ -42,5 +48,11 @@ export class CourseListComponent implements OnInit {
           console.error(err)
         }
       )
+  }
+
+  toCourse(id: number) {
+    this.router.navigate(['view-course', id], {
+      relativeTo: this.route
+    })
   }
 }

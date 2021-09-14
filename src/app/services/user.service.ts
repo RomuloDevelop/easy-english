@@ -12,7 +12,7 @@ import {
   updateUser
 } from '../state/admin/users/user.actions'
 import { throwError } from 'rxjs'
-import { setActualUser } from '../state/session/session.actions'
+import { setActualUser } from '../state/session/profile/session.actions'
 
 const { usersUrl } = Endpoints
 

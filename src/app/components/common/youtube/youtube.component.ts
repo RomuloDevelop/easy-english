@@ -1,4 +1,11 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core'
+import {
+  Component,
+  Input,
+  OnInit,
+  OnDestroy,
+  Output,
+  EventEmitter
+} from '@angular/core'
 
 @Component({
   selector: 'app-youtube',
@@ -7,6 +14,7 @@ import { Component, Input, OnInit, OnDestroy } from '@angular/core'
 })
 export class YoutubeComponent implements OnInit, OnDestroy {
   @Input() url: string = ''
+  @Output() stateChange = new EventEmitter<any>()
   videoHeight: number = 250
   videoWidth: number = 500
 
@@ -38,5 +46,9 @@ export class YoutubeComponent implements OnInit, OnDestroy {
 
   triggerRezise() {
     setTimeout(this.resizeWindow.bind(this), 300)
+  }
+
+  change(event: YT.OnStateChangeEvent) {
+    this.stateChange.emit(event)
   }
 }

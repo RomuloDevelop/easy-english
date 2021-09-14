@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core'
-import { CourseService } from '../course.service'
+import { Component, EventEmitter, Output, OnInit } from '@angular/core'
+import { StudentService } from '../student.service'
 import { MenuItem } from 'primeng/api'
 
 @Component({
@@ -8,10 +8,11 @@ import { MenuItem } from 'primeng/api'
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+  @Output() logout = new EventEmitter()
   items: MenuItem[]
   viewProfile = false
 
-  constructor(private courseService: CourseService) {}
+  constructor(private studentService: StudentService) {}
 
   classApplied = false
   toggleClass() {
@@ -31,21 +32,14 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.items = [
       {
-        label: 'My Profile',
-        icon: 'pi pi-fw pi-user'
-      },
-      {
-        separator: true
-      },
-      {
         label: 'Logout',
         icon: 'pi pi-fw pi-power-off',
-        routerLink: '/'
+        command: () => this.logout.emit()
       }
     ]
   }
 
   openNav() {
-    this.courseService.hideMenuMesage(true)
+    this.studentService.hideMenuMesage(true)
   }
 }

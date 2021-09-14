@@ -2,10 +2,43 @@
   <h1 class="h3 mb-4">{{ lesson?.title }}</h1>
   <app-question [question]="lesson?.data"></app-question>
   <div class="d-flex justify-content-end mt-3">
-    <button class="default-btn" (click)="submit()">
-      <i class="pi pi-pencil icon-arrow before"></i>
-      <span class="label">Submit</span>
-      <i class="pi pi-pencil icon-arrow after"></i>
+    <button
+      class="default-btn"
+      (click)="submit()"
+      [disabled]="quizNote || loading"
+    >
+      <ng-container *ngIf="!loading">
+        <i class="pi pi-pencil icon-arrow before"></i>
+      </ng-container>
+      <ng-container *ngIf="loading">
+        <ng-container
+          *ngTemplateOutlet="spinner; context: { $implicit: 'before' }"
+        ></ng-container>
+      </ng-container>
+
+      <span class="label"> Submit </span>
+
+      <ng-container *ngIf="!loading">
+        <i class="pi pi-pencil icon-arrow after"></i>
+      </ng-container>
+      <ng-container *ngIf="loading">
+        <ng-container
+          *ngTemplateOutlet="spinner; context: { $implicit: 'after' }"
+        ></ng-container
+      ></ng-container>
+
+      <ng-template #spinner let-iClass>
+        <i [class]="iClass" class="icon-arrow">
+          <p-progressSpinner
+            styleClass="custom-spinner"
+            strokeWidth="7"
+            [style]="{
+              width: '22px',
+              height: '22px'
+            }"
+          ></p-progressSpinner>
+        </i>
+      </ng-template>
     </button>
   </div>
 </div>
