@@ -76,6 +76,7 @@ export class UserService {
     return this.http.patch<{ data: User }>(`${usersUrl}/${id}`, user).pipe(
       map(({ data: user }) => {
         this.store.dispatch(updateUser({ user }))
+        return user
       }),
       finalize(finalizeCb)
     )

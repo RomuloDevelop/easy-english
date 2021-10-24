@@ -1,0 +1,26 @@
+:host ::ng-deep .form-group {
+  p-calendar {
+    & > span {
+      width: 100%;
+      .p-inputtext {
+        height: 46px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        border: 1px solid #e6e9fc;
+      }
+    }
+    .p-datepicker {
+      min-width: 0;
+    }
+  }
+  textarea {
+    padding: 8px 12px;
+    width: 100%;
+    border: 1px solid #e6e9fc;
+    border-radius: 4px;
+  }
+}
+
+.p-inputtext {
+  border: 1px solid #e6e9fc;
+}

@@ -1,22 +1,14 @@
-<form class="edit-account">
+<form [formGroup]="form" class="edit-account">
   <div class="row">
-    <div class="col-lg-6 col-md-6">
-      <div class="form-group">
-        <label>First name <span class="required">*</span></label>
-        <input type="text" class="form-control" value="James" />
-      </div>
-    </div>
-    <div class="col-lg-6 col-md-6">
-      <div class="form-group">
-        <label>Last name <span class="required">*</span></label>
-        <input type="text" class="form-control" value="Anderson" />
-      </div>
-    </div>
     <div class="col-lg-12 col-md-12">
       <div class="form-group">
-        <label>Display name <span class="required">*</span></label>
-        <input type="text" class="form-control" value="JamesET" />
-        <span
+        <label>Display name <span class="edit-text required">*</span></label>
+        <input
+          type="text"
+          class="form-control p-inputtext"
+          formControlName="name"
+        />
+        <span class="edit-text"
           ><em
             >This will be how your name will be displayed in the account section
             and in reviews</em
@@ -26,12 +18,36 @@
     </div>
     <div class="col-lg-12 col-md-12">
       <div class="form-group">
-        <label>Email address <span class="required">*</span></label>
+        <label>Email address <span class="edit-text required">*</span></label>
         <input
           type="email"
-          class="form-control"
-          value="hello@jamesanderson.com"
+          class="form-control p-inputtext"
+          formControlName="email"
         />
+      </div>
+    </div>
+    <div class="col-lg-12 col-md-12">
+      <div class="form-group">
+        <label>Date of birth <span class="edit-text required">*</span></label>
+        <p-calendar
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          yearRange="1900:2021"
+          formControlName="dob"
+        ></p-calendar>
+      </div>
+    </div>
+    <div class="col-lg-12 col-md-12">
+      <div class="form-group">
+        <label>Description<span class="edit-text required">*</span></label>
+        <textarea
+          rows="5"
+          cols="30"
+          style="display: block"
+          pInputTextarea
+          placeholder="Description"
+          formControlName="description"
+        ></textarea>
       </div>
     </div>
     <div class="col-lg-12 col-md-12">
@@ -39,28 +55,65 @@
     </div>
     <div class="col-lg-6 col-md-6">
       <div class="form-group">
-        <label>Current password (leave blank to leave unchanged)</label>
-        <input type="password" class="form-control" />
+        <label>New Password (leave blank to leave unchanged)</label>
+        <input
+          type="password"
+          class="form-control p-inputtext"
+          formControlName="password"
+        />
       </div>
     </div>
     <div class="col-lg-6 col-md-6">
       <div class="form-group">
-        <label>New password (leave blank to leave unchanged)</label>
-        <input type="password" class="form-control" />
+        <label>Confirm new password (leave blank to leave unchanged)</label>
+        <input
+          type="password"
+          class="form-control p-inputtext"
+          formControlName="repeat_password"
+        />
       </div>
     </div>
     <div class="col-lg-12 col-md-12">
-      <div class="form-group">
-        <label>Confirm new password</label>
-        <input type="password" class="form-control" />
-      </div>
-    </div>
-    <div class="col-lg-12 col-md-12">
-      <button type="submit" class="default-btn">
-        <i class="bx bx-save icon-arrow before"></i
-        ><span class="label">Save Changes</span
-        ><i class="bx bx-save icon-arrow after"></i>
+      <button
+        class="default-btn"
+        (click)="updateUser()"
+        [disabled]="form.invalid || loading"
+      >
+        <ng-container *ngIf="!loading">
+          <i class="bx bx-save icon-arrow before"></i>
+        </ng-container>
+        <ng-container *ngIf="loading">
+          <ng-container
+            *ngTemplateOutlet="spinner; context: { $implicit: 'before' }"
+          ></ng-container>
+        </ng-container>
+
+        <span class="label">Save Changes</span>
+
+        <ng-container *ngIf="!loading">
+          <i class="bx bx-save icon-arrow after"></i>
+        </ng-container>
+        <ng-container *ngIf="loading">
+          <ng-container
+            *ngTemplateOutlet="spinner; context: { $implicit: 'after' }"
+          ></ng-container
+        ></ng-container>
+
+        <ng-template #spinner let-iClass>
+          <i [class]="iClass" class="icon-arrow">
+            <p-progressSpinner
+              styleClass="custom-spinner"
+              strokeWidth="7"
+              [style]="{
+                width: '22px',
+                height: '22px',
+                color: '#fff !important'
+              }"
+            ></p-progressSpinner>
+          </i>
+        </ng-template>
       </button>
     </div>
   </div>
 </form>
+<p-toast></p-toast>

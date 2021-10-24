@@ -16,7 +16,6 @@ import { CardModule } from 'primeng/card'
 import { DialogModule } from 'primeng/dialog'
 import { ConfirmDialogModule } from 'primeng/confirmdialog'
 import { RadioButtonModule } from 'primeng/radiobutton'
-import { InputTextareaModule } from 'primeng/inputtextarea'
 import { InputSwitchModule } from 'primeng/inputswitch'
 import { ToastModule } from 'primeng/toast'
 import { TooltipModule } from 'primeng/tooltip'
@@ -26,7 +25,6 @@ import { AvatarModule } from 'primeng/avatar'
 import { AvatarGroupModule } from 'primeng/avatargroup'
 import { MenuModule } from 'primeng/menu'
 import { PanelMenuModule } from 'primeng/panelmenu'
-import { CalendarModule } from 'primeng/calendar'
 import { DropdownModule } from 'primeng/dropdown'
 import { MultiSelectModule } from 'primeng/multiselect'
 import { InputNumberModule } from 'primeng/inputnumber'
@@ -71,7 +69,6 @@ import { CreatePaymentComponent } from './payment/create-payment/create-payment.
     DialogModule,
     ConfirmDialogModule,
     RadioButtonModule,
-    InputTextareaModule,
     InputSwitchModule,
     ToastModule,
     TooltipModule,
@@ -81,7 +78,6 @@ import { CreatePaymentComponent } from './payment/create-payment/create-payment.
     AvatarGroupModule,
     MenuModule,
     PanelMenuModule,
-    CalendarModule,
     DropdownModule,
     MultiSelectModule,
     InputNumberModule

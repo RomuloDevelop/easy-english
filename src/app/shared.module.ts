@@ -14,6 +14,7 @@ import { RippleModule } from 'primeng/ripple'
 import { ButtonModule } from 'primeng/button'
 import { AccordionModule } from 'primeng/accordion'
 import { ProgressSpinnerModule } from 'primeng/progressspinner'
+import { InputTextareaModule } from 'primeng/inputtextarea'
 import {
   DashboardTabsComponent,
   TabComponent
@@ -23,6 +24,7 @@ import { YoutubeComponent } from './components/common/youtube/youtube.component'
 import { httpInterceptorProviders } from './interceptors/base'
 import { LoaderModule } from './components/common/loader/loader.module'
 import { SnowEditorDirective } from './directives/snow-editor.directive'
+import { CalendarModule } from 'primeng/calendar'
 
 @NgModule({
   declarations: [
@@ -63,7 +65,9 @@ import { SnowEditorDirective } from './directives/snow-editor.directive'
     ProgressSpinnerModule,
     ReactiveFormsModule,
     LoaderModule,
-    SnowEditorDirective
+    SnowEditorDirective,
+    CalendarModule,
+    InputTextareaModule
   ],
   providers: [httpInterceptorProviders]
 })

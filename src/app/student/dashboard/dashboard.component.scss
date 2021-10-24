@@ -245,14 +245,14 @@
                     size: var(--fontSize);
                     weight: 500;
                 };
-                .required {
+                .required.edit-text {
                     color: red;
                     font: {
                         size: var(--fontSize);
                     };
                 }
             }
-            span {
+            span.edit-text {
                 font-size: 13.5px;
                 color: var(--paragraphColor);
                 display: inline-block;

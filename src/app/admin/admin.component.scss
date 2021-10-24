@@ -2,7 +2,6 @@ section {
     background-color: #f8f9fa;
     padding-top: 70px;
     padding-bottom: 100px;
-    overflow-x: hidden;
     position: relative;
 }
 
@@ -40,6 +39,7 @@ $menuItemPadX: 15px;
         z-index: 1000;
     }
     .admin-side-nav {
+        z-index: 1000;
         position: relative;
         padding-top: 50px;
         top: 0;

@@ -90,9 +90,7 @@
     >
       <ng-container description>
         <p>
-          Hello <strong>{{ user.name }}</strong> (not
-          <strong>{{ user.name }}</strong
-          >? <a routerLink="/">Log out</a>)
+          Hello <strong>{{ user.name }}</strong>
         </p>
         <p>
           From your account dashboard you can view your
@@ -106,9 +104,9 @@
       <tab icon="bx bx-edit" label="Your profile">
         <app-edit-account></app-edit-account>
       </tab>
-      <tab icon="bx bx-edit" label="Billing Details">
+      <!-- <tab icon="bx bx-edit" label="Billing Details">
         <app-edit-billing></app-edit-billing>
-      </tab>
+      </tab> -->
       <tab
         icon="bx bx-log-out"
         label="Logout"

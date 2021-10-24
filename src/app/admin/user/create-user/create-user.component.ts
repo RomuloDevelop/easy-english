@@ -14,7 +14,7 @@ import { UserService } from 'src/app/services/user.service'
 import { User } from 'src/app/state/models'
 import * as moment from 'moment'
 
-const passworfValidator: ValidatorFn = (
+const passwordValidator: ValidatorFn = (
   control: AbstractControl
 ): ValidationErrors | null => {
   const password = control.get('password')
@@ -64,7 +64,7 @@ export class CreateUserComponent implements OnInit {
       parent_phone_two: [null],
       description: [null]
     },
-    { validators: passworfValidator }
+    { validators: passwordValidator }
   )
 
   form2 = this.formBuilder.group(
@@ -72,7 +72,7 @@ export class CreateUserComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(8)]],
       repeat_password: ['', [Validators.required]]
     },
-    { validators: passworfValidator }
+    { validators: passwordValidator }
   )
 
   constructor(
