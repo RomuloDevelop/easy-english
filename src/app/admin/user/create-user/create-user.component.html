@@ -43,6 +43,9 @@
       <div class="p-field col-12 col-md-6">
         <small id="title-help">Enter a date birth of the user.</small>
         <p-calendar
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          yearRange="1900:2021"
           placeholder="Date of birth"
           class="p-inputtext-sm"
           formControlName="dob"
@@ -73,6 +76,7 @@
           formControlName="description"
         ></textarea>
       </div>
+      <div class="col-12 col-md-6"></div>
       <ng-container *ngIf="role === 2">
         <div class="switch-field col-12 col-md-12 mb-1">
           <p-inputSwitch formControlName="is_supervised"></p-inputSwitch>

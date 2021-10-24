@@ -189,10 +189,7 @@ export class CreateUserComponent implements OnInit {
               summary: 'Success',
               detail: 'The user has been created'
             })
-            this.navigationService.back(
-              `../../../users/${this.role}`,
-              this.route
-            )
+            this.navigationService.back(`../`, this.route)
           },
           (err) => {
             console.error(err)

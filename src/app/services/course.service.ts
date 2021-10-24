@@ -39,6 +39,13 @@ export class CourseService {
     )
   }
 
+  getStudentCourses(finalizeCb = () => {}) {
+    return this.http.get<{ data: Course[] }>(`${courseUrl}`).pipe(
+      map(({ data }) => data),
+      finalize(finalizeCb)
+    )
+  }
+
   getCourse(
     id: number,
     finalizeCb = () => {}

@@ -98,10 +98,6 @@ export interface User {
   is_active?: boolean
 }
 
-export interface Session {
-  actualUser: User
-  userNotes: UserQuiz[]
-}
 export interface UserQuiz {
   id?: number
   course_quiz_id: number
@@ -109,6 +105,19 @@ export interface UserQuiz {
   approved: boolean
   total_ok: number
   total_bad: number
+}
+
+export interface Enrollment {
+  id?: number
+  user_id: number
+  course_id: number
+  last_lesson_id: number
+}
+
+export interface Session {
+  actualUser: User
+  userNotes: UserQuiz[]
+  enrollment: Enrollment
 }
 
 export interface AppState {

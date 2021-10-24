@@ -1,4 +1,4 @@
-import { User, UserQuiz } from '../../models'
+import { Enrollment, User, UserQuiz } from '../../models'
 import { createAction, props } from '@ngrx/store'
 
 export const setActualUser = createAction(
@@ -26,4 +26,9 @@ export const updateUserNote = createAction(
 export const updateUserNotes = createAction(
   '[UserNotes] Update User Notes',
   props<{ userNotes: UserQuiz[] }>()
+)
+
+export const setEnrollment = createAction(
+  '[Enrollment] Set User Enrollment',
+  props<{ enrollment: Enrollment }>()
 )

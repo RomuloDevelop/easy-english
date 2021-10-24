@@ -4,5 +4,8 @@
     [url]="lesson.data?.url"
     (stateChange)="videoChange($event)"
   ></app-youtube>
-  <div class="mt-3 editor-html" [innerHtml]="lesson.data?.detail"></div>
+  <div
+    class="mt-3 ql-editor editor-html"
+    [innerHtml]="lesson.data?.detail"
+  ></div>
 </div>

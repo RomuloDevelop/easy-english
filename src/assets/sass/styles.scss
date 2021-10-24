@@ -1,5 +1,6 @@
 @import 'components/scrollbar.scss';
 @import 'components/editor-html.scss';
+@import 'components/p-editor.scss';
 @import 'components/button-loader.scss';
 @import 'components/custom-input.scss';
 
@@ -9,6 +10,7 @@
   --fontFamily2: 'Open Sans', sans-serif;
   --mainColor: #af3a2b;
   --optionalColor2: #1f3353;
+  --optionalColor2rgb: 31, 51, 83;
   --optionalColor: #102360;
   --whiteColor: #ffffff;
   --hoverWhiteColor: #cdcdcdf7;

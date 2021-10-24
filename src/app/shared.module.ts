@@ -22,6 +22,7 @@ import { YoutubeComponent } from './components/common/youtube/youtube.component'
 
 import { httpInterceptorProviders } from './interceptors/base'
 import { LoaderModule } from './components/common/loader/loader.module'
+import { SnowEditorDirective } from './directives/snow-editor.directive'
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { LoaderModule } from './components/common/loader/loader.module'
     HeaderStyleFourComponent,
     DashboardTabsComponent,
     TabComponent,
-    YoutubeComponent
+    YoutubeComponent,
+    SnowEditorDirective
   ],
   imports: [
     RouterModule,
@@ -60,7 +62,8 @@ import { LoaderModule } from './components/common/loader/loader.module'
     YoutubeComponent,
     ProgressSpinnerModule,
     ReactiveFormsModule,
-    LoaderModule
+    LoaderModule,
+    SnowEditorDirective
   ],
   providers: [httpInterceptorProviders]
 })

@@ -1,6 +1,9 @@
 <div class="d-flex justify-content-center">
   <div>
-    <div class="editor-html" [innerHtml]="question?.question"></div>
+    <div
+      class="ql-editor editor-html question-html"
+      [innerHtml]="question?.question"
+    ></div>
     <ul class="unstyled-list">
       <li class="d-flex w-100 mb-2" *ngFor="let answer of question?.answers">
         <p-radioButton

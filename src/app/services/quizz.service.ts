@@ -170,6 +170,12 @@ export class QuizzService {
                     )
                   console.log(results)
                   console.log(deletes)
+                  if (!results?.length && !deletes?.length) {
+                    data.answers = withoutChange.map((item) =>
+                      DataTransform.answerToPost(item, quiz.course_id)
+                    )
+                    return of(data)
+                  }
                   return zip(...results, ...deletes).pipe(
                     map((answers) => {
                       const newAnswers = answers.filter(

@@ -14,25 +14,29 @@ const { userQuizzesUrl } = Endpoints
 export class UserQuizzService {
   constructor(private http: HttpClient, private store: Store) {}
 
-  getUserQuizzes(quiz: number, user: number) {
+  getUserQuizzes(quiz: number, user: number, store = true) {
     return this.http
       .get<{ data: UserQuiz[] }>(
         `${userQuizzesUrl}?user_id=${user}&course_quiz_id=${quiz}`
       )
-      .pipe(map(({ data }) => this.storeResult(data)))
+      .pipe(map(({ data }) => this.storeResult(data, store)))
   }
 
-  insertUserQuizzes(data: UserQuiz[]) {
+  insertUserQuizzes(data: UserQuiz[], store = true) {
     return this.http
       .post<{ data: UserQuiz[] }>('create_user_quizzes_massive', {
         user_quizzes: data
       })
-      .pipe(map(({ data }) => this.storeResult(data)))
+      .pipe(map(({ data }) => this.storeResult(data, store)))
   }
 
-  private storeResult(data: UserQuiz[]) {
+  private storeResult(data: UserQuiz[], store) {
     let result = data.length ? data : []
-    result.forEach((userNote) => this.store.dispatch(addUserNote({ userNote })))
+    if (store) {
+      result.forEach((userNote) =>
+        this.store.dispatch(addUserNote({ userNote }))
+      )
+    }
     return result
   }
 }

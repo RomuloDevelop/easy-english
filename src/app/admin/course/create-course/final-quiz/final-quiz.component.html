@@ -66,6 +66,7 @@
         <h2 class="h6 mt-1 mb-3">Question {{ indexOfelement + 1 }}</h2>
         <p-editor
           #editor
+          class="custom-editor"
           [(ngModel)]="questItem.question"
           [style]="{ height: '150px' }"
           [modules]="quillOptions"

@@ -112,7 +112,10 @@
             <div class="mb-3">
               <app-youtube [url]="lecture.data.url"></app-youtube>
             </div>
-            <div class="editor-html" [innerHtml]="lecture.data.detail"></div>
+            <div
+              class="ql-editor editor-html"
+              [innerHtml]="lecture.data.detail"
+            ></div>
           </ng-container>
           <ng-container *ngIf="lecture.type === 'Article'">
             <ng-container *ngIf="lecture.resources?.length">
@@ -127,11 +130,17 @@
             <strong class="mt-4">Article</strong>
             <hr class="mt-0" />
             <span class="h2">{{ lecture.title }}</span>
-            <div class="editor-html" [innerHtml]="lecture.data.detail"></div>
+            <div
+              class="ql-editor editor-html"
+              [innerHtml]="lecture.data.detail"
+            ></div>
           </ng-container>
           <ng-container *ngIf="lecture.type === 'Quiz'">
             <span class="h2">{{ lecture.title }}</span>
-            <div [innerHtml]="lecture.data.question" class="editor-html"></div>
+            <div
+              [innerHtml]="lecture.data.question"
+              class="ql-editor editor-html question-html"
+            ></div>
             <ul class="unstyled-list container">
               <li
                 class="d-flex w-100 mb-2"
@@ -250,6 +259,7 @@
       [(ngModel)]="lectureTitle"
     />
     <p-editor
+      appSnowEditor
       [(ngModel)]="articleDetail"
       [style]="{ height: '150px' }"
     ></p-editor>
@@ -312,6 +322,7 @@
         [(ngModel)]="videoUrl"
       />
       <p-editor
+        appSnowEditor
         [(ngModel)]="videoDetail"
         [style]="{ height: '150px' }"
       ></p-editor>
@@ -373,7 +384,11 @@
     />
     <div class="p-section-field">
       <h2 class="h6 mt-4 mb-3">Question</h2>
-      <p-editor [(ngModel)]="question" [style]="{ height: '150px' }"></p-editor>
+      <p-editor
+        appSnowEditor
+        [(ngModel)]="question"
+        [style]="{ height: '150px' }"
+      ></p-editor>
     </div>
     <div *ngIf="answers.length">
       <h2 class="h6 mt-4 mb-3">Answers</h2>

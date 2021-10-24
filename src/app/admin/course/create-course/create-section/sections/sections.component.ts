@@ -28,6 +28,7 @@ import memoize from '../../../../../decorators/memoize'
 import { LessonService } from '../../../../../services/lesson.service'
 import { YoutubeComponent } from '../../../../../components/common/youtube/youtube.component'
 import { Observable } from 'rxjs'
+import { element } from 'protractor'
 
 @Component({
   selector: 'app-sections',

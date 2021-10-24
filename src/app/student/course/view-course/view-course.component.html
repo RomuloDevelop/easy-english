@@ -17,6 +17,33 @@
     <span class="h5">Course Content</span>
   </div>
   <div class="view-course__lesson" [class]="{ active: !sectionPanel }">
+    <div
+      *ngIf="actualLesson !== null && actualLesson?.count !== 1"
+      class="nav-button prev-button"
+      (click)="prevLesson(actualLesson)"
+      pRipple
+    >
+      <i class="pi pi-chevron-left"></i>
+      <div class="info">
+        <span>{{ getNextLesson(actualLesson, false) }}</span>
+      </div>
+    </div>
+    <div
+      *ngIf="
+        (actualLesson !== null &&
+          actualLesson?.count < lessonList[lessonList.length - 1].count &&
+          actualLesson?.type !== 'Quiz') ||
+        (actualLesson?.type === 'Quiz' && actualLesson?.answered)
+      "
+      class="nav-button next-button"
+      (click)="nextLesson(actualLesson)"
+      pRipple
+    >
+      <i class="pi pi-chevron-right"></i>
+      <div class="info">
+        <span>{{ getNextLesson(actualLesson) }}</span>
+      </div>
+    </div>
     <ng-container *ngIf="showFinalQuiz">
       <app-final-quiz
         [quiz]="course.quiz"
@@ -24,11 +51,12 @@
       ></app-final-quiz>
     </ng-container>
     <ng-container *ngIf="!showFinalQuiz">
-      <ng-container *ngFor="let lesson of lessonList">
+      <ng-container *ngFor="let lesson of lessonList; let iLesson = index">
         <div
           @fadeInOut
           (@fadeInOut.done)="animationDone($event)"
-          *ngIf="actualLesson.id === lesson.id"
+          *ngIf="actualLesson?.id === lesson.id"
+          style="width: 100%; min-height: 100%"
         >
           <ng-container *ngTemplateOutlet="lessonPage"></ng-container>
         </div>
@@ -45,7 +73,10 @@
         <app-article-lesson [lesson]="actualLesson"></app-article-lesson>
       </ng-container>
       <ng-container *ngIf="actualLesson?.type === 'Quiz'">
-        <app-quiz [lesson]="actualLesson"></app-quiz>
+        <app-quiz
+          [lesson]="actualLesson"
+          (answered)="nextLesson(actualLesson)"
+        ></app-quiz>
       </ng-container>
       <ng-container *ngIf="actualLesson === null">
         <div style="width: 100%; height: 200vh; background-color: black"></div>
@@ -73,11 +104,16 @@
         <ul class="list-group">
           <li
             class="list-group-item list-group-item-action"
-            [class]="{ 'lesson-selected': actualLesson.id === lesson.id }"
+            [class]="{
+              'lesson-selected': actualLesson?.id === lesson.id,
+              disabled: lesson.count > lastLesson.count
+            }"
             *ngFor="let lesson of section.lectures; let i = index"
-            (click)="actualLesson = lesson; showFinalQuiz = false"
+            (click)="selectLesson(lesson)"
           >
-            <strong *ngIf="lesson.type !== 'Quiz'">{{ lesson.count }}.</strong>
+            <strong *ngIf="lesson.type !== 'Quiz'"
+              >{{ lesson.countToShow }}.</strong
+            >
             {{ lesson.title }}
             <span
               *ngIf="lesson.answered"
@@ -95,7 +131,10 @@
       <p-accordionTab
         header="Final quiz"
         class="final-quiz"
-        (click)="showFinalQuiz = true"
+        [disabled]="
+          lastLesson?.count !== lessonList[lessonList.length - 1].count
+        "
+        (click)="canShowFinalQuiz()"
       >
       </p-accordionTab>
     </p-accordion>

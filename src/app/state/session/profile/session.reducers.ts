@@ -4,7 +4,8 @@ import * as UserActions from './session.actions'
 
 export const initialState: Session = {
   actualUser: null,
-  userNotes: []
+  userNotes: [],
+  enrollment: null
 }
 
 const actualUserReducer = createReducer(
@@ -40,6 +41,10 @@ const actualUserReducer = createReducer(
       ...(userNotes.find((userNote) => userNote.id === item.id) || {}),
       ...item
     }))
+  })),
+  on(UserActions.setEnrollment, (state, { enrollment }) => ({
+    ...state,
+    enrollment
   }))
 )
 

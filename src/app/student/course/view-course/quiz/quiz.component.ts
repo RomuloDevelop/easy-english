@@ -1,8 +1,10 @@
 import {
   AfterViewInit,
   Component,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
   ViewChild
 } from '@angular/core'
 import { Quiz, UserQuiz } from 'src/app/state/models'
@@ -21,6 +23,7 @@ interface QuizLesson extends LessonToShow {
 export class QuizComponent implements OnInit {
   @ViewChild(QuestionComponent) question: QuestionComponent
   @Input() lesson: QuizLesson = null
+  @Output() answered = new EventEmitter()
   quizNote: UserQuiz = null
   loading = false
 
@@ -35,6 +38,7 @@ export class QuizComponent implements OnInit {
   }
 
   submit() {
+    this.question.checkAnswer()
     this.loading = true
     const userQuiz = {
       course_quiz_id: this.question.question.id,
@@ -45,7 +49,7 @@ export class QuizComponent implements OnInit {
     this.studentService
       .insertUserQuizzes([userQuiz], () => (this.loading = false))
       .subscribe(() => {
-        this.question.checkAnswer()
+        this.answered.emit()
       })
   }
 }

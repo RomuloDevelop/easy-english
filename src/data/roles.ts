@@ -1,8 +1,10 @@
-export type Roles = {
-  [key: string]: number
+export enum Roles {
+  admin = 1,
+  student = 2,
+  teacher = 3
 }
 
-const roles: Roles = {
+const roles: { [key in keyof typeof Roles]: Roles } = {
   admin: 1,
   student: 2,
   teacher: 3

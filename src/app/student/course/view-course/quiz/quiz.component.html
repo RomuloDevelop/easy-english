@@ -5,7 +5,7 @@
     <button
       class="default-btn"
       (click)="submit()"
-      [disabled]="quizNote || loading"
+      [disabled]="quizNote || loading || !question?.selected"
     >
       <ng-container *ngIf="!loading">
         <i class="pi pi-pencil icon-arrow before"></i>

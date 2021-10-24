@@ -22,8 +22,7 @@ p-progressspinner {
   justify-content: center;
 }
 
-.custom-spinner {
-  display: flex !important;
+@mixin custom-spinner-base {
   align-self: center;
   &:not(.blue) .p-progress-spinner-circle {
     @include custom-spinner-color();
@@ -31,6 +30,16 @@ p-progressspinner {
   &.blue .p-progress-spinner-circle {
     @include custom-spinner-color(var(--optionalColor), "blue");
   }
+}
+
+.custom-spinner {
+  display: flex !important;
+  @include custom-spinner-base();
+}
+
+.custom-spinner-inline {
+  display: inline-flex !important;
+  @include custom-spinner-base();
 }
 
 
