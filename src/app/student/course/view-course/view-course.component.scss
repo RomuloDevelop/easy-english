@@ -44,33 +44,32 @@ $menuItemPadX: 15px;
     width: 240px;
   }
 }
-.nav-button {
-  position: sticky;
+.nav-course-button {
+  position: absolute;
+  box-sizing: border-box;
+  height: 41px;
   display: flex;
   justify-content: center;
   align-items: center;
-  top: calc(50% - 16px);
   padding: 0.8rem 0px;
   width: 1.3rem;
   background-color: #{'rgba(var(--optionalColor2rgb), 0.7)'};
   cursor: pointer;
   color: white;
   text-align: center;
-  transition: all 0.3s;
+  transition: background-color 0.3s, width 0.3s, top 0.2s;
   overflow: visible;
   i {
     font-size: 1rem;
   }
   &.next-button {
-    margin-right: -1rem;
-    margin-left: auto;
+    right: 0;
     .info {
       left: -210px;
     }
   }
   &.prev-button {
-    margin-right: auto;
-    margin-left: -1rem;
+    left: 0;
     .info {
       right: -210px;
     }
@@ -111,6 +110,7 @@ $menuItemPadX: 15px;
   background-color: #f8f9fa;
   .view-course__lesson {
     position: relative;
+    overflow: hidden;
     padding: 2rem 1rem 4rem 1rem;
     width: 75%;
     transition: width 0.2s ease-out;

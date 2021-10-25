@@ -18,9 +18,12 @@
   </div>
   <div class="view-course__lesson" [class]="{ active: !sectionPanel }">
     <div
-      *ngIf="actualLesson !== null && actualLesson?.count !== 1"
-      class="nav-button prev-button"
+      *ngIf="hasPrevButton(actualLesson)"
+      class="nav-course-button prev-button"
       (click)="prevLesson(actualLesson)"
+      [style]="{
+        top: navPosition
+      }"
       pRipple
     >
       <i class="pi pi-chevron-left"></i>
@@ -29,14 +32,12 @@
       </div>
     </div>
     <div
-      *ngIf="
-        (actualLesson !== null &&
-          actualLesson?.count < lessonList[lessonList.length - 1].count &&
-          actualLesson?.type !== 'Quiz') ||
-        (actualLesson?.type === 'Quiz' && actualLesson?.answered)
-      "
-      class="nav-button next-button"
+      *ngIf="hasNextButton(actualLesson, lessonList)"
+      class="nav-course-button next-button"
       (click)="nextLesson(actualLesson)"
+      [style]="{
+        top: navPosition
+      }"
       pRipple
     >
       <i class="pi pi-chevron-right"></i>
@@ -56,7 +57,7 @@
           @fadeInOut
           (@fadeInOut.done)="animationDone($event)"
           *ngIf="actualLesson?.id === lesson.id"
-          style="width: 100%; min-height: 100%"
+          style="width: 100%"
         >
           <ng-container *ngTemplateOutlet="lessonPage"></ng-container>
         </div>

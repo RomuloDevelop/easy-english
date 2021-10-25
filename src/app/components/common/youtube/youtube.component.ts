@@ -2,6 +2,7 @@ import {
   Component,
   Input,
   OnInit,
+  AfterViewInit,
   OnDestroy,
   Output,
   EventEmitter
@@ -12,7 +13,7 @@ import {
   templateUrl: './youtube.component.html',
   styleUrls: ['./youtube.component.scss']
 })
-export class YoutubeComponent implements OnInit, OnDestroy {
+export class YoutubeComponent implements AfterViewInit, OnDestroy {
   @Input() url: string = ''
   @Output() stateChange = new EventEmitter<any>()
   videoHeight: number = 250
@@ -20,7 +21,7 @@ export class YoutubeComponent implements OnInit, OnDestroy {
 
   constructor() {}
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     // Add Youtube script
     const tag = document.createElement('script')
 

@@ -1,8 +1,15 @@
-import { Component, OnInit, ViewChild } from '@angular/core'
+import {
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { StudentService, CourseToShow, LessonToShow } from '../student.service'
 import { Enrollment, Lecture } from 'src/app/state/models'
 import { LoaderService } from '../../../components/common/loader/loader.service'
+import memoize from '../../../decorators/memoize'
 import { SessionService } from 'src/app/services/session.service'
 import { RouterAnimations } from 'src/app/utils/Animations'
 import { VideoLessonComponent } from './video-lesson/video-lesson.component'
@@ -13,7 +20,7 @@ import { combineLatest } from 'rxjs'
   styleUrls: ['./view-course.component.scss'],
   animations: [RouterAnimations.viewCourseTransition()]
 })
-export class ViewCourseComponent implements OnInit {
+export class ViewCourseComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(VideoLessonComponent, { static: false })
   video: VideoLessonComponent = null
   loadingCourse = false
@@ -26,12 +33,18 @@ export class ViewCourseComponent implements OnInit {
   sectionTabs: boolean[] = []
   firstLoad = false
   enrollment: Enrollment
+  navPosition = 'calc(50vh - 16px)'
+  scrollListener: (this: Window, ev: Event) => any
   constructor(
     private loader: LoaderService,
     private sessionService: SessionService,
     private studentService: StudentService,
     private route: ActivatedRoute
   ) {}
+
+  ngOnDestroy() {
+    window.removeEventListener('scroll', this.scrollListener)
+  }
 
   ngOnInit() {
     this.firstLoad = false
@@ -61,6 +74,30 @@ export class ViewCourseComponent implements OnInit {
       this.actualLesson = lastLessonToView || lessonList[0]
       this.lastLesson = lastLessonToView || lessonList[0]
     })
+  }
+
+  ngAfterViewInit() {
+    this.scrollEvent()
+  }
+
+  scrollEvent() {
+    this.navPosition = window.innerHeight / 2 - 20 + 'px'
+    this.scrollListener = (e) => {
+      const offset =
+        document.querySelector('.view-course__lesson').getBoundingClientRect()
+          .top - document.body.getBoundingClientRect().top
+      const scrollY = window.scrollY
+      const top = window.innerHeight / 2 - 20 + scrollY - offset
+      const footerHeight = document
+        .querySelector('.footer-area')
+        .getBoundingClientRect().height
+      const maxTop = document.body.scrollHeight - footerHeight - 41
+      console.log(top, maxTop, footerHeight)
+      if (top + offset < maxTop) {
+        this.navPosition = top + 'px'
+      }
+    }
+    window.addEventListener('scroll', this.scrollListener)
   }
 
   getLecture(lesson) {
@@ -133,6 +170,29 @@ export class ViewCourseComponent implements OnInit {
       }
     }
     return ''
+  }
+
+  @memoize({
+    normalizer: function (args) {
+      return JSON.stringify(args)
+    }
+  })
+  hasPrevButton(actualLesson: LessonToShow) {
+    return actualLesson !== null && actualLesson?.count !== 1
+  }
+
+  @memoize({
+    normalizer: function (args) {
+      return JSON.stringify(args)
+    }
+  })
+  hasNextButton(actualLesson: LessonToShow, lessonList: LessonToShow[]) {
+    return (
+      (actualLesson !== null &&
+        actualLesson?.count < lessonList[lessonList.length - 1].count &&
+        actualLesson?.type !== 'Quiz') ||
+      (actualLesson?.type === 'Quiz' && actualLesson?.answered)
+    )
   }
 
   logout() {
