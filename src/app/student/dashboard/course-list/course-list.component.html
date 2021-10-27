@@ -1,5 +1,8 @@
-<h3>Recent Orders</h3>
-<div class="recent-orders-table table-responsive">
+<h3>My Courses</h3>
+<div
+  class="recent-orders-table table-responsive"
+  *ngIf="(list | async).length; else noCourses"
+>
   <table class="table">
     <thead>
       <tr>
@@ -26,3 +29,6 @@
     </tbody>
   </table>
 </div>
+<ng-template #noCourses>
+  <h4 class="no-course">No course available</h4>
+</ng-template>

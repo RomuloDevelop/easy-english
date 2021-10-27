@@ -40,7 +40,7 @@ export class CourseService {
   }
 
   getStudentCourses(finalizeCb = () => {}) {
-    return this.http.get<{ data: Course[] }>(`${courseUrl}`).pipe(
+    return this.http.get<{ data: Course[] }>(`my_courses`).pipe(
       map(({ data }) => data),
       finalize(finalizeCb)
     )

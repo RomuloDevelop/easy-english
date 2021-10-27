@@ -39,7 +39,8 @@ export class CourseListComponent implements OnInit {
   getTable() {
     this.loadingCourses = true
     this.courseService
-      .getCourses(() => (this.loadingCourses = false))
+      .getStudentCourses(() => (this.loadingCourses = false))
+
       .subscribe(
         (courses) => {
           this.store.dispatch(setCourses({ courses }))

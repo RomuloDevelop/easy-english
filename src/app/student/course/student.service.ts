@@ -63,11 +63,10 @@ export class StudentService {
               )
             }
           })
-          const enrollment = enrollments.data.find(
-            (item) => item.user_id === user.id
-          )
+          const enrollment =
+            enrollments.data.find((item) => item.user_id === user.id) || null
 
-          if (enrollment) this.store.dispatch(setEnrollment({ enrollment }))
+          this.store.dispatch(setEnrollment({ enrollment }))
 
           return requests.length
             ? zip(...requests).pipe(

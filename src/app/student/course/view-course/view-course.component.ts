@@ -69,7 +69,8 @@ export class ViewCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       this.lessonList = lessonList
       this.sectionTabs = new Array(data.sections.length).fill(true)
       const lastLessonToView = lessonList.find(
-        (lesson) => lesson.id === enrollment.last_lesson_id
+        (lesson) =>
+          enrollment != null && lesson.id === enrollment.last_lesson_id
       )
       this.actualLesson = lastLessonToView || lessonList[0]
       this.lastLesson = lastLessonToView || lessonList[0]
