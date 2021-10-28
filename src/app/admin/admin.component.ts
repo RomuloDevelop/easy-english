@@ -4,6 +4,7 @@ import { SessionService } from '../services/session.service'
 import { LoaderService } from '../components/common/loader/loader.service'
 import { selectActualUser } from '../state/session/session.selectors'
 import { RouterAnimations } from '../utils/Animations'
+import { User } from '../state/models'
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
@@ -11,36 +12,49 @@ import { RouterAnimations } from '../utils/Animations'
   animations: [RouterAnimations.routerForwardAnimation()]
 })
 export class AdminComponent implements OnInit {
+  actualUser: User
   viewMenu = true
   items: {
     label: string
     icon: string
     route?: string
+    admin: boolean
   }[] = [
     {
       label: 'Dashboard',
       icon: 'pi pi-pw pi-chart-bar',
-      route: '/admin'
+      route: '/admin',
+      admin: true
     },
     {
       label: 'Gestión de Cursos',
       icon: 'pi pi-pw pi-book',
-      route: '/admin'
+      route: '/admin',
+      admin: false
     },
     {
       label: 'Gestión de Profesores',
       icon: 'pi pi-fw pi-user-edit',
-      route: 'teachers'
+      route: 'teachers',
+      admin: false
     },
     {
       label: 'Gestión de Alumnos',
       icon: 'pi pi-fw pi-user',
-      route: 'students'
+      route: 'students',
+      admin: true
     },
     {
       label: 'Gestión de Pagos',
       icon: 'pi pi-fw pi-credit-card',
-      route: 'payments'
+      route: 'payments',
+      admin: true
+    },
+    {
+      label: 'Gestión de Inscripciónes',
+      icon: 'pi pi-fw pi-users',
+      route: 'enrollments',
+      admin: true
     }
   ]
 
@@ -52,13 +66,7 @@ export class AdminComponent implements OnInit {
 
   ngOnInit() {
     this.store.pipe(select(selectActualUser)).subscribe((user) => {
-      if (user.role === 1) {
-        this.items.push({
-          label: 'Gestión de Inscripciónes',
-          icon: 'pi pi-fw pi-users',
-          route: 'enrollments'
-        })
-      }
+      this.actualUser = user
     })
   }
 

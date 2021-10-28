@@ -10,14 +10,16 @@
     </div>
     <img class="admin-side-nav__logo" src="assets/img/logoEN.png" alt="logo" />
     <ul class="menu-list">
-      <li
-        *ngFor="let item of items"
-        class="menu-item"
-        [routerLink]="item.route"
-      >
-        <i [class]="item.icon"></i>
-        <span>{{ item.label }}</span>
-      </li>
+      <ng-container *ngFor="let item of items">
+        <li
+          *ngIf="!item.admin || actualUser.role === 1"
+          class="menu-item"
+          [routerLink]="item.route"
+        >
+          <i [class]="item.icon"></i>
+          <span>{{ item.label }}</span>
+        </li>
+      </ng-container>
     </ul>
   </div>
   <div class="admin-content" [class]="{ active: viewMenu }">

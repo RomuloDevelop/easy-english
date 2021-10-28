@@ -30,7 +30,7 @@ export class HomePageComponent implements OnInit {
   sections: SectionData[] = []
   course: CoursesTableRow = null
   courseId = parseInt(this.route.snapshot.paramMap.get('id'))
-  teachers: User[] = []
+  teachers: any[] = []
 
   constructor(
     public adminService: AdminService,
@@ -49,12 +49,20 @@ export class HomePageComponent implements OnInit {
       this.userService.getUsers(3)
     ]).subscribe(([courses, teachers]) => {
       if (courses != null && teachers != null) {
-        this.teachers = teachers
+        this.teachers = [
+          { name: 'No asignado', id: null, inactive: true },
+          ...teachers
+        ]
+        console.log(this.teachers)
         this.course = courses.find((item) => item.id === this.courseId)
         this.title = this.course.title
         this.subtitle = this.course.subtitle
         this.description = this.course.description
-        this.teacher = this.course.user_id
+        this.teacher = this.teachers.find(
+          (item) => this.course.user_id === item.id
+        )
+          ? this.course.user_id
+          : null
       }
     })
     this.adminService.sectionToEdit$.subscribe((id) => {
@@ -70,7 +78,7 @@ export class HomePageComponent implements OnInit {
       subtitle: this.subtitle,
       description: this.description,
       status: this.course.status,
-      user_id: this.teacher
+      user_id: this.teacher == null ? this.course.user_id : this.teacher
     }
     this.loading = true
     this.courseService

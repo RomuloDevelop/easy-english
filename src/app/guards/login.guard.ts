@@ -10,7 +10,7 @@ import {
 import { select, Store } from '@ngrx/store'
 import { Observable } from 'rxjs'
 import { selectActualUser } from '../state/session/session.selectors'
-import roles from '../../data/roles'
+import roles, { Roles } from '../../data/roles'
 import { map } from 'rxjs/operators'
 
 @Injectable({
@@ -35,6 +35,11 @@ export class LoginGuard implements CanActivate {
     return roles[url[0].path]
   }
 
+  getRoute(route: ActivatedRouteSnapshot) {
+    const url = route.parent.url
+    return url[0].path
+  }
+
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
@@ -48,10 +53,14 @@ export class LoginGuard implements CanActivate {
       return this.store.pipe(
         select(selectActualUser),
         map((user) => {
-          const result = user.role === 1 || user.role === this.getRole(route)
+          const result =
+            user.role === 1 ||
+            (this.getRoute(route) === 'admin' && user.role === 3) ||
+            (this.getRoute(route) === 'student' && user.role === 2)
           if (!result) {
             this.redirectToLogin(route)
           }
+          console.log('guard', this.getRole(route))
           return result
         })
       )

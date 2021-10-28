@@ -32,7 +32,8 @@ export class LoginPageComponent implements OnInit {
 
   getRole() {
     const url = this.route.snapshot.pathFromRoot[1].url
-    this.requiredRole = roles[url[0].path]
+    this.requiredRole =
+      url[0].path === 'student' ? roles['student'] : roles['teacher']
   }
 
   submit() {

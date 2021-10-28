@@ -5,6 +5,9 @@ import { User } from '../../../state/models'
 import { selectUsers } from '../../../state/admin/admin.selectores'
 import { ConfirmationService, PrimeNGConfig, Message } from 'primeng/api'
 import { UserService } from 'src/app/services/user.service'
+import { selectActualUser } from 'src/app/state/session/session.selectors'
+import { take } from 'rxjs/operators'
+import { combineLatest } from 'rxjs'
 
 @Component({
   selector: 'app-users',
@@ -12,6 +15,7 @@ import { UserService } from 'src/app/services/user.service'
   styleUrls: ['./users.component.scss']
 })
 export class UsersComponent implements OnInit {
+  actualUser: User
   loadingUsers = false
   msgs: Message[] = []
 
@@ -37,9 +41,14 @@ export class UsersComponent implements OnInit {
       this.role = parseInt(data.role)
       console.log(data)
       this.getTable()
-      this.store.pipe(select(selectUsers)).subscribe((data) => {
-        console.log(data)
-        this.users = data
+      combineLatest([
+        this.store.pipe(select(selectUsers)),
+        this.store.pipe(select(selectActualUser))
+      ]).subscribe(([data, actualUser]) => {
+        this.actualUser = actualUser
+        this.users = data.filter((user) =>
+          actualUser.role === 3 ? user.id === actualUser.id : true
+        )
       })
     })
   }

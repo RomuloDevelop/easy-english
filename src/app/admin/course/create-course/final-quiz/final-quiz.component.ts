@@ -35,8 +35,7 @@ export class FinalQuizComponent implements OnInit {
       [{ size: ['small', false, 'large', 'huge'] }],
       ['bold', 'italic', 'underline'],
       ['image', 'code-block']
-    ],
-    theme: 'snow'
+    ]
   }
 
   constructor(

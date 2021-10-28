@@ -23,6 +23,7 @@ import { deleteSectionLecture } from 'src/app/state/admin/lectures/lecture.actio
 import { combineLatest, zip } from 'rxjs'
 import { take } from 'rxjs/operators'
 import { selectActualUser } from 'src/app/state/session/session.selectors'
+import memoize from 'src/app/decorators/memoize'
 
 @Component({
   selector: 'app-courses',
@@ -55,12 +56,11 @@ export class CoursesComponent implements OnInit {
 
   ngOnInit() {
     this.primengConfig.ripple = true
-    this.getTable()
-    combineLatest([
-      this.store.pipe(select(selectActualUser)),
-      this.store.pipe(select(selectCoursesTable))
-    ]).subscribe(([actualUser, courses]) => {
+    this.store.pipe(select(selectActualUser)).subscribe((actualUser) => {
       this.actualUser = actualUser
+      this.getTable()
+    })
+    this.store.pipe(select(selectCoursesTable)).subscribe((courses) => {
       this.courses = courses
     })
   }
@@ -71,7 +71,15 @@ export class CoursesComponent implements OnInit {
       .getCourses(() => (this.loadingCourses = false))
       .subscribe(
         (courses) => {
-          this.store.dispatch(setCourses({ courses }))
+          this.store.dispatch(
+            setCourses({
+              courses: courses.filter((course) =>
+                this.actualUser.role === 3
+                  ? course.user_id === this.actualUser.id
+                  : true
+              )
+            })
+          )
         },
         (err) => {
           console.error(err)
