@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core'
-import { Router, NavigationEnd } from '@angular/router'
+import { Router } from '@angular/router'
 import { select, Store } from '@ngrx/store'
-import { Observable } from 'rxjs'
 import { User } from 'src/app/state/models'
 import { selectActualUser } from 'src/app/state/session/session.selectors'
 import { SessionService } from '../../services/session.service'

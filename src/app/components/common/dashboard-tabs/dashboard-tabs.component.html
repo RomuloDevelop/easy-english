@@ -24,7 +24,11 @@
   </div>
   <div class="myDashboard-content">
     <ng-content select="[description]"></ng-content>
-    <div style="position: relative">
+    <div
+      style="position: relative"
+      class="myDashboard-content-tab"
+      [style]="{ height: tabHeight !== null ? tabHeight + 'px' : 'auto' }"
+    >
       <ng-content></ng-content>
     </div>
   </div>

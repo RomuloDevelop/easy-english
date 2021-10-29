@@ -6,19 +6,29 @@ import {
   OnChanges,
   ContentChildren,
   QueryList,
-  AfterContentInit
+  AfterContentInit,
+  AfterViewInit,
+  ViewChild,
+  ElementRef
 } from '@angular/core'
+import { RouterAnimations } from 'src/app/utils/Animations'
 
 @Component({
   selector: 'tab',
   template: `
-    <div class="tab-content" [class]="{ visible: display, hidden: !display }">
+    <div
+      #tabContent
+      class="tab-content"
+      [@fadeInOutTab]="display ? 'in-tab' : 'out-tab'"
+    >
       <ng-content></ng-content>
     </div>
   `,
-  styleUrls: ['./dashboard-tabs.component.scss']
+  styleUrls: ['./dashboard-tabs.component.scss'],
+  animations: [RouterAnimations.tabTransition()]
 })
 export class TabComponent {
+  @ViewChild('tabContent') element: ElementRef
   @Input() label: string = ''
   @Input() icon: string = ''
   @Input() notDisplay: boolean = false
@@ -34,6 +44,11 @@ export class TabComponent {
 
   hideTab() {
     this.display = false
+  }
+
+  getHeight() {
+    const height = this.element.nativeElement.clientHeight
+    return height
   }
 }
 
@@ -53,6 +68,10 @@ export class DashboardTabsComponent implements OnChanges, AfterContentInit {
   @ContentChildren(TabComponent) tabsTemp: QueryList<TabComponent>
   tabs: Tab[] = []
 
+  nextHeight: number = null
+  prevHeight: number = null
+  tabHeight: number = null
+
   selected: number = 0
 
   constructor() {}
@@ -71,6 +90,10 @@ export class DashboardTabsComponent implements OnChanges, AfterContentInit {
 
       if (i !== this.selected) {
         item.hideTab()
+      } else {
+        setTimeout(() => {
+          this.tabHeight = item.getHeight()
+        })
       }
     })
 
@@ -84,7 +107,20 @@ export class DashboardTabsComponent implements OnChanges, AfterContentInit {
       this.selected = index
       this.tabsTemp.forEach((item, i) => {
         if (index === i) {
+          if (index > this.selected) {
+            this.tabHeight = this.nextHeight
+          } else if (index < this.selected) {
+            this.tabHeight = this.prevHeight
+          } else {
+            this.tabHeight = item.getHeight()
+          }
           item.showTab()
+          this.nextHeight = this.tabsTemp
+            .find((item, index) => index === i + 1)
+            ?.getHeight()
+          this.prevHeight = this.tabsTemp
+            .find((item, index) => index === i - 1)
+            ?.getHeight()
         } else {
           item.hideTab()
         }
@@ -96,5 +132,6 @@ export class DashboardTabsComponent implements OnChanges, AfterContentInit {
         }
       })
     }
+    console.log(this.tabHeight)
   }
 }

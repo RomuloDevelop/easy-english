@@ -45,6 +45,11 @@
   }
 }
 
+.myDashboard-content-tab {
+  transition: height 0.5s ease-in-out;
+  overflow: hidden;
+}
+
 @media only screen and (max-width: 767px) {
   .myDashboard-navigation {
       ul {
@@ -69,7 +74,6 @@
 
 .tab-content {
   position: relative;
-  transition: all 0.3s ease-out;
   &.visible {
     display: block;
   }
