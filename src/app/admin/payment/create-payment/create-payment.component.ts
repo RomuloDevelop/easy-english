@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
 import { FormBuilder, Validators } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
 import { MessageService } from 'primeng/api'
@@ -14,11 +14,13 @@ import * as moment from 'moment'
   styleUrls: ['./create-payment.component.scss']
 })
 export class CreatePaymentComponent implements OnInit {
+  @ViewChild('file') file: ElementRef
   paymentId = parseInt(this.route.snapshot.paramMap.get('id'))
   users: User[] = []
   actualUrl = this.route.snapshot.url.map((segment) => segment.path).join('/')
   willUpdate = false
   loading = false
+  voucher: File = null
   statusList = [
     {
       id: 1,
@@ -36,10 +38,8 @@ export class CreatePaymentComponent implements OnInit {
 
   form = this.formBuilder.group({
     user_id: [null, Validators.required],
-    description: ['', Validators.required],
     date: ['', Validators.required],
-    status: [1, Validators.required],
-    percentage: ['', Validators.required]
+    status: [1, Validators.required]
   })
 
   constructor(
@@ -63,18 +63,17 @@ export class CreatePaymentComponent implements OnInit {
           this.form.controls.description.setValue(payment.description)
           this.form.controls.date.setValue(moment(payment.date).toDate())
           this.form.controls.status.setValue(payment.status)
-          this.form.controls.percentage.setValue(payment.percentaje)
         })
     }
     console.log('init')
   }
-  updatePayment() {
+  async updatePayment() {
+    const base64 = await this.convertBlobToBase64(this.voucher)
     const payment: Payment = {
       user_id: this.form.get('user_id').value,
-      description: this.form.get('description').value,
+      description: base64,
       date: moment(this.form.get('date').value).format('YYYY-MM-DD'),
-      status: this.form.get('status').value,
-      percentaje: this.form.get('percentage').value
+      status: this.form.get('status').value
     }
     this.loading = true
     if (this.willUpdate) {
@@ -120,5 +119,26 @@ export class CreatePaymentComponent implements OnInit {
           }
         )
     }
+  }
+
+  getVoucher() {
+    this.file.nativeElement.click()
+  }
+
+  setFile(event) {
+    this.voucher = event.target.files[0]
+  }
+
+  convertBlobToBase64(blob: Blob): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onerror = reject
+      reader.onload = () => {
+        const base64data = reader.result as string
+        console.log('onload', base64data)
+        resolve(base64data)
+      }
+      reader.readAsDataURL(blob)
+    })
   }
 }

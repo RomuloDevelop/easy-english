@@ -11,6 +11,7 @@ import { EnrollmentsComponent } from './enrollment/enrollments/enrollments.compo
 import { CreateEnrollmentComponent } from './enrollment/create-enrollment/create-enrollment.component'
 import { PaymentsComponent } from './payment/payments/payments.component'
 import { CreatePaymentComponent } from './payment/create-payment/create-payment.component'
+import { TipsComponent } from './tips/tips.component'
 
 const routes: Routes = [
   {
@@ -106,6 +107,11 @@ const routes: Routes = [
             data: { animation: 'CreateEnrollment' }
           }
         ]
+      },
+      {
+        path: 'tips',
+        component: TipsComponent,
+        data: { animation: 'Tips' }
       }
     ]
   },

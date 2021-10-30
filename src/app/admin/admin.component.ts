@@ -55,6 +55,12 @@ export class AdminComponent implements OnInit {
       icon: 'pi pi-fw pi-users',
       route: 'enrollments',
       admin: true
+    },
+    {
+      label: 'Gestión de Tips',
+      icon: 'pi pi-fw pi-comment',
+      route: 'tips',
+      admin: true
     }
   ]
 

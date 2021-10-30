@@ -6,7 +6,6 @@ import { selectUsers } from '../../../state/admin/admin.selectores'
 import { ConfirmationService, PrimeNGConfig, Message } from 'primeng/api'
 import { UserService } from 'src/app/services/user.service'
 import { selectActualUser } from 'src/app/state/session/session.selectors'
-import { take } from 'rxjs/operators'
 import { combineLatest } from 'rxjs'
 
 @Component({

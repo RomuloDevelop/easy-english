@@ -9,5 +9,6 @@ export default {
   loginUrl: 'login',
   logoutUrl: 'logout',
   enrollmentUrl: 'enrollments',
-  paymentUrl: 'payments'
+  paymentUrl: 'payments',
+  tipsUrl: 'tips'
 }

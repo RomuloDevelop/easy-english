@@ -83,4 +83,15 @@ export class PaymentsComponent implements OnInit {
       }
     )
   }
+
+  downloadVoucher(payment: Payment) {
+    console.log(payment)
+    const a = document.createElement('a')
+    const fileType = payment.description.split(';')[0].split('/')[1]
+    a.href = payment.description
+    a.download = `voucher-${payment.date}.${fileType}`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+  }
 }

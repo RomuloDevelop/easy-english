@@ -1,0 +1,12 @@
+.p-button.p-button-danger:not(:hover), .p-buttonset.p-button-danger > .p-button:not(:hover), .p-splitbutton.p-button-danger > .p-button:not(:hover) {
+  background-color: var(--mainColor);
+}
+
+.close-button {
+  cursor: pointer;
+  transition: color 0.2s;
+  color: #7f7f7f;
+  &:hover {
+    color: #afafaf;
+  }
+}

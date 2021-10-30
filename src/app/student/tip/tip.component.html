@@ -1,0 +1,33 @@
+<div class="tip-container" *ngIf="show" [@listFade]>
+  <div>
+    <div class="tip-close close-button" (click)="showChange.emit()">
+      <i class="pi pi-times"></i>
+    </div>
+    <h3>
+      <i style="font-size: 1.3rem" class="pi pi-exclamation-circle"></i>
+      Tip!
+    </h3>
+    <p>
+      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Libero, repellat
+      rerum. Fugiat amet maiores corrupti aperiam! Quibusdam ad nulla similique
+      magni in cum, accusamus incidunt quae id ratione libero est!
+    </p>
+    <div class="tip-footer">
+      <button
+        pButton
+        pRipple
+        type="button"
+        label="Next tip"
+        class="p-button-raised p-button-danger"
+      ></button>
+      <button
+        pButton
+        pRipple
+        type="button"
+        label="Cancel"
+        class="p-button-outlined p-button-secondary"
+        (click)="showChange.emit()"
+      ></button>
+    </div>
+  </div>
+</div>

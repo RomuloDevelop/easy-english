@@ -5,3 +5,10 @@
 .p-inputtext:enabled:focus:not(.ng-dirty.ng-invalid) {
   border-color: #0d2b8d !important;
 }
+
+textarea {
+  padding: 8px 12px;
+  width: 100%;
+  border: 1px solid #e6e9fc;
+  border-radius: 4px;
+}

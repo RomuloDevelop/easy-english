@@ -20,16 +20,6 @@
         ></p-dropdown>
       </div>
       <div class="p-field col-12 col-md-6">
-        <small id="title-help">Type a percentage for the payment.</small>
-        <p-inputNumber
-          formControlName="percentage"
-          class="p-inputtext-sm"
-          inputId="percent"
-          prefix="%"
-        >
-        </p-inputNumber>
-      </div>
-      <div class="p-field col-12 col-md-6">
         <small id="title-help">Select a status for actual payment.</small>
         <p-dropdown
           [options]="statusList"
@@ -48,19 +38,36 @@
       </div>
       <div class="p-field col-12 col-md-6">
         <small id="title-help">Enter the payment's detail.</small>
-        <textarea
-          rows="5"
-          cols="30"
-          pInputTextarea
-          placeholder="Description"
-          formControlName="description"
-        ></textarea>
+        <div class="voucher-control">
+          <button
+            pButton
+            pRipple
+            type="button"
+            label="Upload voucher"
+            class="p-button-raised p-button-danger"
+            (click)="getVoucher()"
+          ></button>
+          <span class="p-ml-2">{{ voucher?.name }}</span>
+          <div
+            class="close-button"
+            (click)="voucher = null"
+            *ngIf="voucher !== null"
+          >
+            <i class="pi pi-times" style="vertical-align: middle"></i>
+          </div>
+        </div>
+        <input
+          #file
+          type="file"
+          (change)="setFile($event)"
+          style="display: none"
+        />
       </div>
       <div class="d-flex justify-content-center mt-3">
         <button
           class="default-btn"
           (click)="updatePayment()"
-          [disabled]="form.invalid"
+          [disabled]="form.invalid || voucher === null"
         >
           <ng-container *ngIf="!loading">
             <i class="pi pi-pencil icon-arrow before"></i>

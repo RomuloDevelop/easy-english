@@ -48,6 +48,9 @@
 .myDashboard-content-tab {
   transition: height 0.5s ease-in-out;
   overflow: hidden;
+  padding-bottom: 20px;
+  padding-left: 10px;
+  box-sizing: content-box;
 }
 
 @media only screen and (max-width: 767px) {

@@ -1,21 +1,13 @@
 import { Component, OnInit } from '@angular/core'
-import { trigger, style, animate, transition } from '@angular/animations'
 import { LoaderService } from '../loader.service'
 import { Subscription } from 'rxjs'
+import { RouterAnimations } from 'src/app/utils/Animations'
 
 @Component({
   selector: 'app-loader',
   templateUrl: './loader.component.html',
   styleUrls: ['./loader.component.scss'],
-  animations: [
-    trigger('listFade', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate('0.3s 0.1s ease', style({ opacity: 1 }))
-      ]),
-      transition(':leave', [animate('0.3s 0.1s ease', style({ opacity: 0 }))])
-    ])
-  ]
+  animations: [RouterAnimations.fadeTransition()]
 })
 export class LoaderComponent implements OnInit {
   show = false

@@ -92,8 +92,8 @@ export class RouterAnimations {
         style({
           position: 'absolute',
           top: 0,
-          width: '100%',
-          transform: 'translateX(0%)',
+          width: 'calc(100% - 20px)', //Toma encuenta padding para mostrar sombreado
+          transform: 'none',
           opacity: 1
         })
       ),
@@ -108,6 +108,16 @@ export class RouterAnimations {
       ),
       transition('in-tab => out-tab', [animate('0.5s ease-in-out')]),
       transition('out-tab => in-tab', [animate('0.5s ease-in-out')])
+    ])
+  }
+
+  static fadeTransition() {
+    return trigger('listFade', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('0.3s 0.1s ease', style({ opacity: 1 }))
+      ]),
+      transition(':leave', [animate('0.3s 0.1s ease', style({ opacity: 0 }))])
     ])
   }
 }

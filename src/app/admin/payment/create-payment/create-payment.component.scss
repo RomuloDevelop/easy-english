@@ -23,3 +23,12 @@
 :host ::ng-deep app-dashboard-tabs > * {
   margin-top: 3rem;
 }
+
+.voucher-control {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  * {
+    margin-right: 0.8rem;
+  }
+}

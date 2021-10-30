@@ -2,11 +2,11 @@
   <div class="page-title-content p-mb-5">
     <ul>
       <li><a routerLink="../admin">Admin</a></li>
-      <li>Payment</li>
+      <li>Tips</li>
     </ul>
-    <h2>Payments</h2>
+    <h2>Tips</h2>
   </div>
-  <ng-container *ngIf="loadingPayments">
+  <ng-container *ngIf="loadingTips">
     <div class="d-flex justify-content-center align-items-center w-100">
       <p-progressSpinner
         styleClass="custom-spinner blue"
@@ -18,25 +18,25 @@
       ></p-progressSpinner>
     </div>
   </ng-container>
-  <ng-container *ngIf="payments?.length && !loadingPayments">
+  <ng-container *ngIf="tips?.length && !loadingTips">
     <p-table
-      [value]="payments"
+      [value]="tips"
       dataKey="id"
       tableStyleClass="p-datatable-responsive"
     >
       <ng-template pTemplate="header">
         <tr>
           <th style="width: 3rem"></th>
-          <th *ngFor="let col of paymentCols">{{ col }}</th>
+          <th *ngFor="let col of tipCols">{{ col }}</th>
           <th>Actions</th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-payment let-expanded="expanded">
+      <ng-template pTemplate="body" let-tip let-expanded="expanded">
         <tr>
           <td style="width: 3rem"></td>
-          <td *ngFor="let row of paymentRows; let iCol = index">
-            <span class="p-column-title">{{ paymentCols[iCol] }}</span>
-            {{ payment[row] }}
+          <td *ngFor="let row of tipRows; let iCol = index">
+            <span class="p-column-title">{{ tipCols[iCol] }}</span>
+            {{ tip[row] }}
           </td>
           <td>
             <span class="p-column-title">Actions</span>
@@ -45,17 +45,9 @@
                 pButton
                 pRipple
                 type="button"
-                icon="pi pi-download"
-                class="p-button-rounded p-button-outlined btn-action"
-                (click)="downloadVoucher(payment)"
-              ></button>
-              <button
-                pButton
-                pRipple
-                type="button"
                 icon="pi pi-pencil"
                 class="p-button-rounded p-button-outlined btn-action"
-                (click)="editPayment(payment)"
+                (click)="editTip(tip)"
               ></button>
               <button
                 pButton
@@ -66,7 +58,7 @@
                   p-button-rounded p-button-danger p-button-outlined
                   btn-action
                 "
-                (click)="confirmDeletePayment(payment)"
+                (click)="confirmDeleteTip(tip)"
               ></button>
             </div>
           </td>
@@ -74,7 +66,7 @@
       </ng-template>
     </p-table>
   </ng-container>
-  <ng-container *ngIf="!payments?.length && !loadingPayments">
+  <ng-container *ngIf="!tips?.length && !loadingTips">
     <div
       class="d-flex justify-content-center align-items-center w-100"
       style="height: 200px"
@@ -82,10 +74,10 @@
       <span class="h1">No data available</span>
     </div>
   </ng-container>
-  <div class="d-flex justify-content-end mt-3">
-    <a (click)="toCreatePage()" class="default-btn"
+  <div class="d-flex justify-content-end mt-3" *ngIf="actualUser.role === 1">
+    <a (click)="newTip()" class="default-btn"
       ><i class="bx bx-plus-circle icon-arrow before"></i
-      ><span class="label">Register Payment</span
+      ><span class="label">Create Tip</span
       ><i class="bx bx-plus-circle icon-arrow after"></i
     ></a>
   </div>
@@ -96,3 +88,49 @@
   [style]="{ width: '50vw' }"
   [baseZIndex]="10000"
 ></p-confirmDialog>
+
+<!-- Notification -->
+<p-toast></p-toast>
+
+<!-- Create/Edit dialog -->
+<p-dialog
+  [header]="tip.id ? 'Update Tip' : 'New Tip'"
+  [modal]="true"
+  [(visible)]="tipModal"
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+  [closable]="!loadingTip"
+>
+  <p>
+    <i class="pi pi-exclamation-circle"></i> Add a description that will be
+    shown romdomly to the students.
+  </p>
+  <textarea pInputTextarea [(ngModel)]="tip.description"></textarea>
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      (click)="submitTip()"
+      class="p-button--sm p-button-outlined"
+      [disabled]="tip.description === '' || loadingTip"
+    >
+      <ng-container *ngIf="!loadingTip"> Update </ng-container>
+      <ng-container *ngIf="loadingTip">
+        <p-progressSpinner
+          styleClass="custom-spinner blue"
+          strokeWidth="7"
+          [style]="{
+            width: '22px',
+            height: '22px'
+          }"
+        ></p-progressSpinner>
+      </ng-container>
+    </button>
+    <button
+      pButton
+      (click)="tipModal = false"
+      [disabled]="loadingTip"
+      label="Cancel"
+      class="p-button--sm p-button-outlined p-button-secondary cancel-btn"
+    ></button>
+  </ng-template>
+</p-dialog>

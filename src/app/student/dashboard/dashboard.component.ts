@@ -11,6 +11,7 @@ import { SessionService } from '../../services/session.service'
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  showTip = false
   user: User
   loadingLogOutPanel = null
   loadingLogOutButton = false
@@ -25,6 +26,9 @@ export class DashboardComponent implements OnInit {
     this.store
       .pipe(select(selectActualUser))
       .subscribe((user) => (this.user = user))
+    setTimeout(() => {
+      this.showTip = true
+    }, 1000)
   }
 
   logoutButton() {

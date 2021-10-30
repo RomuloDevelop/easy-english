@@ -11,7 +11,6 @@ import {
   SectionData
 } from '../../../../state/admin/admin.selectores'
 import { PrimeNGConfig } from 'primeng/api'
-import { combineLatest } from 'rxjs'
 
 @Component({
   selector: 'app-create-section',

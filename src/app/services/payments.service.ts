@@ -11,7 +11,6 @@ import * as moment from 'moment'
 
 export interface Payment {
   id?: number
-  percentaje: string
   description: string
   date: string
   status: number
@@ -54,18 +53,20 @@ export class PaymentsService {
   }
 
   insertPayment(payment: Payment, finalizeCb = () => {}) {
-    return this.http.post<{ data: Payment }>(paymentUrl, payment).pipe(
-      map(({ data }) => data),
-      catchError((error: InterceptorError) => {
-        let message = error.defaultMessage
-        if (error.error?.errors) {
-          const errorField = Object.keys(error.error.errors)[0]
-          message = error.error.errors[errorField][0]
-        }
-        return throwError(message)
-      }),
-      finalize(finalizeCb)
-    )
+    return this.http
+      .post<{ data: Payment }>(paymentUrl, { ...payment, percentaje: 1 })
+      .pipe(
+        map(({ data }) => data),
+        catchError((error: InterceptorError) => {
+          let message = error.defaultMessage
+          if (error.error?.errors) {
+            const errorField = Object.keys(error.error.errors)[0]
+            message = error.error.errors[errorField][0]
+          }
+          return throwError(message)
+        }),
+        finalize(finalizeCb)
+      )
   }
 
   updatePayment(payment: Partial<Payment>, finalizeCb = () => {}) {
