@@ -21,7 +21,7 @@ export class CommonOptions implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     let headers = req.headers.set('Content-Type', 'application/json')
-    const url = 'http://135.148.121.221:80/api/'
+    const url = 'https://backend.aeasyenglish.com/api/'
 
     // Determina si requiere token
     if (req.url !== 'login' && req.url !== 'register') {

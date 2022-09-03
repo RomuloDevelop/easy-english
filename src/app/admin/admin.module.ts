@@ -39,7 +39,7 @@ import { CreateUserComponent } from './user/create-user/create-user.component'
 import { EnrollmentsComponent } from './enrollment/enrollments/enrollments.component'
 import { CreateEnrollmentComponent } from './enrollment/create-enrollment/create-enrollment.component'
 import { PaymentsComponent } from './payment/payments/payments.component'
-import { CreatePaymentComponent } from './payment/create-payment/create-payment.component';
+import { CreatePaymentComponent } from './payment/create-payment/create-payment.component'
 import { TipsComponent } from './tips/tips.component'
 
 @NgModule({
