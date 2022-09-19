@@ -29,8 +29,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
   }
 
   checkAnswer() {
-    console.log(this.question)
-    const correctAnswer = this.question.answers.find((item) => item.correct)
+    const correctAnswer = this.question.options.find((item) => !!item.is_valid)
     this.message.correct = this.selected === correctAnswer.id
     this.message.text =
       correctAnswer.id === this.selected

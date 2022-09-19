@@ -50,67 +50,48 @@ export class CourseService {
     id: number,
     finalizeCb = () => {}
   ): Observable<{
-    courses: Course[]
+    course: Course
     sections: Section[]
     lessons: Lecture[]
   }> {
     return this.http.get<{ data: any }>(`${courseUrl}/${id}`).pipe(
       map(({ data: course }) => {
-        const { sections, final_quizz } = course
+        const { sections, final_quiz } = course
         let lessons = []
-
-        // Obtiene curso final
-        let formatedCourse = course
-        const quizResponse = final_quizz.map((quiz) => ({
-          ...quiz,
-          answers: quiz.quizz_options
-        }))
-        if (quizResponse) {
-          const finalQuiz = DataTransform.formatFinalQuiz(quizResponse)
-          finalQuiz.questions = finalQuiz.questions.map((item) => ({
-            ...item,
-            course_id: course.id
-          }))
-          formatedCourse = { ...course, quiz: finalQuiz }
-        }
 
         // Formatea lesson
         sections?.forEach((section) => {
           const formatedLessons = section.lessons.map((lesson) => {
-            const quiz = lesson.quizz
-            if (quiz != null) {
-              quiz[0].answers = quiz[0].quizz_options
-              quiz[0].lesson_id = lesson.id
-              quiz[0].course_id = course.id
-              return DataTransform.backendToAppData(lesson, quiz[0])
+            if (lesson.is_quiz) {
+              console.log('is quiz', lesson)
+              const { quiz } = lesson
+              quiz.answers = quiz.options
+              quiz.lesson_id = lesson.id
+              quiz.course_id = course.id
+              return DataTransform.backendToAppData(lesson, quiz)
             }
             return DataTransform.backendToAppData(lesson, null)
           })
           lessons = lessons.concat(formatedLessons)
         })
 
-        delete formatedCourse.sections
-        delete formatedCourse.quizz
+        delete course.sections
         delete sections.lessons
-        this.store.dispatch(setCourses({ courses: [formatedCourse] }))
+        this.store.dispatch(setCourses({ courses: [course] }))
         this.store.dispatch(setSections({ sections: sections }))
         this.store.dispatch(setLectures({ lectures: lessons }))
-        return { courses: formatedCourse, sections, lessons }
+        return { course, sections, lessons }
       }),
       finalize(finalizeCb)
     )
   }
 
-  updateCourse(
-    course: Partial<Course>,
-    finalCb?: () => void
-  ): Observable<{ data: Course }> {
+  updateCourse(course: Partial<Course>, finalCb?: () => void) {
     return this.http
       .patch<{ data: Course }>(`${courseUrl}/${course.id}`, course)
       .pipe(
-        map((course) => {
-          this.store.dispatch(updateCourse({ course: course.data }))
-          return course
+        map(() => {
+          this.store.dispatch(updateCourse({ course }))
         }),
         finalize(finalCb)
       )

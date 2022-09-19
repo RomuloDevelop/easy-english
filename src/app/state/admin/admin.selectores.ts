@@ -28,14 +28,11 @@ export const selectUsers = createSelector(
   (users: Array<User>) => users
 )
 
-const cbSectionData = (sections: Array<Section>, lectures: Array<Lecture>) => {
-  const result = sections.map((section) => ({
+const cbSectionData = (sections: Array<Section>, lectures: Array<Lecture>) =>
+  sections.map((section) => ({
     ...section,
     lectures: lectures.filter((lecture) => lecture.section_id === section.id)
   }))
-  console.log('result', result)
-  return result
-}
 
 export const selectSectionsData = createSelector(
   selectSections,

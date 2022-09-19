@@ -4,24 +4,17 @@ import {
   VideoLectue,
   Article,
   LessonResponse,
-  QuizzResponse,
-  AnswerResponse,
-  Answer,
+  QuizOption,
   FinalQuiz
 } from '../state/models'
 
 export class DataTransform {
-  static backendToAppData(
-    respLessons: LessonResponse,
-    respQuizzes: QuizzResponse
-  ) {
+  static backendToAppData(respLessons: LessonResponse, respQuizzes: Quiz) {
     let type: 'Article' | 'Video' | 'Quiz' = 'Article'
-    if (respLessons.youtube_id != 'null') type = 'Video'
-    else if (
-      respLessons.youtube_id == 'null' &&
-      respLessons.description != 'null'
-    )
-      type = 'Article'
+    const isVideo =
+      respLessons.youtube_id != '0' && respLessons.youtube_id != 'null'
+    if (isVideo) type = 'Video'
+    else if (!respLessons.is_quiz) type = 'Article'
     else type = 'Quiz'
 
     const getData = {
@@ -37,6 +30,7 @@ export class DataTransform {
       id: respLessons.id,
       title: respLessons.title,
       section_id: respLessons.section_id,
+      is_quiz: respLessons.is_quiz,
       data: getData[type]() as Article | VideoLectue | Quiz,
       type
     }
@@ -48,6 +42,7 @@ export class DataTransform {
     const result: LessonResponse = {
       id: lesson.id,
       title: lesson.title,
+      is_quiz: lesson.is_quiz,
       description:
         lesson.type != 'Quiz' ? (lesson.data as Article).detail : 'null',
       youtube_id:
@@ -59,69 +54,46 @@ export class DataTransform {
 
   static quizzesForPost(
     quiz: Quiz,
-    is_final_quizz = false,
-    lesson_id?: number,
+    lesson_id: number | null,
     title: string = 'Temporal question'
   ) {
-    let result: QuizzResponse = {
+    let result = {
       title,
-      is_final_quizz,
       course_id: quiz.course_id,
-      question: quiz.question
+      question: quiz.question,
+      lesson_id: !quiz.course_id && lesson_id
     }
-    if (!is_final_quizz) result = { ...result, lesson_id }
     return result
   }
 
-  static formatQuizzes(respQuizz: QuizzResponse) {
+  static formatQuizzes(respQuizz: Quiz) {
     let newFormat: Quiz = {
+      title: '',
       id: respQuizz.id,
       question: respQuizz.question,
       course_id: respQuizz.course_id,
-      answers: []
+      options: []
     }
-    if (respQuizz.answers) {
+    if (respQuizz.options) {
       newFormat = {
         ...newFormat,
-        answers: this.formatAnswers(respQuizz.answers),
-        correctAnswer: respQuizz.answers.find((answer) => answer.is_valid)?.id
+        options: respQuizz.options,
+        correctAnswer: respQuizz.options.find((answer) => answer.is_valid)?.id
       }
     }
     return newFormat
   }
 
-  static formatFinalQuiz(respFinalQuizz: QuizzResponse[]) {
-    const newFormat: FinalQuiz = {
-      questions: respFinalQuizz.map((item) => this.formatQuizzes(item))
-    }
-    return newFormat
-  }
-
-  static formatAnswers(answers: AnswerResponse[]) {
-    return answers.map<Answer>((item) => this.formatAnswer(item))
-  }
-
-  static formatAnswer(answer: AnswerResponse) {
-    const newFormat: Answer = {
-      id: answer.id,
-      text: answer.description,
-      correct: answer.is_valid === 1 ? true : false
-    }
-    return newFormat
-  }
-
-  static answersToPost(answers: Answer[], course_quiz_id: number) {
-    return answers.map<AnswerResponse>((item) =>
+  static answersToPost(answers: QuizOption[], course_quiz_id: number) {
+    return answers.map<QuizOption>((item) =>
       this.answerToPost(item, course_quiz_id)
     )
   }
 
-  static answerToPost(answer: Answer, course_quiz_id: number) {
-    const newFormat: AnswerResponse = {
-      id: answer.id,
-      description: answer.text,
-      is_valid: answer.correct ? 1 : 0,
-      course_quiz_id
+  static answerToPost(option: QuizOption, quiz_id: number) {
+    const newFormat: QuizOption = {
+      ...option,
+      quiz_id
     }
     return newFormat
   }

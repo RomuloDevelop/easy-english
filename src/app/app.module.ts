@@ -119,6 +119,7 @@ import { EditShippingAddressPageComponent } from './components/pages/edit-shippi
 import { AdminModule } from './admin/admin.module'
 import { SharedModule } from './shared.module'
 import { StudentModule } from './student/student.module'
+import { HomeComponent } from './pages/home/home.component'
 
 const store = {
   courses: CourseReducer,
@@ -226,7 +227,8 @@ const store = {
     EditAddressPageComponent,
     EditAccountPageComponent,
     EditBillingAddressPageComponent,
-    EditShippingAddressPageComponent
+    EditShippingAddressPageComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

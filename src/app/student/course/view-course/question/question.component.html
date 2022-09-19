@@ -5,14 +5,14 @@
       [innerHtml]="question?.question"
     ></div>
     <ul class="unstyled-list">
-      <li class="d-flex w-100 mb-2" *ngFor="let answer of question?.answers">
+      <li class="d-flex w-100 mb-2" *ngFor="let option of question?.options">
         <p-radioButton
-          [inputId]="answer.id"
+          [inputId]="option.id"
           name="answer-result"
-          [value]="answer.id"
+          [value]="option.id"
           [(ngModel)]="selected"
         ></p-radioButton>
-        <p style="margin-left: 1.2rem">{{ answer.text }}</p>
+        <p style="margin-left: 1.2rem">{{ option.description }}</p>
       </li>
     </ul>
     <div

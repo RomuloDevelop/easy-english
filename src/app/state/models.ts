@@ -1,45 +1,49 @@
-export interface AnswerResponse {
+export interface QuizOption {
   id?: number
   is_valid: 0 | 1
   description: string
-  course_quiz_id: number
+  quiz_id: number
 }
 
-export interface QuizzResponse {
+export interface Quiz {
   id?: number
-  is_final_quizz: boolean
+  title: string
   question: string
-  course_id: number
-  title?: string
-  lesson_id?: number
-  answers?: AnswerResponse[]
+  options: QuizOption[]
+  course_id?: number
+  correctAnswer?: number
 }
 
 export interface LessonResponse {
-  id: number
+  id?: number
   title: string
   description: string
-  youtube_id: string
+  youtube_id?: string
   section_id: number
+  is_quiz: boolean
+}
+
+export interface CourseListResponse {
+  id: number
+  title: string
+  subtitle: string
+  description: string
+  level: string
+  status: number
+  students_count: number
+  user_id: number
+  final_quizz_title: string
+  sections_count: number
 }
 
 export type SectionAction = 'update' | 'cancel' | 'delete'
 
-export interface Answer {
-  id?: number
-  text: string
-  correct: boolean
-}
-export interface Quiz {
-  id?: number
-  question: string
-  answers: Answer[]
-  course_id: number
-  correctAnswer?: number
-}
-
 export interface FinalQuiz {
-  questions: Quiz[]
+  id: number
+  course_id: number
+  quiz_id: number
+  required: boolean
+  quiz: Quiz
 }
 
 export interface Article {
@@ -56,6 +60,7 @@ export interface Lecture {
   title: string
   section_id: number
   data: Article | VideoLectue | Quiz
+  is_quiz: boolean
   type: 'Article' | 'Video' | 'Quiz'
   resources?: File[]
 }
@@ -76,7 +81,7 @@ export interface Course {
   description: string
   status: boolean
   level?: string
-  quiz?: FinalQuiz
+  final_quiz?: FinalQuiz[]
   final_quizz_title?: string
 }
 

@@ -8,7 +8,7 @@ import ContactInfo from '../../../data/networks'
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
   @Output() openNav = new EventEmitter()
   @Output() logout = new EventEmitter()
   items: MenuItem[]
@@ -18,23 +18,6 @@ export class HeaderComponent implements OnInit {
   classApplied = false
 
   constructor() {}
-
-  ngOnInit() {
-    this.items = [
-      {
-        label: 'My Profile',
-        icon: 'pi pi-fw pi-user'
-      },
-      {
-        separator: true
-      },
-      {
-        label: 'Logout',
-        icon: 'pi pi-fw pi-power-off',
-        command: () => this.logout.emit()
-      }
-    ]
-  }
 
   open() {
     this.openNav.emit()

@@ -19,11 +19,18 @@ import { RouterAnimations } from 'src/app/utils/Animations'
     <div
       #tabContent
       class="tab-content"
-      [@fadeInOutTab]="display ? 'in-tab' : 'out-tab'"
+      [@fadeInOutTab]="
+        display === true
+          ? 'in-tab'
+          : display === false
+          ? 'out-tab'
+          : 'stack-tab'
+      "
     >
       <ng-content></ng-content>
     </div>
   `,
+
   styleUrls: ['./dashboard-tabs.component.scss'],
   animations: [RouterAnimations.tabTransition()]
 })
@@ -34,12 +41,14 @@ export class TabComponent {
   @Input() notDisplay: boolean = false
   @Output() tabClick = new EventEmitter()
   display = true
+  timeOut
 
   constructor() {}
 
   showTab() {
     this.display = true
     this.tabClick.emit()
+    this.timeOut = setTimeout(() => (this.display = null), 500) // Se debe coordinar con la duracion de la animacion
   }
 
   hideTab() {
@@ -49,6 +58,10 @@ export class TabComponent {
   getHeight() {
     const height = this.element.nativeElement.clientHeight
     return height
+  }
+
+  clearTimeout() {
+    clearTimeout(this.timeOut)
   }
 }
 
@@ -73,6 +86,8 @@ export class DashboardTabsComponent implements OnChanges, AfterContentInit {
   tabHeight: number = null
 
   selected: number = 0
+
+  timeOut
 
   constructor() {}
 
@@ -104,8 +119,12 @@ export class DashboardTabsComponent implements OnChanges, AfterContentInit {
 
   getTabForChange(index: number) {
     if (!this.tabs[index].notDisplay) {
+      const prevSelected = this.selected
       this.selected = index
       this.tabsTemp.forEach((item, i) => {
+        if (i === prevSelected) {
+          item.clearTimeout()
+        }
         if (index === i) {
           if (index > this.selected) {
             this.tabHeight = this.nextHeight
@@ -132,6 +151,13 @@ export class DashboardTabsComponent implements OnChanges, AfterContentInit {
         }
       })
     }
-    console.log(this.tabHeight)
+
+    if (this.timeOut != null) {
+      clearTimeout(this.timeOut)
+    }
+    this.timeOut = setTimeout(() => {
+      this.tabHeight = null
+      console.log(this.tabHeight)
+    }, 500)
   }
 }

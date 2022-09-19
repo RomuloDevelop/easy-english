@@ -1,35 +1,26 @@
 <header #btn class="header-area p-relative">
   <div class="top-header top-header-style-four">
-    <div class="container">
-      <div class="row align-items-center">
-        <div class="col-lg-8 col-md-8">
-          <ul class="top-header-contact-info">
-            <li>
-              Call:
-              <div
-                class="d-inline"
-                *ngFor="let phone of phones; let index = index"
-              >
-                <a [href]="phone.url">{{ phone.number }}</a>
-                <div
-                  *ngIf="index !== phones.length - 1 ? 'or' : ''"
-                  class="d-inline mx-2"
-                >
-                  or
-                </div>
-              </div>
-            </li>
-          </ul>
-          <div class="top-header-social">
-            <span>Follow us:</span>
-            <ng-container *ngFor="let network of rrss | keyvalue">
-              <a [href]="network.value.url" target="_blank"
-                ><i [class]="network.value.icon"></i
-              ></a>
-            </ng-container>
+    <ul class="top-header-contact-info">
+      <li>
+        Call:
+        <div class="d-inline" *ngFor="let phone of phones; let index = index">
+          <a [href]="phone.url">{{ phone.number }}</a>
+          <div
+            *ngIf="index !== phones.length - 1 ? 'or' : ''"
+            class="d-inline mx-2"
+          >
+            or
           </div>
         </div>
-      </div>
+      </li>
+    </ul>
+    <div class="top-header-social">
+      <span>Follow us:</span>
+      <ng-container *ngFor="let network of rrss | keyvalue">
+        <a [href]="network.value.url" target="_blank"
+          ><i [class]="network.value.icon"></i
+        ></a>
+      </ng-container>
     </div>
   </div>
   <div
@@ -42,7 +33,9 @@
         class="admin-navbar navbar navbar-light bg-light"
         [class.active]="classApplied"
       >
-        <div class="p-mr-3 menu-btn p-pl-3 d-flex align-items-center">
+        <div
+          class="p-mr-md-3 p-mr-xs-1 menu-btn p-pl-3 d-flex align-items-center"
+        >
           <button
             (click)="open()"
             pButton
@@ -53,26 +46,21 @@
           ></button>
         </div>
         <a class="navbar-brand p-pt-1 p-pb-1" routerLink="/"
-          ><img style="height: 70px" src="assets/img/logoEN.png" alt="logo"
+          ><img style="height: 60px" src="assets/img/logoEN.png" alt="logo"
         /></a>
         <div
           style="display: flex !important; flex-basis: auto; flex-grow: 1"
         ></div>
-        <div style="position: relative">
-          <div
+        <div class="menu-btn p-mr-md-3 p-mr-sm-1">
+          <button
+            (click)="logout.emit()"
+            pButton
             pRipple
-            (click)="viewProfile = !viewProfile"
-            class="p-ml-5 p-pr-3 p-pl-3 menu-btn"
-          >
-            <div class="p-mr-2">
-              <p-avatar label="P" styleClass="p-mr-2" shape="circle"></p-avatar>
-              <span>Admin</span>
-            </div>
-            <i class="pi pi-angle-down"></i>
-          </div>
-          <div class="menu-list" [class]="{ active: viewProfile }">
-            <p-menu #menu [model]="items" [appendTo]="btn"></p-menu>
-          </div>
+            type="button"
+            icon="pi pi-fw pi-power-off"
+            label="Logout"
+            class="p-button-plain p-button-md p-button-text"
+          ></button>
         </div>
       </nav>
     </div>

@@ -88,12 +88,20 @@ export class RouterAnimations {
   static tabTransition() {
     return trigger('fadeInOutTab', [
       state(
+        'stack-tab',
+        style({
+          position: 'static',
+          opacity: 1,
+          width: 'calc(100% - 20px)'
+        })
+      ),
+      state(
         'in-tab',
         style({
           position: 'absolute',
           top: 0,
-          width: 'calc(100% - 20px)', //Toma encuenta padding para mostrar sombreado
           transform: 'none',
+          width: 'calc(100% - 20px)', //Toma encuenta padding para mostrar sombreado
           opacity: 1
         })
       ),
@@ -106,6 +114,14 @@ export class RouterAnimations {
           opacity: 0
         })
       ),
+      transition('stack-tab => out-tab', [
+        style({
+          position: 'absolute',
+          top: 0,
+          transform: 'none'
+        }),
+        animate('0.5s ease-in-out')
+      ]),
       transition('in-tab => out-tab', [animate('0.5s ease-in-out')]),
       transition('out-tab => in-tab', [animate('0.5s ease-in-out')])
     ])

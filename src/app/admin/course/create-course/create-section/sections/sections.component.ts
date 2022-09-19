@@ -18,7 +18,7 @@ import {
   VideoLectue,
   Article,
   Quiz,
-  Answer
+  QuizOption
 } from '../../../../../state/models'
 import {
   SectionData,
@@ -28,7 +28,6 @@ import memoize from '../../../../../decorators/memoize'
 import { LessonService } from '../../../../../services/lesson.service'
 import { YoutubeComponent } from '../../../../../components/common/youtube/youtube.component'
 import { Observable } from 'rxjs'
-import { element } from 'protractor'
 
 @Component({
   selector: 'app-sections',
@@ -74,7 +73,7 @@ export class SectionsComponent implements OnInit, OnChanges {
   //Quiz
   loadingQuiz = false
   question = ''
-  answers: Answer[] = []
+  options: QuizOption[] = []
   correctAnswer: number = null
   questionId: number
 
@@ -115,8 +114,8 @@ export class SectionsComponent implements OnInit, OnChanges {
   emitEvent(type: SectionAction = 'update') {
     const section: Section = {
       id: this.data.id,
-      course_id: this.courseId,
       title: this.title,
+      course_id: this.data.course_id,
       subtitle: this.description
     }
     this.saveEvent.emit({ section, type })
@@ -163,10 +162,10 @@ export class SectionsComponent implements OnInit, OnChanges {
     } else if (item.type === 'Quiz') {
       const data = item.data as Quiz
       this.question = data.question
-      this.answers = data.answers.length
-        ? data.answers.map<Answer>((item) => ({ ...item }))
+      this.options = data.options.length
+        ? data.options.map<QuizOption>((item) => ({ ...item }))
         : []
-      this.correctAnswer = this.answers.find((item) => item.correct)?.id
+      this.correctAnswer = this.options.find((item) => item.is_valid)?.id
       this.displayQuiz = true
       this.questionId = data.id
     } else if (item.type === 'Video') {
@@ -195,6 +194,7 @@ export class SectionsComponent implements OnInit, OnChanges {
       id: null,
       title: 'Temporal title',
       section_id,
+      is_quiz: false,
       data: {
         url: 'LljIeFJQ7xY',
         detail: 'Temporal description'
@@ -216,6 +216,7 @@ export class SectionsComponent implements OnInit, OnChanges {
     }
     this.addLectureOrEdit({
       title: this.lectureTitle,
+      is_quiz: false,
       section_id,
       id,
       data: video,
@@ -242,6 +243,7 @@ export class SectionsComponent implements OnInit, OnChanges {
     this.addLectureOrEdit({
       title: 'Temporal title',
       section_id,
+      is_quiz: false,
       id: null,
       data: {
         detail: 'Temporal detail'
@@ -263,6 +265,7 @@ export class SectionsComponent implements OnInit, OnChanges {
     this.addLectureOrEdit({
       title: this.lectureTitle,
       section_id,
+      is_quiz: false,
       id,
       data,
       type: 'Article'
@@ -283,40 +286,53 @@ export class SectionsComponent implements OnInit, OnChanges {
 
   // Quiz methods
   newQuiz() {
+    this.options = []
+    this.displayQuiz = true
+  }
+
+  createQuiz() {
     this.loadingQuiz = true
     const section_id = this.data.id
-    this.addLectureOrEdit({
-      title: 'Temporal title',
-      section_id,
-      id: null,
-      data: {
-        question: 'Temporal question',
-        course_id: this.data.course_id,
-        answers: []
-      },
-      type: 'Quiz'
-    }).subscribe(() => {
-      this.loadingQuiz = false
-      this.displayQuiz = true
-      this.cdr.markForCheck()
-    })
+    this.lessonService
+      .addLessonQuiz({
+        quiz: {
+          question: this.question,
+          title: this.lectureTitle
+        },
+        quiz_options: this.options.map((answer) => ({
+          description: answer.description,
+          is_valid: this.correctAnswer === answer.id ? 1 : 0
+        })),
+        course_lesson: {
+          title: this.lectureTitle,
+          description: 'Descripcion',
+          section_id,
+          is_quiz: true
+        }
+      })
+      .subscribe(() => {
+        this.loadingQuiz = false
+        this.displayQuiz = false
+        this.cdr.markForCheck()
+      })
   }
-  createQuiz() {
+  updateQuiz() {
     this.loadingQuiz = true
     const id = this.lectureId
     const section_id = this.data.id
     const data: Quiz = {
+      title: this.lectureTitle,
       id: this.questionId,
       question: this.question,
-      course_id: this.data.course_id,
-      answers: this.answers.map((answer) => ({
-        ...answer,
-        correct: this.correctAnswer === answer.id
+      options: this.options.map((option) => ({
+        ...option,
+        is_valid: this.correctAnswer === option.id ? 1 : 0
       }))
     }
     this.addLectureOrEdit({
       title: this.lectureTitle,
       section_id,
+      is_quiz: true,
       id,
       data,
       type: 'Quiz'
@@ -327,23 +343,24 @@ export class SectionsComponent implements OnInit, OnChanges {
     this.loadingQuiz = false
     this.displayQuiz = false
     this.question = ''
-    this.answers = []
+    this.options = []
     this.correctAnswer = null
     this.clearCommonModalData()
   }
 
   addAnswer() {
     let id = 0
-    if (this.answers.length) id = this.answers[this.answers.length - 1].id + 1
-    this.answers.push({
+    if (this.options.length) id = this.options[this.options.length - 1].id + 1
+    this.options.push({
       id,
-      text: '',
-      correct: false
+      description: '',
+      is_valid: 0,
+      quiz_id: this.questionId
     })
   }
 
   deleteaAnswer(id: number) {
-    this.answers = this.answers.filter((item) => item.id !== id)
+    this.options = this.options.filter((item) => item.id !== id)
   }
 
   @memoize()
@@ -356,13 +373,13 @@ export class SectionsComponent implements OnInit, OnChanges {
       return JSON.stringify(args)
     }
   })
-  disabledCreateQuiz(title: string, answers: Answer[], id: number) {
+  disabledCreateQuiz(title: string, answers: QuizOption[], id: number) {
     let result = true
     for (let answer of answers) {
       if (answer.id === id) {
         result = false
       }
-      if (answer.text === '') {
+      if (answer.description === '') {
         result = true
         break
       }

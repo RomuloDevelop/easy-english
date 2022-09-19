@@ -14,10 +14,7 @@
 
 .top-header {
     background-color: var(--mainColor);
-    padding: {
-        top: 15px;
-        bottom: 25px;
-    };
+    padding: 15px 12px 25px 12px;
 }
 .top-header-contact-info {
     padding-left: 0;
@@ -888,24 +885,6 @@
         background-color: var(--blackColor) !important;
     }
 }
-.navbar-style-three {
-    margin-top: 0;
-
-    .navbar {
-        border-radius: 0;
-        padding: 0;
-
-        .navbar-nav {
-            margin: {
-                left: auto;
-                right: 0px;
-            };
-        }
-        .others-option {
-            margin-left: 30px;
-        }
-    }
-}
 .navbar-style-four {
     margin-top: 0;
 
@@ -917,145 +896,6 @@
 }
 .bg-light {
     background-color: transparent !important;
-}
-
-/*Search Overlay CSS*/
-.search-overlay {
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    opacity: 0;
-    z-index: 99999;
-    position: fixed;
-    overflow: hidden;
-    visibility: hidden;
-    transition: all 0.3s ease-in-out;
-
-    .search-overlay-layer {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 1;
-        transform: translateX(100%);
-
-        &:nth-child(1) {
-            left: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            transition: all 0.3s ease-in-out 0s;
-        }
-        &:nth-child(2) {
-            left: 0;
-            background-color: rgba(0, 0, 0, 0.4);
-            transition: all 0.3s ease-in-out 0.3s;
-        }
-        &:nth-child(3) {
-            left: 0;
-            background-color: rgba(0, 0, 0, 0.7);
-            transition: all 0.9s ease-in-out 0.6s;
-        }
-    }
-    .search-overlay-close {
-        position: absolute;
-        top: 40px;
-        right: 40px;
-        width: 50px;
-        z-index: 2;
-        text-align: center;
-        cursor: pointer;
-        padding: 10px;
-        transition: all 0.9s ease-in-out 1.5s;
-        opacity: 0;
-        visibility: hidden;
-
-        .search-overlay-close-line {
-            width: 100%;
-            height: 3px;
-            float: left;
-            margin-bottom: 5px;
-            background-color: var(--whiteColor);
-            transition: all 500ms ease;
-
-            &:nth-child(1) {
-                transform: rotate(45deg);
-            }
-            &:nth-child(2) {
-                margin-top: -7px;
-                transform: rotate(-45deg);
-            }
-        }
-        &:hover {
-            .search-overlay-close-line {
-                background: var(--mainColor);
-                transform: rotate(180deg);
-            }
-        }
-    }
-    .search-overlay-form {
-        transition: all 0.9s ease-in-out 1.4s;
-        opacity: 0;
-        visibility: hidden;
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translateY(-50%) translateX(-50%);
-        z-index: 2;
-        max-width: 500px;
-        width: 500px;
-
-        form {
-            position: relative;
-
-            .input-search {
-                display: block;
-                width: 100%;
-                height: 55px;
-                border: none;
-                border-radius: 30px;
-                padding-left: 20px;
-                color: var(--blackColor);
-                font-size: var(--fontSize);
-            }
-            button {
-                position: absolute;
-                right: 5px;
-                top: 5px;
-                width: 45px;
-                color: var(--whiteColor);
-                height: 45px;
-                border-radius: 50%;
-                background-color: var(--mainColor);
-                transition: var(--transition);
-                border: none;
-                font-size: 20px;
-                line-height: 45px;
-
-                &:hover {
-                    background-color: var(--blackColor);
-                    color: var(--whiteColor);
-                }
-            }
-        }
-    }
-    &.active {
-        &.search-overlay {
-            opacity: 1;
-            visibility: visible;
-
-            .search-overlay-layer {
-                transform: translateX(0);
-            }
-            .search-overlay-close {
-                opacity: 1;
-                visibility: visible;
-            }
-            .search-overlay-form {
-                opacity: 1;
-                visibility: visible;
-            }
-        }
-    }
 }
 
 @media only screen and (max-width: 767px) {
@@ -1657,20 +1497,8 @@
   height: 80px;
   cursor: pointer;
   overflow: hidden;
+  color: black;
   .p-ink {
     background: var(--hoverWhiteColor);
-  }
-  & ~ .menu-list {
-    overflow: hidden;
-    position: absolute;
-    right: 0;
-    top: 80px;
-    height: 0px;
-    opacity: 0;
-    transition: all 0.3s;
-    &.active {
-        height: auto;
-        opacity: 1;
-    }
   }
 }

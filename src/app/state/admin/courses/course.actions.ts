@@ -12,7 +12,7 @@ export const addCourse = createAction(
 )
 export const updateCourse = createAction(
   '[Course] Update Course',
-  props<{ course: Course }>()
+  props<{ course: Partial<Course> }>()
 )
 export const deleteCourse = createAction(
   '[Course] Delete Course',
@@ -24,5 +24,5 @@ export const updateStatus = createAction(
 )
 export const updateFinalQuiz = createAction(
   '[Course] Update FinalQuiz',
-  props<{ id: number; quiz: FinalQuiz }>()
+  props<{ id: number; final_quiz: FinalQuiz[] }>()
 )

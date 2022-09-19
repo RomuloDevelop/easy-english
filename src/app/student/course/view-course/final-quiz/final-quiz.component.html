@@ -2,7 +2,7 @@
   <h1 class="h3 mb-4">{{ title }}</h1>
   <app-question
     #questions
-    *ngFor="let question of quiz.questions"
+    *ngFor="let question of quiz"
     [question]="question"
   ></app-question>
   <div class="d-flex justify-content-end mt-3">

@@ -1,4 +1,4 @@
-import { Lecture, Answer, Quiz } from '../../models'
+import { Lecture, Quiz } from '../../models'
 import { createAction, props } from '@ngrx/store'
 
 export const setLectures = createAction(

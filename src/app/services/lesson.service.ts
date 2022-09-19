@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
-import { Observable, iif, of, defer } from 'rxjs'
-import { map, mergeMap } from 'rxjs/operators'
-import { Store } from '@ngrx/store'
-import { Lecture, Quiz, LessonResponse } from '../state/models'
+import { Observable, of, zip } from 'rxjs'
+import { map, mergeMap, take } from 'rxjs/operators'
+import { select, Store } from '@ngrx/store'
+import { Lecture, LessonResponse, Quiz, QuizOption } from '../state/models'
 import { QuizzService } from '../services/quizz.service'
 import {
   addLecture,
@@ -12,6 +12,13 @@ import {
 } from '../state/admin/lectures/lecture.actions'
 import { DataTransform } from '../utils/DataTransform'
 import Endpoints from '../../data/endpoints'
+import { selectLectures } from '../state/admin/admin.selectores'
+
+interface LessonQuiz {
+  quiz: { question: string; title: string }
+  quiz_options: { description: string; is_valid: 1 | 0 }[]
+  course_lesson: LessonResponse
+}
 
 const { sectionUrl, lessonUrl } = Endpoints
 
@@ -38,30 +45,11 @@ export class LessonService {
   }
 
   addLesson(lesson: Lecture) {
-    let addQuizz$ = (data: LessonResponse) =>
-      this.quizService
-        .addQuizz(lesson.data as Quiz, false, false, data.id)
-        .pipe(
-          map((quiz) => {
-            console.log('quiz', quiz)
-            return DataTransform.backendToAppData(data, quiz)
-          })
-        )
-
-    let onlyFormatQuizz$ = (data: LessonResponse) =>
-      of(DataTransform.backendToAppData(data, null))
-
     const formatedLesson = DataTransform.appDataToBackend(lesson)
     return this.http
       .post<{ data: LessonResponse }>(lessonUrl, formatedLesson)
       .pipe(
-        mergeMap(({ data }) =>
-          iif(
-            () => lesson.type === 'Quiz',
-            defer(() => addQuizz$(data)),
-            defer(() => onlyFormatQuizz$(data))
-          )
-        ),
+        map(({ data }) => DataTransform.backendToAppData(data, null)),
         map((lessonFormated) => {
           this.store.dispatch(addLecture({ lecture: lessonFormated }))
           return lessonFormated
@@ -69,9 +57,29 @@ export class LessonService {
       )
   }
 
+  addLessonQuiz(data: LessonQuiz) {
+    data.course_lesson.youtube_id = '0'
+    return this.http.post<any>('create_course_lesson_quiz', data).pipe(
+      map(({ data: resp }) => {
+        const lessonFormated: Lecture = {
+          id: resp.id,
+          title: resp.title,
+          section_id: resp.section_id,
+          data: {
+            ...resp.quiz,
+            answers: resp.options
+          },
+          is_quiz: true,
+          type: 'Quiz'
+        }
+        this.store.dispatch(addLecture({ lecture: lessonFormated }))
+      })
+    )
+  }
+
   updateLesson(lesson: Lecture) {
     let updateQuizz$ = (data: LessonResponse) =>
-      this.quizService.updateQuizz(lesson.data as Quiz, false, data.id).pipe(
+      this.updateLessonQuizz(lesson.data as Quiz, data.id).pipe(
         map((quiz) => {
           return DataTransform.backendToAppData(data, quiz)
         })
@@ -88,11 +96,7 @@ export class LessonService {
       )
       .pipe(
         mergeMap(({ data }) =>
-          iif(
-            () => lesson.type === 'Quiz',
-            defer(() => updateQuizz$(data)),
-            defer(() => onlyFormatQuizz$(data))
-          )
+          lesson.type === 'Quiz' ? updateQuizz$(data) : onlyFormatQuizz$(data)
         ),
         map((lessonFormated) => {
           this.store.dispatch(updateLecture({ lecture: lessonFormated }))
@@ -107,6 +111,60 @@ export class LessonService {
         this.store.dispatch(deleteLecture({ id }))
         return data
       })
+    )
+  }
+
+  updateLessonQuizz(quiz: Quiz, lesson_id: number) {
+    const { course_id, options, correctAnswer, ...quizFields } = quiz
+    return this.quizService.updateQuiz(quizFields).pipe(
+      // Comparar answers
+      mergeMap((data) =>
+        this.store.pipe(
+          take(1),
+          select(selectLectures),
+          mergeMap((lessons) => {
+            let actualLesson = lessons.find((item) => item.id === lesson_id)
+
+            // Agrega, actualiza y elimina donde corresponda
+            const { results, deletes, withoutChange } =
+              this.quizService.addOrUpdateAnswer(
+                quiz.options,
+                (actualLesson.data as Quiz).options,
+                quiz.id
+              )
+            if (!results?.length && !deletes?.length) {
+              data.options = withoutChange.map((item) =>
+                DataTransform.answerToPost(item, quiz.course_id)
+              )
+              return of(data)
+            }
+            return zip(...results, ...deletes).pipe(
+              map((options) => {
+                const newAnswers = options.filter(
+                  (item: any) => item?.id
+                ) as QuizOption[] //Obtiene solo respuestas de insertado y actualizado
+                data.options = withoutChange
+                  .map((item) =>
+                    DataTransform.answerToPost(item, quiz.course_id)
+                  )
+                  .concat(newAnswers)
+                  .sort((a, b) => a.id - b.id)
+                const lecture: Lecture = {
+                  id: actualLesson.id,
+                  title: actualLesson.title,
+                  section_id: actualLesson.section_id,
+                  type: actualLesson.type,
+                  resources: actualLesson.resources,
+                  data,
+                  is_quiz: actualLesson.is_quiz
+                }
+                this.store.dispatch(updateLecture({ lecture }))
+                return data
+              })
+            )
+          })
+        )
+      )
     )
   }
 }

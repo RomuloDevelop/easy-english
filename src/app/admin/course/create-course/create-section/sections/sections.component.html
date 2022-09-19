@@ -144,15 +144,15 @@
             <ul class="unstyled-list container">
               <li
                 class="d-flex w-100 mb-2"
-                *ngFor="let answer of lecture.data.answers"
+                *ngFor="let option of lecture.data.options"
               >
                 <p-radioButton
-                  [inputId]="answer.id"
-                  name="answer-result"
-                  [value]="answer.id"
+                  [inputId]="option.id"
+                  name="option-result"
+                  [value]="option.id"
                   [(ngModel)]="correctAnswer"
                 ></p-radioButton>
-                <p style="margin-left: 1.2rem">{{ answer.text }}</p>
+                <p style="margin-left: 1.2rem">{{ option.description }}</p>
               </li>
             </ul>
           </ng-container>
@@ -390,34 +390,34 @@
         [style]="{ height: '150px' }"
       ></p-editor>
     </div>
-    <div *ngIf="answers.length">
+    <div *ngIf="options.length">
       <h2 class="h6 mt-4 mb-3">Answers</h2>
-      <div class="answer-item" *ngFor="let answer of answers">
-        <div class="delete-btn" (click)="deleteaAnswer(answer.id)">
+      <div class="answer-item" *ngFor="let option of options">
+        <div class="delete-btn" (click)="deleteaAnswer(option.id)">
           <i class="pi pi-times"></i>
         </div>
         <p-radioButton
-          [inputId]="answer.id"
-          name="answer"
-          [value]="answer.id"
+          [inputId]="option.id"
+          name="option"
+          [value]="option.id"
           [(ngModel)]="correctAnswer"
         ></p-radioButton>
         <div class="w-100">
           <small
             class="d-block"
             style="color: var(--green-500); transition: all 0.2s"
-            [style]="{ opacity: correctAnswer === answer.id ? 1 : 0 }"
+            [style]="{ opacity: correctAnswer === option.id ? 1 : 0 }"
           >
             Correct Answer!
           </small>
           <textarea
             pInputTextarea
             placeholder="Add answer"
-            [(ngModel)]="answer.text"
+            [(ngModel)]="option.description"
             [style]="{
               height: '50px',
               'border-color':
-                correctAnswer === answer.id ? 'var(--green-500)' : ''
+                correctAnswer === option.id ? 'var(--green-500)' : ''
             }"
           >
           </textarea>
@@ -439,13 +439,15 @@
       <button
         pButton
         [disabled]="
-          disabledCreateQuiz(lectureTitle, answers, correctAnswer) ||
+          disabledCreateQuiz(lectureTitle, options, correctAnswer) ||
           loadingQuiz
         "
-        (click)="createQuiz()"
+        (click)="lectureId ? updateQuiz() : createQuiz()"
         class="p-button--sm p-button-outlined"
       >
-        <ng-container *ngIf="!loadingQuiz"> Update </ng-container>
+        <ng-container *ngIf="!loadingQuiz">
+          {{ lectureId ? 'Update' : 'Create' }}
+        </ng-container>
         <ng-container *ngIf="loadingQuiz">
           <p-progressSpinner
             styleClass="custom-spinner blue"

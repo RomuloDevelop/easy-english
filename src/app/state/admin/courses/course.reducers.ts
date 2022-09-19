@@ -29,10 +29,10 @@ const courseReducers = createReducer(
       return item
     })
   ),
-  on(CourseActions.updateFinalQuiz, (state, { id, quiz }) =>
+  on(CourseActions.updateFinalQuiz, (state, { id, final_quiz }) =>
     state.map((item) => {
       if (item.id === id) {
-        return { ...item, quiz }
+        return { ...item, final_quiz }
       }
       return item
     })

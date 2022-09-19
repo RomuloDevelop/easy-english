@@ -14,6 +14,7 @@ import { SessionService } from 'src/app/services/session.service'
 import { RouterAnimations } from 'src/app/utils/Animations'
 import { VideoLessonComponent } from './video-lesson/video-lesson.component'
 import { combineLatest } from 'rxjs'
+
 @Component({
   selector: 'app-view-course',
   templateUrl: './view-course.component.html',

@@ -75,21 +75,21 @@
       </div>
       <div
         class="answer-container"
-        [class]="{ empty: questItem.answers.length === 0 }"
+        [class]="{ empty: questItem.options.length === 0 }"
       >
-        <div *ngIf="questItem.answers.length">
+        <div *ngIf="questItem.options.length">
           <h2 class="h6 mt-2 mb-3">Answers</h2>
-          <div class="answer-item" *ngFor="let answerItem of questItem.answers">
+          <div class="answer-item" *ngFor="let option of questItem.options">
             <div
               class="delete-btn"
-              (click)="deleteaAnswer(questItem.id, answerItem.id)"
+              (click)="deleteaAnswer(questItem.id, option.id)"
             >
               <i class="pi pi-times"></i>
             </div>
             <p-radioButton
-              [inputId]="answerItem.id"
+              [inputId]="option.id"
               [name]="'answer' + questItem.id"
-              [value]="answerItem.id"
+              [value]="option.id"
               [(ngModel)]="questItem.correctAnswer"
             ></p-radioButton>
             <div class="w-100">
@@ -97,7 +97,7 @@
                 class="d-block"
                 style="color: var(--green-500); transition: all 0.2s"
                 [style]="{
-                  opacity: questItem.correctAnswer === answerItem.id ? 1 : 0
+                  opacity: questItem.correctAnswer === option.id ? 1 : 0
                 }"
               >
                 Correct Answer!
@@ -105,11 +105,11 @@
               <textarea
                 pInputTextarea
                 placeholder="Add answer"
-                [(ngModel)]="answerItem.text"
+                [(ngModel)]="option.description"
                 [style]="{
                   height: '50px',
                   'border-color':
-                    questItem.correctAnswer === answerItem.id
+                    questItem.correctAnswer === option.id
                       ? 'var(--green-500)'
                       : ''
                 }"
@@ -131,7 +131,7 @@
         </div>
         <div
           class="d-flex justify-content-center mt-1"
-          *ngIf="questItem.answers?.length"
+          *ngIf="questItem.options?.length"
         >
           <button
             class="default-btn"
