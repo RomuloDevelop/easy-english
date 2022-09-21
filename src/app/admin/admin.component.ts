@@ -20,12 +20,12 @@ export class AdminComponent implements OnInit {
     route?: string
     admin: boolean
   }[] = [
-    {
-      label: 'Dashboard',
-      icon: 'pi pi-pw pi-chart-bar',
-      route: '/admin',
-      admin: true
-    },
+    // {
+    //   label: 'Dashboard',
+    //   icon: 'pi pi-pw pi-chart-bar',
+    //   route: '/admin',
+    //   admin: true
+    // },
     {
       label: 'Gestión de Cursos',
       icon: 'pi pi-pw pi-book',

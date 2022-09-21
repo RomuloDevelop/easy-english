@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component } from '@angular/core'
 
 @Component({
   selector: 'app-home',
@@ -19,9 +19,7 @@ import { Component, OnInit } from '@angular/core'
         </div>
         <app-instructors-style-one></app-instructors-style-one>
       </div>
-    </div>
-
-    <app-become-instructor-partner></app-become-instructor-partner>`
+    </div>`
 })
 export class HomeComponent {
   constructor() {}

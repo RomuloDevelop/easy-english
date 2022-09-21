@@ -25,7 +25,7 @@ import { FinalQuizComponent } from './course/view-course/final-quiz/final-quiz.c
 import { QuestionComponent } from './course/view-course/question/question.component'
 
 import { StudentService } from './course/student.service'
-import { MessageService } from 'primeng/api';
+import { MessageService } from 'primeng/api'
 import { TipComponent } from './tip/tip.component'
 
 @NgModule({
