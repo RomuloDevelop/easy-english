@@ -6,7 +6,8 @@ export const initialState: Session = {
   actualUser: null,
   userAnswers: [],
   userFinalQuizAnswers: [],
-  enrollment: null
+  enrollment: null,
+  showFinalQuizReminder: true
 }
 
 const actualUserReducer = createReducer(
@@ -54,20 +55,17 @@ const actualUserReducer = createReducer(
       userFinalQuizAnswers: userFinalQuizAnswers
     })
   ),
-  on(
-    UserActions.updateUserFinalQuizAnswers,
-    (state, { userFinalQuizAnswer }) => ({
-      ...state,
-      userFinalQuizAnswers: state.userFinalQuizAnswers.map((item) =>
-        item.course_quiz_id === userFinalQuizAnswer.course_quiz_id
-          ? { ...item, ...userFinalQuizAnswer }
-          : item
-      )
-    })
-  ),
+  on(UserActions.addUserFinalQuizAnswer, (state, { userFinalQuizAnswer }) => ({
+    ...state,
+    userFinalQuizAnswers: [...state.userFinalQuizAnswers, userFinalQuizAnswer]
+  })),
   on(UserActions.setEnrollment, (state, { enrollment }) => ({
     ...state,
     enrollment
+  })),
+  on(UserActions.setFinalQuizReminder, (state, { showFinalQuizReminder }) => ({
+    ...state,
+    showFinalQuizReminder
   }))
 )
 

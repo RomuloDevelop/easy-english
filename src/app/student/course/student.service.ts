@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { Store, select } from '@ngrx/store'
-import { Observable, zip, Subject, of, combineLatest } from 'rxjs'
+import { Observable, zip, Subject } from 'rxjs'
 import { finalize, map, mergeMap, take } from 'rxjs/operators'
+import { UserAnswer } from 'src/app/state/models'
 import {
-  selectCoursesTable,
-  CoursesTableRow
-} from '../../state/admin/admin.selectores'
-import { Quiz, UserAnswer, UserQuiz } from 'src/app/state/models'
-import { UserQuizzService } from 'src/app/services/user-quizz.service'
+  StoreUserFinalQuizAnswer,
+  UserQuizzService
+} from 'src/app/services/user-quizz.service'
 import { CourseService } from 'src/app/services/course.service'
 import { EnrollmentService } from 'src/app/services/enrollment.service'
 import {
   selectActualUser,
   selectUserEnrollment,
-  selectUserAnswers
+  selectUserAnswers,
+  selectFinalQuizReminder
 } from 'src/app/state/session/session.selectors'
 import { setEnrollment } from 'src/app/state/session/profile/session.actions'
 
@@ -110,6 +110,24 @@ export class StudentService {
     )
   }
 
+  insertUserFinalQuizzes(
+    data: Omit<StoreUserFinalQuizAnswer, 'user_id'>[],
+    finalizeCb = () => {}
+  ) {
+    return this.getStoredUser().pipe(
+      mergeMap((user) => {
+        const requests = data.map((item) =>
+          this.userQuizService.createUserFinalQuizAnswer({
+            user_id: user.id,
+            ...item
+          })
+        )
+        return zip(...requests)
+      }),
+      finalize(finalizeCb)
+    )
+  }
+
   getUserQuizzes() {
     return this.store.pipe(take(1), select(selectUserAnswers))
   }
@@ -140,5 +158,9 @@ export class StudentService {
 
   getEnrollment() {
     return this.store.pipe(select(selectUserEnrollment))
+  }
+
+  showFinalQuizReminder() {
+    return this.store.select(selectFinalQuizReminder)
   }
 }

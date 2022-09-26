@@ -13,7 +13,7 @@
     <p>
       <ng-content select="[description]"></ng-content>
     </p>
-    <div class="app-modal-footer">
+    <div class="app-modal-footer" *ngIf="footer">
       <button
         pButton
         pRipple

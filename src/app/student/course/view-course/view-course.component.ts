@@ -78,7 +78,7 @@ export class ViewCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       this.lastLesson = lastLessonToView || lessonList[0]
 
       if (this.lastLesson?.count === lessonList[lessonList.length - 1].count) {
-        this.askForFinalQuiz = true
+        this.checkFinalQuizReminder()
       }
     })
   }
@@ -114,7 +114,7 @@ export class ViewCourseComponent implements OnInit, OnDestroy, AfterViewInit {
     const i = this.lessonList.findIndex((item) => item.id === lesson.id)
 
     if (!this.lessonList[i + 1]) {
-      this.askForFinalQuiz = true
+      this.checkFinalQuizReminder()
     }
 
     if (this.lessonList[i + 1].count > this.lastLesson.count) {
@@ -205,5 +205,11 @@ export class ViewCourseComponent implements OnInit, OnDestroy, AfterViewInit {
   logout() {
     this.loader.show()
     this.sessionService.logout(() => this.loader.show(false)).subscribe()
+  }
+
+  checkFinalQuizReminder() {
+    this.studentService
+      .showFinalQuizReminder()
+      .subscribe((showReminder) => (this.askForFinalQuiz = showReminder))
   }
 }

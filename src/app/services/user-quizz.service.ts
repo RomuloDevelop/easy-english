@@ -7,8 +7,15 @@ import {
   addUserAnswer,
   setUserAnswers,
   setUserFinalQuizAnswers,
-  updateUserFinalQuizAnswers
+  addUserFinalQuizAnswer
 } from '../state/session/profile/session.actions'
+
+export interface StoreUserFinalQuizAnswer {
+  course_quiz_id: number
+  user_id: number
+  quiz_option_id: number
+  is_valid_option: boolean
+}
 
 const quizEndpoint = 'course_lesson_user'
 const finalQuizEndpoint = 'course_quiz_user'
@@ -60,13 +67,13 @@ export class UserQuizzService {
       )
   }
 
-  createUserFinalQuizAnswer(data: UserFinalQuizAnswer) {
+  createUserFinalQuizAnswer(data: StoreUserFinalQuizAnswer) {
     return this.http
       .post<{ data: UserFinalQuizAnswer }>(finalQuizEndpoint, data)
       .pipe(
         map(({ data }) => {
           this.store.dispatch(
-            updateUserFinalQuizAnswers({ userFinalQuizAnswer: data })
+            addUserFinalQuizAnswer({ userFinalQuizAnswer: data })
           )
           return data
         })

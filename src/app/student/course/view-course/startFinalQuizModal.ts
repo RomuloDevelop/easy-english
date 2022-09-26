@@ -7,10 +7,12 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core'
+import { Store } from '@ngrx/store'
 import {
   ModalAction,
   ModalComponent
 } from 'src/app/components/common/modal/modal.component'
+import { setFinalQuizReminder } from 'src/app/state/session/profile/session.actions'
 
 @Component({
   selector: 'app-start-final-quiz-modal',
@@ -44,14 +46,19 @@ export class StartFinalQuizModalComponent implements OnChanges {
   @Output() accept = new EventEmitter()
   @ViewChild(ModalComponent) modal = new ModalComponent()
 
-  constructor() {}
+  constructor(private store: Store) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     this.changeModalProp(changes, 'show')
   }
 
   getAction(value: ModalAction): void {
-    value === ModalAction.accept && this.accept.emit()
+    if (value === ModalAction.accept) {
+      this.store.dispatch(
+        setFinalQuizReminder({ showFinalQuizReminder: false })
+      )
+      this.accept.emit()
+    }
     this.modal.show = false
   }
 

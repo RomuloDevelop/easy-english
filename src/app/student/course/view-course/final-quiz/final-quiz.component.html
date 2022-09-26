@@ -4,17 +4,14 @@
     #questions
     *ngFor="let item of finalQuiz"
     [question]="item.quiz"
+    [answer]="item.answer"
+    [id]="item.course_quiz_id"
   ></app-question>
   <div class="d-flex justify-content-end mt-3">
-    <!-- <button class="default-btn" (click)="submit()">
-      <i class="pi pi-pencil icon-arrow before"></i>
-      <span class="label">Submit</span>
-      <i class="pi pi-pencil icon-arrow after"></i>
-    </button> -->
     <button
       class="default-btn"
       (click)="submit()"
-      [disabled]="quizNotes.length || loading"
+      [disabled]="userFinalQuizAnswers.length || loading"
     >
       <ng-container *ngIf="!loading">
         <i class="pi pi-pencil icon-arrow before"></i>
@@ -51,3 +48,14 @@
     </button>
   </div>
 </div>
+
+<app-modal [footer]="false" [(show)]="modal">
+  <ng-container title>
+    <i style="font-size: 1.3rem" class="pi pi-exclamation-circle"></i>
+    Well done!
+  </ng-container>
+  <ng-container description>
+    You have completed the entire course!, we sugest you contact the teacher to
+    know your grade
+  </ng-container>
+</app-modal>

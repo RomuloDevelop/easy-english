@@ -26,3 +26,8 @@ export const selectUserEnrollment = createSelector(
   (state: AppState) => state.session.enrollment,
   (enrollment: Enrollment) => enrollment
 )
+
+export const selectFinalQuizReminder = createSelector(
+  (state: AppState) => state.session.showFinalQuizReminder,
+  (showFinalQuizReminder: boolean) => showFinalQuizReminder
+)

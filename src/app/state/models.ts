@@ -44,6 +44,7 @@ export interface FinalQuiz {
   quiz_id: number
   required: boolean
   quiz: Quiz
+  course_quiz_id?: number
 }
 
 export interface Article {
@@ -141,6 +142,7 @@ export interface Session {
   userAnswers: UserAnswer[]
   userFinalQuizAnswers: UserFinalQuizAnswer[]
   enrollment: Enrollment
+  showFinalQuizReminder: boolean
 }
 
 export interface AppState {

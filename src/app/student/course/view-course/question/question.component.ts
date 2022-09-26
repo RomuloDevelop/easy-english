@@ -3,7 +3,8 @@ import {
   OnDestroy,
   Input,
   OnChanges,
-  SimpleChanges
+  SimpleChanges,
+  OnInit
 } from '@angular/core'
 import { Quiz } from 'src/app/state/models'
 
@@ -12,26 +13,36 @@ import { Quiz } from 'src/app/state/models'
   templateUrl: './question.component.html',
   styleUrls: ['./question.component.scss']
 })
-export class QuestionComponent implements OnChanges, OnDestroy {
+export class QuestionComponent implements OnInit, OnChanges, OnDestroy {
   @Input() question: Quiz = null
   @Input() answer: number = null
+  @Input() id: number = null
   selected: number = null
   message = {
     correct: false,
     text: ''
   }
 
+  ngOnInit(): void {
+    console.log(this.answer)
+    this.checkAnswerIfDefined(this.answer)
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['answer']?.currentValue != null) {
-      this.selected = changes['answer'].currentValue
-      this.checkAnswer()
-    }
+    this.checkAnswerIfDefined(changes['answer']?.currentValue)
   }
 
   ngOnDestroy() {
     this.message = {
       correct: false,
       text: ''
+    }
+  }
+
+  checkAnswerIfDefined(answer: number) {
+    if (answer) {
+      this.selected = answer
+      this.checkAnswer()
     }
   }
 

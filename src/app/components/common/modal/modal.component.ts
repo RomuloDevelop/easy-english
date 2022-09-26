@@ -18,6 +18,8 @@ export class ModalComponent {
   @Input() showClose = true
   @Input() acceptText = 'Ok'
   @Input() cancelText = 'Cancel'
+  @Input() footer = true
+  @Output() showChange = new EventEmitter<boolean>()
   @Output() action = new EventEmitter<ModalAction>()
 
   modalAction = ModalAction
@@ -26,5 +28,7 @@ export class ModalComponent {
 
   emitAction(value: ModalAction) {
     this.action.emit(value)
+
+    if (value === ModalAction.close) this.showChange.emit(false)
   }
 }

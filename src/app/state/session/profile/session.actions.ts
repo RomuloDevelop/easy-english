@@ -40,7 +40,12 @@ export const setUserFinalQuizAnswers = createAction(
   props<{ userFinalQuizAnswers: UserFinalQuizAnswer[] }>()
 )
 
-export const updateUserFinalQuizAnswers = createAction(
-  '[UserFinalQuizAnswers] Update User Final Quiz Answers',
-  props<{ userFinalQuizAnswer: Partial<UserFinalQuizAnswer> }>()
+export const addUserFinalQuizAnswer = createAction(
+  '[UserFinalQuizAnswers] Add User Final Quiz Answers',
+  props<{ userFinalQuizAnswer: UserFinalQuizAnswer }>()
+)
+
+export const setFinalQuizReminder = createAction(
+  '[ShowFinalQuizReminder] Set Final Quiz Reminder',
+  props<{ showFinalQuizReminder: boolean }>()
 )

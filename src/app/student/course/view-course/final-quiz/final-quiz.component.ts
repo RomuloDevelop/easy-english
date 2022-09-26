@@ -1,31 +1,26 @@
-import {
-  Component,
-  Input,
-  ViewChildren,
-  QueryList,
-  OnInit,
-  AfterViewInit
-} from '@angular/core'
+import { Component, ViewChildren, QueryList, OnInit } from '@angular/core'
 import { QuestionComponent } from '../question/question.component'
-import { FinalQuiz, UserQuiz } from 'src/app/state/models'
+import { UserFinalQuizAnswer } from 'src/app/state/models'
 import { MessageService } from 'primeng/api'
 import { StudentService } from '../../student.service'
 import { Store } from '@ngrx/store'
 import { selectCourses } from 'src/app/state/admin/admin.selectores'
 import { selectUserFinalQuizAnswers } from 'src/app/state/session/session.selectors'
 import { combineLatest } from 'rxjs'
+import { StoreUserFinalQuizAnswer } from 'src/app/services/user-quizz.service'
 
 @Component({
   selector: 'app-final-quiz',
   templateUrl: './final-quiz.component.html',
   styleUrls: ['./final-quiz.component.scss']
 })
-export class FinalQuizComponent implements OnInit, AfterViewInit {
+export class FinalQuizComponent implements OnInit {
   @ViewChildren(QuestionComponent) questions: QueryList<QuestionComponent>
+  modal = false
   title: string
-  finalQuiz: FinalQuiz[]
+  finalQuiz = []
+  userFinalQuizAnswers: UserFinalQuizAnswer[] = []
   loading = false
-  quizNotes: UserQuiz[] = []
 
   constructor(
     private messageService: MessageService,
@@ -40,18 +35,20 @@ export class FinalQuizComponent implements OnInit, AfterViewInit {
       this.store.select(selectUserFinalQuizAnswers)
     ]).subscribe(([courses, userFinalQuizAnswers]) => {
       this.title = courses[0].final_quizz_title
-      this.finalQuiz = courses[0].final_quiz || []
-    })
-  }
+      this.userFinalQuizAnswers = userFinalQuizAnswers
 
-  ngAfterViewInit() {
-    this.studentService.getUserQuizzes().subscribe((data) => {
-      // this.quizNotes = data.filter((dataItem) =>
-      //   this.questions.find(
-      //     (quiestionItem) =>
-      //       quiestionItem.question.id === dataItem.course_quiz_id
-      //   )
-      // )
+      if (courses[0]?.final_quiz) {
+        this.finalQuiz = courses[0].final_quiz.map((quiz) => ({
+          ...quiz,
+          answer: userFinalQuizAnswers.find(
+            (answer) => answer.course_quiz_id === quiz.id
+          ).quiz_option_id
+        }))
+      }
+
+      if (this.finalQuiz[0].answer != null) {
+        this.modal = true
+      }
     })
   }
 
@@ -64,18 +61,17 @@ export class FinalQuizComponent implements OnInit, AfterViewInit {
       })
     } else {
       this.loading = true
-      const userQuizzes: Omit<UserQuiz, 'user_id'>[] = []
+      const userQuizzes: Omit<StoreUserFinalQuizAnswer, 'user_id'>[] = []
       this.questions.forEach((item) => {
         userQuizzes.push({
-          course_quiz_id: item.question.id,
-          total_bad: item.message.correct ? 1 : 0,
-          total_ok: item.message.correct ? 1 : 0,
-          approved: item.message.correct
+          course_quiz_id: item.id,
+          quiz_option_id: item.selected,
+          is_valid_option: item.message.correct
         })
       })
-      // this.studentService
-      //   .insertUserQuizzes(userQuizzes, () => (this.loading = false))
-      //   .subscribe(() => this.showResults())
+      this.studentService
+        .insertUserFinalQuizzes(userQuizzes, () => (this.loading = false))
+        .subscribe(() => this.showResults())
     }
   }
 
@@ -89,5 +85,6 @@ export class FinalQuizComponent implements OnInit, AfterViewInit {
     this.questions.forEach((item) => {
       item.checkAnswer()
     })
+    this.modal = true
   }
 }
