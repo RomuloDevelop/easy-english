@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core'
+import {
+  Component,
+  OnDestroy,
+  Input,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core'
 import { Quiz } from 'src/app/state/models'
 
 @Component({
@@ -6,22 +12,23 @@ import { Quiz } from 'src/app/state/models'
   templateUrl: './question.component.html',
   styleUrls: ['./question.component.scss']
 })
-export class QuestionComponent implements OnInit, OnDestroy {
+export class QuestionComponent implements OnChanges, OnDestroy {
   @Input() question: Quiz = null
+  @Input() answer: number = null
   selected: number = null
   message = {
     correct: false,
     text: ''
   }
-  showAnswer = false
-  constructor() {}
 
-  ngOnInit(): void {
-    console.log('quiz')
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['answer']?.currentValue != null) {
+      this.selected = changes['answer'].currentValue
+      this.checkAnswer()
+    }
   }
 
   ngOnDestroy() {
-    this.showAnswer = false
     this.message = {
       correct: false,
       text: ''
@@ -35,6 +42,5 @@ export class QuestionComponent implements OnInit, OnDestroy {
       correctAnswer.id === this.selected
         ? 'The answer is correct!'
         : `Incorrect answer!`
-    this.showAnswer = true
   }
 }

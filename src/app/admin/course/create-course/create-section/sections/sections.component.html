@@ -65,44 +65,44 @@
       <p>{{ description }}</p>
       <p-accordion
         [multiple]="true"
-        *ngIf="lectures.length"
+        *ngIf="lessons.length"
         class="lecture-group"
         (onOpen)="onOpen()"
       >
         <p-accordionTab
-          *ngFor="let lecture of lectures; let indexElement = index"
+          *ngFor="let lesson of lessons; let indexElement = index"
         >
           <ng-template pTemplate="header">
             <div class="w-100">
               <h4 class="h6 d-inline">
-                {{ indexElement + 1 + ' ' + lecture.type }}
+                {{ indexElement + 1 + ' ' + lesson.type }}
               </h4>
               <div class="edit-buttons float-end">
                 <i
                   class="pi pi-pencil"
                   pTooltip="Edit lecture"
-                  (click)="updateLecture($event, lecture)"
+                  (click)="updateLesson($event, lesson)"
                 ></i>
                 <i
                   class="ml-1 pi pi-trash"
                   pTooltip="Delete lecture"
-                  (click)="deleteLecture($event, lecture)"
+                  (click)="deleteLesson($event, lesson)"
                 ></i>
                 <i
-                  *ngIf="lecture.type === 'Video' || lecture.type === 'Article'"
+                  *ngIf="lesson.type === 'Video' || lesson.type === 'Article'"
                   class="ml-1 pi pi-file"
                   pTooltip="See resources"
-                  (click)="showResources($event, lecture)"
+                  (click)="showResources($event, lesson)"
                 ></i>
               </div>
             </div>
           </ng-template>
-          <ng-container *ngIf="lecture.type === 'Video'">
-            <ng-container *ngIf="lecture.resources?.length">
+          <ng-container *ngIf="lesson.type === 'Video'">
+            <ng-container *ngIf="lesson.resources?.length">
               <strong>Resources</strong>
               <hr class="mt-0" />
               <ol class="unstyled-list">
-                <li *ngFor="let file of lecture?.resources">
+                <li *ngFor="let file of lesson?.resources">
                   {{ file.name }} - {{ file.size }} bytes
                 </li>
               </ol>
@@ -110,41 +110,41 @@
             <strong class="mt-4">Video</strong>
             <hr class="mt-0" />
             <div class="mb-3">
-              <app-youtube [url]="lecture.data.url"></app-youtube>
+              <app-youtube [url]="lesson.data.url"></app-youtube>
             </div>
             <div
               class="ql-editor editor-html"
-              [innerHtml]="lecture.data.detail"
+              [innerHtml]="lesson.data.detail"
             ></div>
           </ng-container>
-          <ng-container *ngIf="lecture.type === 'Article'">
-            <ng-container *ngIf="lecture.resources?.length">
+          <ng-container *ngIf="lesson.type === 'Article'">
+            <ng-container *ngIf="lesson.resources?.length">
               <strong>Resources</strong>
               <hr class="mt-0" />
               <ol class="unstyled-list">
-                <li *ngFor="let file of lecture?.resources">
+                <li *ngFor="let file of lesson?.resources">
                   {{ file.name }} - {{ file.size }} bytes
                 </li>
               </ol>
             </ng-container>
             <strong class="mt-4">Article</strong>
             <hr class="mt-0" />
-            <span class="h2">{{ lecture.title }}</span>
+            <span class="h2">{{ lesson.title }}</span>
             <div
               class="ql-editor editor-html"
-              [innerHtml]="lecture.data.detail"
+              [innerHtml]="lesson.data.detail"
             ></div>
           </ng-container>
-          <ng-container *ngIf="lecture.type === 'Quiz'">
-            <span class="h2">{{ lecture.title }}</span>
+          <ng-container *ngIf="lesson.type === 'Quiz'">
+            <span class="h2">{{ lesson.title }}</span>
             <div
-              [innerHtml]="lecture.data.question"
+              [innerHtml]="lesson.data.question"
               class="ql-editor editor-html question-html"
             ></div>
             <ul class="unstyled-list container">
               <li
                 class="d-flex w-100 mb-2"
-                *ngFor="let option of lecture.data.options"
+                *ngFor="let option of lesson.data.options"
               >
                 <p-radioButton
                   [inputId]="option.id"
@@ -240,7 +240,7 @@
 
   <!-- Article Dialog -->
   <p-dialog
-    [header]="lectureId ? 'Update Article' : 'New Article'"
+    [header]="lessonId ? 'Update Article' : 'New Article'"
     [modal]="true"
     [(visible)]="displayArticle"
     [style]="{ width: '50vw' }"
@@ -256,7 +256,7 @@
       class="p-inputtext-sm mb-3 w-100"
       type="text"
       pInputText
-      [(ngModel)]="lectureTitle"
+      [(ngModel)]="lessonTitle"
     />
     <p-editor
       appSnowEditor
@@ -268,7 +268,7 @@
         pButton
         (click)="createArticle()"
         class="p-button--sm p-button-outlined"
-        [disabled]="disableCreateArticle(lectureTitle) || loadingArticle"
+        [disabled]="disableCreateArticle(lessonTitle) || loadingArticle"
       >
         <ng-container *ngIf="!loadingArticle"> Update </ng-container>
         <ng-container *ngIf="loadingArticle">
@@ -294,7 +294,7 @@
 
   <!-- Video dialog -->
   <p-dialog
-    [header]="lectureId ? 'Update Video' : 'New Video'"
+    [header]="lessonId ? 'Update Video' : 'New Video'"
     [modal]="true"
     [(visible)]="displayVideo"
     [style]="{ width: '50vw' }"
@@ -312,7 +312,7 @@
         class="p-inputtext-sm mb-3 w-100"
         type="text"
         pInputText
-        [(ngModel)]="lectureTitle"
+        [(ngModel)]="lessonTitle"
       />
       <input
         placeholder="Youtube Id"
@@ -333,8 +333,7 @@
         pButton
         (click)="createVideo()"
         [disabled]="
-          disableCreateVideo(lectureTitle, videoUrl, videoDetail) ||
-          loadingVideo
+          disableCreateVideo(lessonTitle, videoUrl, videoDetail) || loadingVideo
         "
         class="p-button--sm p-button-outlined"
       >
@@ -363,7 +362,7 @@
 
   <!-- Quiz Dialog -->
   <p-dialog
-    [header]="lectureId ? 'Update Quiz' : 'New Quiz'"
+    [header]="lessonId ? 'Update Quiz' : 'New Quiz'"
     [modal]="true"
     [(visible)]="displayQuiz"
     [style]="{ width: '50vw' }"
@@ -380,7 +379,7 @@
       class="p-inputtext-sm mb-3 w-100"
       type="text"
       pInputText
-      [(ngModel)]="lectureTitle"
+      [(ngModel)]="lessonTitle"
     />
     <div class="p-section-field">
       <h2 class="h6 mt-4 mb-3">Question</h2>
@@ -439,14 +438,13 @@
       <button
         pButton
         [disabled]="
-          disabledCreateQuiz(lectureTitle, options, correctAnswer) ||
-          loadingQuiz
+          disabledCreateQuiz(lessonTitle, options, correctAnswer) || loadingQuiz
         "
-        (click)="lectureId ? updateQuiz() : createQuiz()"
+        (click)="lessonId ? updateQuiz() : createQuiz()"
         class="p-button--sm p-button-outlined"
       >
         <ng-container *ngIf="!loadingQuiz">
-          {{ lectureId ? 'Update' : 'Create' }}
+          {{ lessonId ? 'Update' : 'Create' }}
         </ng-container>
         <ng-container *ngIf="loadingQuiz">
           <p-progressSpinner

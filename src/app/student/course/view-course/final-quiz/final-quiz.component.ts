@@ -10,32 +10,48 @@ import { QuestionComponent } from '../question/question.component'
 import { FinalQuiz, UserQuiz } from 'src/app/state/models'
 import { MessageService } from 'primeng/api'
 import { StudentService } from '../../student.service'
+import { Store } from '@ngrx/store'
+import { selectCourses } from 'src/app/state/admin/admin.selectores'
+import { selectUserFinalQuizAnswers } from 'src/app/state/session/session.selectors'
+import { combineLatest } from 'rxjs'
 
 @Component({
   selector: 'app-final-quiz',
   templateUrl: './final-quiz.component.html',
   styleUrls: ['./final-quiz.component.scss']
 })
-export class FinalQuizComponent implements AfterViewInit {
+export class FinalQuizComponent implements OnInit, AfterViewInit {
   @ViewChildren(QuestionComponent) questions: QueryList<QuestionComponent>
-  @Input() quiz: FinalQuiz
-  @Input() title: string
+  title: string
+  finalQuiz: FinalQuiz[]
   loading = false
   quizNotes: UserQuiz[] = []
 
   constructor(
     private messageService: MessageService,
-    private studentService: StudentService
+    private studentService: StudentService,
+    private store: Store
   ) {}
 
-  ngAfterViewInit(): void {
+  ngOnInit() {
+    console.log(this.title)
+    combineLatest([
+      this.store.select(selectCourses),
+      this.store.select(selectUserFinalQuizAnswers)
+    ]).subscribe(([courses, userFinalQuizAnswers]) => {
+      this.title = courses[0].final_quizz_title
+      this.finalQuiz = courses[0].final_quiz || []
+    })
+  }
+
+  ngAfterViewInit() {
     this.studentService.getUserQuizzes().subscribe((data) => {
-      this.quizNotes = data.filter((dataItem) =>
-        this.questions.find(
-          (quiestionItem) =>
-            quiestionItem.question.id === dataItem.course_quiz_id
-        )
-      )
+      // this.quizNotes = data.filter((dataItem) =>
+      //   this.questions.find(
+      //     (quiestionItem) =>
+      //       quiestionItem.question.id === dataItem.course_quiz_id
+      //   )
+      // )
     })
   }
 
@@ -57,9 +73,9 @@ export class FinalQuizComponent implements AfterViewInit {
           approved: item.message.correct
         })
       })
-      this.studentService
-        .insertUserQuizzes(userQuizzes, () => (this.loading = false))
-        .subscribe(() => this.showResults())
+      // this.studentService
+      //   .insertUserQuizzes(userQuizzes, () => (this.loading = false))
+      //   .subscribe(() => this.showResults())
     }
   }
 

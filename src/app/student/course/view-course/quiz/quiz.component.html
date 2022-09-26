@@ -1,11 +1,14 @@
 <div class="quiz-content">
   <h1 class="h3 mb-4">{{ lesson?.title }}</h1>
-  <app-question [question]="lesson?.data"></app-question>
+  <app-question
+    [question]="lesson?.quiz"
+    [answer]="userAnswer?.quiz_option_id"
+  ></app-question>
   <div class="d-flex justify-content-end mt-3">
     <button
       class="default-btn"
       (click)="submit()"
-      [disabled]="quizNote || loading || !question?.selected"
+      [disabled]="userAnswer || loading || !question?.selected"
     >
       <ng-container *ngIf="!loading">
         <i class="pi pi-pencil icon-arrow before"></i>

@@ -1,5 +1,5 @@
 import {
-  Lecture,
+  Lesson,
   Quiz,
   VideoLectue,
   Article,
@@ -26,7 +26,7 @@ export class DataTransform {
       Quiz: () => this.formatQuizzes(respQuizzes)
     }
 
-    const lesson: Lecture = {
+    const lesson: Lesson = {
       id: respLessons.id,
       title: respLessons.title,
       section_id: respLessons.section_id,
@@ -38,7 +38,7 @@ export class DataTransform {
     return lesson
   }
 
-  static appDataToBackend(lesson: Lecture) {
+  static appDataToBackend(lesson: Lesson) {
     const result: LessonResponse = {
       id: lesson.id,
       title: lesson.title,

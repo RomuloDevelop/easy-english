@@ -15,6 +15,8 @@ import { ButtonModule } from 'primeng/button'
 import { AccordionModule } from 'primeng/accordion'
 import { ProgressSpinnerModule } from 'primeng/progressspinner'
 import { InputTextareaModule } from 'primeng/inputtextarea'
+import { CalendarModule } from 'primeng/calendar'
+
 import {
   DashboardTabsComponent,
   TabComponent
@@ -23,8 +25,9 @@ import { YoutubeComponent } from './components/common/youtube/youtube.component'
 
 import { httpInterceptorProviders } from './interceptors/base'
 import { LoaderModule } from './components/common/loader/loader.module'
+import { ModalComponent } from './components/common/modal/modal.component'
+
 import { SnowEditorDirective } from './directives/snow-editor.directive'
-import { CalendarModule } from 'primeng/calendar'
 
 @NgModule({
   declarations: [
@@ -35,7 +38,8 @@ import { CalendarModule } from 'primeng/calendar'
     DashboardTabsComponent,
     TabComponent,
     YoutubeComponent,
-    SnowEditorDirective
+    SnowEditorDirective,
+    ModalComponent
   ],
   imports: [
     RouterModule,
@@ -44,7 +48,8 @@ import { CalendarModule } from 'primeng/calendar'
     CommonModule,
     YouTubePlayerModule,
     ProgressSpinnerModule,
-    LoaderModule
+    LoaderModule,
+    ButtonModule
   ],
   exports: [
     FormsModule,
@@ -67,7 +72,8 @@ import { CalendarModule } from 'primeng/calendar'
     LoaderModule,
     SnowEditorDirective,
     CalendarModule,
-    InputTextareaModule
+    InputTextareaModule,
+    ModalComponent
   ],
   providers: [httpInterceptorProviders]
 })

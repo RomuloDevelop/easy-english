@@ -46,16 +46,13 @@
       </div>
     </div>
     <ng-container *ngIf="showFinalQuiz">
-      <app-final-quiz
-        [quiz]="course.final_quiz"
-        [title]="course.final_quizz_title"
-      ></app-final-quiz>
+      <app-final-quiz></app-final-quiz>
     </ng-container>
     <ng-container *ngIf="!showFinalQuiz">
       <ng-container *ngFor="let lesson of lessonList; let iLesson = index">
         <div
           @fadeInOut
-          (@fadeInOut.done)="animationDone($event)"
+          (@fadeInOut.done)="animationDone()"
           *ngIf="actualLesson?.id === lesson.id"
           style="width: 100%"
         >
@@ -64,16 +61,27 @@
       </ng-container>
     </ng-container>
     <ng-template #lessonPage>
-      <ng-container *ngIf="actualLesson?.type === 'Video'">
+      <ng-container
+        *ngIf="
+          actualLesson?.youtube_id !== 'null' &&
+          actualLesson?.youtube_id !== '0'
+        "
+      >
         <app-video-lesson
           (videoEnded)="nextLesson($event)"
           [lesson]="actualLesson"
         ></app-video-lesson>
       </ng-container>
-      <ng-container *ngIf="actualLesson?.type === 'Article'">
+      <ng-container
+        *ngIf="
+          (actualLesson?.youtube_id === 'null' ||
+            actualLesson?.youtube_id === '0') &&
+          !actualLesson?.is_quiz
+        "
+      >
         <app-article-lesson [lesson]="actualLesson"></app-article-lesson>
       </ng-container>
-      <ng-container *ngIf="actualLesson?.type === 'Quiz'">
+      <ng-container *ngIf="actualLesson?.is_quiz">
         <app-quiz
           [lesson]="actualLesson"
           (answered)="nextLesson(actualLesson)"
@@ -97,38 +105,38 @@
       ></button>
     </div>
     <p-accordion [multiple]="true" styleClass="view-course__sections__list">
-      <p-accordionTab
-        [header]="'Section ' + (i + 1)"
-        *ngFor="let section of course.sections; let i = index"
-        [(selected)]="sectionTabs[i]"
-      >
-        <ul class="list-group">
-          <li
-            class="list-group-item list-group-item-action"
-            [class]="{
-              'lesson-selected': actualLesson?.id === lesson.id,
-              disabled: lesson.count > lastLesson.count
-            }"
-            *ngFor="let lesson of section.lectures; let i = index"
-            (click)="selectLesson(lesson)"
-          >
-            <strong *ngIf="lesson.type !== 'Quiz'"
-              >{{ lesson.countToShow }}.</strong
+      <ng-container *ngFor="let section of course.sections; let i = index">
+        <p-accordionTab
+          *ngIf="section.lessons?.length"
+          [header]="'Section ' + (i + 1)"
+          [(selected)]="sectionTabs[i]"
+        >
+          <ul class="list-group">
+            <li
+              class="list-group-item list-group-item-action"
+              [class]="{
+                'lesson-selected': actualLesson?.id === lesson.id,
+                disabled: lesson.count > lastLesson.count
+              }"
+              *ngFor="let lesson of section.lessons; let i = index"
+              (click)="selectLesson(lesson)"
             >
-            {{ lesson.title }}
-            <span
-              *ngIf="lesson.answered"
-              class="p-ml-3"
-              [class]="lesson.testOk ? 'quiz-correct' : 'quiz-incorrect'"
-              >{{ lesson.testOk ? 'Correct' : 'Incorrect' }}
-              <i
-                class="pi"
-                [class]="lesson.testOk ? 'pi-check-circle' : 'pi-times'"
-              ></i
-            ></span>
-          </li>
-        </ul>
-      </p-accordionTab>
+              <strong>{{ lesson.countToShow }}.</strong>
+              {{ lesson.title }}
+              <span
+                *ngIf="lesson.answered"
+                class="p-ml-3"
+                [class]="lesson.testOk ? 'quiz-correct' : 'quiz-incorrect'"
+                >{{ lesson.testOk ? 'Correct' : 'Incorrect' }}
+                <i
+                  class="pi"
+                  [class]="lesson.testOk ? 'pi-check-circle' : 'pi-times'"
+                ></i
+              ></span>
+            </li>
+          </ul>
+        </p-accordionTab>
+      </ng-container>
       <p-accordionTab
         header="Final quiz"
         class="final-quiz"
@@ -142,3 +150,7 @@
   </div>
 </div>
 <p-toast></p-toast>
+<app-start-final-quiz-modal
+  [show]="askForFinalQuiz"
+  (accept)="canShowFinalQuiz()"
+></app-start-final-quiz-modal>

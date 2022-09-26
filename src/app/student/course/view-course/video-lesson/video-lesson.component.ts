@@ -7,12 +7,14 @@ import {
   Output,
   EventEmitter
 } from '@angular/core'
-import { Lecture, VideoLectue } from 'src/app/state/models'
+import { Lesson, VideoLectue } from 'src/app/state/models'
 import { YoutubeComponent } from '../../../../components/common/youtube/youtube.component'
 import { StudentService, LessonToShow } from '../../student.service'
 
-interface VideoLesson extends LessonToShow {
-  data: VideoLectue
+interface VideoLesson {
+  title: string
+  youtube_id: string
+  description: string
 }
 
 @Component({
@@ -23,7 +25,7 @@ interface VideoLesson extends LessonToShow {
 export class VideoLessonComponent implements OnInit, AfterViewInit {
   @ViewChild(YoutubeComponent) youtube: YoutubeComponent
   @Input() lesson: VideoLesson = null
-  @Output() videoEnded = new EventEmitter<Lecture>()
+  @Output() videoEnded = new EventEmitter<VideoLesson>()
   constructor(private studentService: StudentService) {}
 
   ngOnInit(): void {

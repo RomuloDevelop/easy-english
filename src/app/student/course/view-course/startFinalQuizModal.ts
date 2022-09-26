@@ -1,7 +1,9 @@
 import {
   Component,
+  EventEmitter,
   Input,
   OnChanges,
+  Output,
   SimpleChanges,
   ViewChild
 } from '@angular/core'
@@ -11,17 +13,21 @@ import {
 } from 'src/app/components/common/modal/modal.component'
 
 @Component({
-  selector: 'app-tip',
+  selector: 'app-start-final-quiz-modal',
   template: `
-    <app-modal acceptText="Next tip" (action)="getAction($event)">
+    <app-modal
+      acceptText="Continue"
+      cancelText="Not now"
+      showClose="false"
+      (action)="getAction($event)"
+    >
       <ng-container title>
         <i style="font-size: 1.3rem" class="pi pi-exclamation-circle"></i>
-        Tip!
+        All right!
       </ng-container>
       <ng-container description>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Libero,
-        repellat rerum. Fugiat amet maiores corrupti aperiam! Quibusdam ad nulla
-        similique magni in cum, accusamus incidunt quae id ratione libero est!
+        You have completed the material for this course. Would you like to start
+        the final quiz?
       </ng-container>
     </app-modal>
   `,
@@ -33,8 +39,9 @@ import {
     `
   ]
 })
-export class TipComponent implements OnChanges {
+export class StartFinalQuizModalComponent implements OnChanges {
   @Input() show = false
+  @Output() accept = new EventEmitter()
   @ViewChild(ModalComponent) modal = new ModalComponent()
 
   constructor() {}
@@ -44,6 +51,7 @@ export class TipComponent implements OnChanges {
   }
 
   getAction(value: ModalAction): void {
+    value === ModalAction.accept && this.accept.emit()
     this.modal.show = false
   }
 

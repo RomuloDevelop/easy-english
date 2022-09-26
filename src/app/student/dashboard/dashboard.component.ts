@@ -16,11 +16,7 @@ export class DashboardComponent implements OnInit {
   loadingLogOutPanel = null
   loadingLogOutButton = false
 
-  constructor(
-    private sessionService: SessionService,
-    private store: Store,
-    private router: Router
-  ) {}
+  constructor(private sessionService: SessionService, private store: Store) {}
 
   ngOnInit(): void {
     this.store

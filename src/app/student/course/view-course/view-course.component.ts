@@ -7,7 +7,7 @@ import {
 } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { StudentService, CourseToShow, LessonToShow } from '../student.service'
-import { Enrollment, Lecture } from 'src/app/state/models'
+import { Enrollment, Lesson } from 'src/app/state/models'
 import { LoaderService } from '../../../components/common/loader/loader.service'
 import memoize from '../../../decorators/memoize'
 import { SessionService } from 'src/app/services/session.service'
@@ -34,6 +34,7 @@ export class ViewCourseComponent implements OnInit, OnDestroy, AfterViewInit {
   sectionTabs: boolean[] = []
   firstLoad = false
   enrollment: Enrollment
+  askForFinalQuiz = false
   navPosition = 'calc(50vh - 16px)'
   scrollListener: (this: Window, ev: Event) => any
   constructor(
@@ -64,10 +65,10 @@ export class ViewCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       this.course = data
       let lessonList: LessonToShow[] = []
       data.sections.forEach((section) => {
-        lessonList = lessonList.concat(section.lectures)
+        lessonList = lessonList.concat(section.lessons)
       })
-      console.log(enrollment, data.sections)
       this.lessonList = lessonList
+      console.log('All lessons', this.lessonList)
       this.sectionTabs = new Array(data.sections.length).fill(true)
       const lastLessonToView = lessonList.find(
         (lesson) =>
@@ -75,6 +76,10 @@ export class ViewCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       )
       this.actualLesson = lastLessonToView || lessonList[0]
       this.lastLesson = lastLessonToView || lessonList[0]
+
+      if (this.lastLesson?.count === lessonList[lessonList.length - 1].count) {
+        this.askForFinalQuiz = true
+      }
     })
   }
 
@@ -94,7 +99,6 @@ export class ViewCourseComponent implements OnInit, OnDestroy, AfterViewInit {
         .querySelector('.footer-area')
         .getBoundingClientRect().height
       const maxTop = document.body.scrollHeight - footerHeight - 41
-      console.log(top, maxTop, footerHeight)
       if (top + offset < maxTop) {
         this.navPosition = top + 'px'
       }
@@ -102,29 +106,30 @@ export class ViewCourseComponent implements OnInit, OnDestroy, AfterViewInit {
     window.addEventListener('scroll', this.scrollListener)
   }
 
-  getLecture(lesson) {
+  getLesson(lesson) {
     this.actualLesson = lesson
   }
 
-  nextLesson(lesson: Lecture) {
-    for (let i = 0; i <= this.lessonList.length; i++) {
-      if (this.lessonList[i].id === lesson.id) {
-        if (this.lessonList[i + 1].count > this.lastLesson.count) {
-          this.loader.show()
-          this.studentService
-            .updateLastLessonCompleted(this.lessonList[i + 1].id, () =>
-              this.loader.show(false)
-            )
-            .subscribe(() => (this.actualLesson = this.lessonList[i + 1]))
-        } else {
-          this.actualLesson = this.lessonList[i + 1]
-        }
-        break
-      }
+  nextLesson(lesson: Lesson) {
+    const i = this.lessonList.findIndex((item) => item.id === lesson.id)
+
+    if (!this.lessonList[i + 1]) {
+      this.askForFinalQuiz = true
     }
+
+    if (this.lessonList[i + 1].count > this.lastLesson.count) {
+      this.loader.show()
+      this.studentService
+        .updateLastLessonCompleted(this.lessonList[i + 1].id, () =>
+          this.loader.show(false)
+        )
+        .subscribe(() => (this.actualLesson = this.lessonList[i + 1]))
+      return
+    }
+    this.actualLesson = this.lessonList[i + 1]
   }
 
-  prevLesson(lesson: Lecture) {
+  prevLesson(lesson: Lesson) {
     for (let i = 0; i <= this.lessonList.length; i++) {
       if (this.lessonList[i].id === lesson.id) {
         this.actualLesson = this.lessonList[i - 1]
@@ -144,7 +149,7 @@ export class ViewCourseComponent implements OnInit, OnDestroy, AfterViewInit {
     this.studentService.hideMenuMesage(!this.sectionPanel)
   }
 
-  animationDone(event) {
+  animationDone() {
     if (this.actualLesson?.type === 'Video') {
       this.video.resize()
     }
@@ -192,8 +197,8 @@ export class ViewCourseComponent implements OnInit, OnDestroy, AfterViewInit {
     return (
       (actualLesson !== null &&
         actualLesson?.count < lessonList[lessonList.length - 1].count &&
-        actualLesson?.type !== 'Quiz') ||
-      (actualLesson?.type === 'Quiz' && actualLesson?.answered)
+        !actualLesson?.is_quiz) ||
+      (actualLesson?.is_quiz && actualLesson?.answered)
     )
   }
 

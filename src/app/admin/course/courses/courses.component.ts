@@ -19,7 +19,7 @@ import {
   deleteCourseSection,
   updateSection
 } from 'src/app/state/admin/sections/section.actions'
-import { deleteSectionLecture } from 'src/app/state/admin/lectures/lecture.actions'
+import { deleteSectionLesson } from 'src/app/state/admin/lessons/lesson.actions'
 import { combineLatest, zip } from 'rxjs'
 import { take } from 'rxjs/operators'
 import { selectActualUser } from 'src/app/state/session/session.selectors'
@@ -157,7 +157,7 @@ export class CoursesComponent implements OnInit {
 
   deleteAllCourseData(course: CoursesTableRow) {
     for (let section of course.sections) {
-      this.store.dispatch(deleteSectionLecture({ sectionId: section.id }))
+      this.store.dispatch(deleteSectionLesson({ sectionId: section.id }))
     }
     this.store.dispatch(deleteCourseSection({ courseId: course.id }))
     this.store.dispatch(deleteCourse({ id: course.id }))

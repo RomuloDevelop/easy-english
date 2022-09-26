@@ -4,7 +4,8 @@ import * as UserActions from './session.actions'
 
 export const initialState: Session = {
   actualUser: null,
-  userNotes: [],
+  userAnswers: [],
+  userFinalQuizAnswers: [],
   enrollment: null
 }
 
@@ -21,27 +22,49 @@ const actualUserReducer = createReducer(
       ...user
     }
   })),
-  on(UserActions.setUserNotes, (state, { userNotes }) => ({
+  on(UserActions.setUserAnswers, (state, { userAnswers }) => ({
     ...state,
-    userNotes
+    userAnswers
   })),
-  on(UserActions.addUserNote, (state, { userNote }) => ({
+  on(UserActions.addUserAnswer, (state, { userAnswer }) => ({
     ...state,
-    userNotes: [...state.userNotes, userNote]
+    userAnswer: [...state.userAnswers, userAnswer]
   })),
-  on(UserActions.updateUserNote, (state, { userNote }) => ({
+  on(UserActions.updateUserAnswer, (state, { userAnswer }) => ({
     ...state,
-    userNotes: state.userNotes.map((item) =>
-      item.id === userNote.id ? { ...item, ...userNote } : item
+    userAnswers: state.userAnswers.map((item) =>
+      item.course_lesson_id === userAnswer.course_lesson_id
+        ? { ...item, ...userAnswer }
+        : item
     )
   })),
-  on(UserActions.updateUserNotes, (state, { userNotes }) => ({
+  on(UserActions.updateUserAnswers, (state, { userAnswers }) => ({
     ...state,
-    userNotes: state.userNotes.map((item) => ({
-      ...(userNotes.find((userNote) => userNote.id === item.id) || {}),
+    userAnswers: state.userAnswers.map((item) => ({
+      ...(userAnswers.find(
+        (userAnswer) => userAnswer.course_lesson_id === item.course_lesson_id
+      ) || {}),
       ...item
     }))
   })),
+  on(
+    UserActions.setUserFinalQuizAnswers,
+    (state, { userFinalQuizAnswers }) => ({
+      ...state,
+      userFinalQuizAnswers: userFinalQuizAnswers
+    })
+  ),
+  on(
+    UserActions.updateUserFinalQuizAnswers,
+    (state, { userFinalQuizAnswer }) => ({
+      ...state,
+      userFinalQuizAnswers: state.userFinalQuizAnswers.map((item) =>
+        item.course_quiz_id === userFinalQuizAnswer.course_quiz_id
+          ? { ...item, ...userFinalQuizAnswer }
+          : item
+      )
+    })
+  ),
   on(UserActions.setEnrollment, (state, { enrollment }) => ({
     ...state,
     enrollment

@@ -7,22 +7,19 @@ import {
   selectCoursesTable,
   CoursesTableRow
 } from '../../state/admin/admin.selectores'
-import { Quiz, UserQuiz } from 'src/app/state/models'
-import { UserQuizzService } from 'src/app/services/user_quizz.service'
+import { Quiz, UserAnswer, UserQuiz } from 'src/app/state/models'
+import { UserQuizzService } from 'src/app/services/user-quizz.service'
 import { CourseService } from 'src/app/services/course.service'
 import { EnrollmentService } from 'src/app/services/enrollment.service'
 import {
   selectActualUser,
   selectUserEnrollment,
-  selectNotes
+  selectUserAnswers
 } from 'src/app/state/session/session.selectors'
-import {
-  setEnrollment,
-  setUserNotes
-} from 'src/app/state/session/profile/session.actions'
+import { setEnrollment } from 'src/app/state/session/profile/session.actions'
 
 export type CourseToShow = ReturnType<StudentService['addLessonCount']>
-export type LessonToShow = CourseToShow['sections'][0]['lectures'][0]
+export type LessonToShow = CourseToShow['sections'][0]['lessons'][0]
 
 @Injectable()
 export class StudentService {
@@ -31,14 +28,12 @@ export class StudentService {
 
   constructor(
     private store: Store,
-    private userNotes: UserQuizzService,
+    private userQuizService: UserQuizzService,
     private courseService: CourseService,
     private enrollmentService: EnrollmentService
   ) {}
 
   hideMenuMesage(hideMenu = false) {
-    console.log(hideMenu)
-
     this.subHideMenu.next(hideMenu)
   }
 
@@ -49,106 +44,79 @@ export class StudentService {
   ): Observable<CourseToShow> {
     if (refresh) {
       const id = parseInt(route.snapshot.paramMap.get('id'))
-      return zip(
-        this.getStoredUser(),
-        this.enrollmentService.getEnrollments(id),
-        this.courseService.getCourse(id)
-      ).pipe(
-        mergeMap(([user, enrollments, data]) => {
-          const requests: Observable<UserQuiz[]>[] = []
-          data.lessons.forEach((item) => {
-            if (item.type === 'Quiz') {
-              requests.push(
-                this.userNotes.getUserQuizzes((item.data as Quiz).id, user.id)
-              )
-            }
-          })
-          const enrollment =
-            enrollments.data.find((item) => item.user_id === user.id) || null
+      return this.getStoredUser().pipe(
+        mergeMap((user) =>
+          zip(
+            this.enrollmentService.getEnrollments(id),
+            this.courseService.getCourse(id),
+            this.userQuizService.getUserQuizzes(id, user.id),
+            this.userQuizService.getUserFinalQuizAnswer(id, user.id)
+          ).pipe(
+            mergeMap(([enrollments, course]) => {
+              const enrollment =
+                enrollments.data.find((item) => item.user_id === user.id) ||
+                null
 
-          this.store.dispatch(setEnrollment({ enrollment }))
+              this.store.dispatch(setEnrollment({ enrollment }))
 
-          return requests.length
-            ? zip(...requests).pipe(
-                mergeMap((userNotes) => {
-                  let flaten: UserQuiz[] = []
-                  userNotes.forEach((list) =>
-                    list.forEach((item) => flaten.push(item))
-                  )
-                  this.store.dispatch(setUserNotes({ userNotes: flaten }))
-                  return this.getStoredCourse(route)
-                })
-              )
-            : this.getStoredCourse(route)
-        }),
-        finalize(finalizeCb)
+              return this.getStoredCourse(course)
+            }),
+            finalize(finalizeCb)
+          )
+        )
       )
     } else {
       return this.getStoredCourse(route).pipe(finalize(finalizeCb))
     }
   }
 
-  addLessonCount(
-    userQuizzes: UserQuiz[],
-    data: CoursesTableRow[],
-    route: ActivatedRoute
-  ) {
-    const filtered = data.filter((item) => item.status)
-    const id = parseInt(route.snapshot.paramMap.get('id'))
-    const course = filtered.find((item) => item.id === id)
+  addLessonCount(data: any, userAnswers: UserAnswer[]) {
     let lastSectionCount = 1
-    const sections = course.sections.map((item) => {
+    const sections = data.sections.map((section) => {
       let lastCount = 0
-      let lectures = item.lectures.map((item, iLecture) => {
+      const lessons = section.lessons.map((lesson, iLesson) => {
         let testOk = false
         let answered = false
-        if (item.type !== 'Quiz') {
+        if (lesson.type !== 'Quiz') {
           lastCount++
         } else {
-          const userNote = userQuizzes.find(
-            (userNote) => userNote.course_quiz_id === (item.data as Quiz).id
+          const userAnswer = userAnswers.find(
+            (item) => item.course_lesson_id === lesson.id
           )
-          console.log(userNote)
-          answered = !!userNote
-          testOk = userNote ? userNote.approved : false
+          answered = !!userAnswer
+          testOk = userAnswer ? !!userAnswer.is_valid_option : false
         }
         return {
-          ...item,
-          count: lastSectionCount + iLecture,
+          ...lesson,
+          count: lastSectionCount + iLesson,
           countToShow: lastCount,
           testOk,
           answered
         }
       })
-      lastSectionCount = lectures[lectures.length - 1].count
-      return { ...item, lectures }
+      if (lessons.length) lastSectionCount = lessons[lessons.length - 1].count
+      return { ...section, lessons }
     })
-    const result = { ...course, sections }
+    const result = { ...data, sections }
     return result
   }
 
-  insertUserQuizzes(data: Omit<UserQuiz, 'user_id'>[], finalizeCb = () => {}) {
+  insertUserQuizzes(data: Omit<UserAnswer, 'user_id'>, finalizeCb = () => {}) {
     return this.getStoredUser().pipe(
-      mergeMap((user) => {
-        const userQuiz = data.map((item) => ({ ...item, user_id: user.id }))
-        return this.userNotes.insertUserQuizzes(userQuiz)
-      }),
+      mergeMap((user) =>
+        this.userQuizService.createUserAnswer({ user_id: user.id, ...data })
+      ),
       finalize(finalizeCb)
     )
   }
 
   getUserQuizzes() {
-    return this.store.pipe(select(selectNotes))
+    return this.store.pipe(take(1), select(selectUserAnswers))
   }
 
-  private getStoredCourse(route: ActivatedRoute) {
-    return combineLatest([
-      this.getUserQuizzes(),
-      this.store.pipe(select(selectCoursesTable))
-    ]).pipe(
-      map(([userNotes, course]) =>
-        this.addLessonCount(userNotes, course, route)
-      )
+  private getStoredCourse(course: any) {
+    return this.getUserQuizzes().pipe(
+      map((userAnswers) => this.addLessonCount(course, userAnswers))
     )
   }
 

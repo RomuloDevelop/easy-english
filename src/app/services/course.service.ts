@@ -3,14 +3,14 @@ import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs'
 import { finalize, map } from 'rxjs/operators'
 import { Store } from '@ngrx/store'
-import { Course, Lecture, Section } from '../state/models'
+import { Course, Lesson, Section } from '../state/models'
 import {
   addCourse,
   setCourses,
   updateCourse
 } from '../state/admin/courses/course.actions'
 import Endpoints from '../../data/endpoints'
-import { setLectures } from '../state/admin/lectures/lecture.actions'
+import { setLessons } from '../state/admin/lessons/lesson.actions'
 import { setSections } from '../state/admin/sections/section.actions'
 import { DataTransform } from '../utils/DataTransform'
 
@@ -52,18 +52,17 @@ export class CourseService {
   ): Observable<{
     course: Course
     sections: Section[]
-    lessons: Lecture[]
+    lessons: Lesson[]
   }> {
     return this.http.get<{ data: any }>(`${courseUrl}/${id}`).pipe(
       map(({ data: course }) => {
-        const { sections, final_quiz } = course
+        const { sections } = course
         let lessons = []
 
         // Formatea lesson
         sections?.forEach((section) => {
           const formatedLessons = section.lessons.map((lesson) => {
             if (lesson.is_quiz) {
-              console.log('is quiz', lesson)
               const { quiz } = lesson
               quiz.answers = quiz.options
               quiz.lesson_id = lesson.id
@@ -77,9 +76,10 @@ export class CourseService {
 
         delete course.sections
         delete sections.lessons
+
         this.store.dispatch(setCourses({ courses: [course] }))
         this.store.dispatch(setSections({ sections: sections }))
-        this.store.dispatch(setLectures({ lectures: lessons }))
+        this.store.dispatch(setLessons({ lessons: lessons }))
         return { course, sections, lessons }
       }),
       finalize(finalizeCb)

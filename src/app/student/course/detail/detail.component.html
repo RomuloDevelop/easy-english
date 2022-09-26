@@ -515,15 +515,15 @@
             <div class="courses-list">
               <ul>
                 <li
-                  *ngFor="let lecture of section.lectures; let lecIndex = index"
+                  *ngFor="let lesson of section.lessons; let lecIndex = index"
                 >
                   <span class="number">{{ lecIndex + 1 }}.</span>
-                  <ng-container *ngIf="lecture.type !== 'Quiz'; else quizItem">
-                    Lesson {{ lecIndex + lecture.count }}:
-                    {{ lecture.data.title }} (4:30)
+                  <ng-container *ngIf="lesson.type !== 'Quiz'; else quizItem">
+                    Lesson {{ lecIndex + lesson.count }}:
+                    {{ lesson.data.title }} (4:30)
                   </ng-container>
                   <ng-template #quizItem>
-                    Quiz - {{ lecture.title }}
+                    Quiz - {{ lesson.title }}
                   </ng-template>
                 </li>
               </ul>

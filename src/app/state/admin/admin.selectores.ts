@@ -3,7 +3,7 @@ import {
   AppState,
   Course,
   Section,
-  Lecture,
+  Lesson,
   ArrayElement,
   User
 } from '../models'
@@ -18,9 +18,9 @@ export const selectSections = createSelector(
   (sections: Array<Section>) => sections
 )
 
-export const selectLectures = createSelector(
-  (state: AppState) => state.lectures,
-  (lectures: Array<Lecture>) => lectures
+export const selectLessons = createSelector(
+  (state: AppState) => state.lessons,
+  (lessons: Array<Lesson>) => lessons
 )
 
 export const selectUsers = createSelector(
@@ -28,15 +28,15 @@ export const selectUsers = createSelector(
   (users: Array<User>) => users
 )
 
-const cbSectionData = (sections: Array<Section>, lectures: Array<Lecture>) =>
+const cbSectionData = (sections: Array<Section>, lessons: Array<Lesson>) =>
   sections.map((section) => ({
     ...section,
-    lectures: lectures.filter((lecture) => lecture.section_id === section.id)
+    lessons: lessons.filter((lesson) => lesson.section_id === section.id)
   }))
 
 export const selectSectionsData = createSelector(
   selectSections,
-  selectLectures,
+  selectLessons,
   cbSectionData
 )
 

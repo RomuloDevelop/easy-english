@@ -11,12 +11,13 @@
           name="answer-result"
           [value]="option.id"
           [(ngModel)]="selected"
+          [disabled]="answer"
         ></p-radioButton>
         <p style="margin-left: 1.2rem">{{ option.description }}</p>
       </li>
     </ul>
     <div
-      [style.opacity]="showAnswer ? 1 : 0"
+      [style.opacity]="message.text ? 1 : 0"
       class="quiz-content__message"
       [class]="{ correct: message.correct }"
     >

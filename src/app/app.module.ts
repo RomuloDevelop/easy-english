@@ -5,7 +5,7 @@ import { storageSyncMetaReducer } from 'ngrx-store-persist'
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'
 import { reducer as CourseReducer } from './state/admin/courses/course.reducers'
 import { reducer as SectionReducer } from './state/admin/sections/section.reducers'
-import { reducer as LectureReducer } from './state/admin/lectures/lecture.reducers'
+import { reducer as LessonReducer } from './state/admin/lessons/lesson.reducers'
 import { reducer as UserReducer } from './state/admin/users/user.reducers'
 import { reducer as SessionReducer } from './state/session/profile/session.reducers'
 import { CarouselModule } from 'ngx-owl-carousel-o'
@@ -124,7 +124,7 @@ import { HomeComponent } from './pages/home/home.component'
 const store = {
   courses: CourseReducer,
   sections: SectionReducer,
-  lectures: LectureReducer,
+  lessons: LessonReducer,
   users: UserReducer,
   session: SessionReducer
 }

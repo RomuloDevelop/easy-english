@@ -1,35 +1,5 @@
-.tip-container {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  backdrop-filter: blur(7px);
-  z-index: 1000;
+:host ::ng-deep .app-modal-container {
   h3 i {
     color: var(--mainColor);
-  }
-  & > div {
-    border-radius: 10px;
-    background-color: white;
-    padding: 25px 20px;
-    box-shadow: -1px 3px 17px -1px rgba(0,0,0,0.74);
-    width: 50vw;
-    min-width: 300px;
-    max-width: 500px;
-    box-sizing: content-box;
-    .tip-close {
-      float: right;
-    }
-    .tip-footer {
-      display: flex;
-      justify-content: flex-end;
-      button:first-child {
-        margin-right: 1rem;
-      }
-    }
   }
 }

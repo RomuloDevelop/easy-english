@@ -10,7 +10,7 @@ import {
   deleteSection
 } from '../state/admin/sections/section.actions'
 import Endpoints from '../../data/endpoints'
-import { deleteSectionLecture } from '../state/admin/lectures/lecture.actions'
+import { deleteSectionLesson } from '../state/admin/lessons/lesson.actions'
 
 const { courseUrl, sectionUrl } = Endpoints
 
@@ -65,7 +65,7 @@ export class SectionService {
   }
 
   deleteSectionAndLectures(section: Section) {
-    this.store.dispatch(deleteSectionLecture({ sectionId: section.id }))
+    this.store.dispatch(deleteSectionLesson({ sectionId: section.id }))
     this.store.dispatch(deleteSection({ id: section.id }))
   }
 }

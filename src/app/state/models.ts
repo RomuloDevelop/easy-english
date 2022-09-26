@@ -55,7 +55,7 @@ export interface VideoLectue {
   detail: string
 }
 
-export interface Lecture {
+export interface Lesson {
   id: number
   title: string
   section_id: number
@@ -112,6 +112,23 @@ export interface UserQuiz {
   total_bad: number
 }
 
+export interface UserAnswer {
+  course_lesson_id: number
+  user_id: number
+  quiz_option_id: number
+  is_valid_option: boolean
+}
+
+export interface UserFinalQuizAnswer {
+  course_quiz_id: number
+  course_quiz: Quiz
+  user_id: number
+  user: any
+  is_valid_option: 0 | 1
+  quiz_option_id: number
+  quiz_option: QuizOption
+}
+
 export interface Enrollment {
   id?: number
   user_id: number
@@ -121,14 +138,15 @@ export interface Enrollment {
 
 export interface Session {
   actualUser: User
-  userNotes: UserQuiz[]
+  userAnswers: UserAnswer[]
+  userFinalQuizAnswers: UserFinalQuizAnswer[]
   enrollment: Enrollment
 }
 
 export interface AppState {
   courses: Course[]
   sections: Section[]
-  lectures: Lecture[]
+  lessons: Lesson[]
   users: User[]
   session: Session
 }

@@ -3,16 +3,16 @@ import { Injectable } from '@angular/core'
 import { Observable, of, zip } from 'rxjs'
 import { map, mergeMap, take } from 'rxjs/operators'
 import { select, Store } from '@ngrx/store'
-import { Lecture, LessonResponse, Quiz, QuizOption } from '../state/models'
+import { Lesson, LessonResponse, Quiz, QuizOption } from '../state/models'
 import { QuizzService } from '../services/quizz.service'
 import {
-  addLecture,
-  updateLecture,
-  deleteLecture
-} from '../state/admin/lectures/lecture.actions'
+  addLesson,
+  updateLesson,
+  deleteLesson
+} from '../state/admin/lessons/lesson.actions'
 import { DataTransform } from '../utils/DataTransform'
 import Endpoints from '../../data/endpoints'
-import { selectLectures } from '../state/admin/admin.selectores'
+import { selectLessons } from '../state/admin/admin.selectores'
 
 interface LessonQuiz {
   quiz: { question: string; title: string }
@@ -44,24 +44,24 @@ export class LessonService {
       .pipe(map(({ data }) => data))
   }
 
-  addLesson(lesson: Lecture) {
+  addLesson(lesson: Lesson) {
     const formatedLesson = DataTransform.appDataToBackend(lesson)
     return this.http
       .post<{ data: LessonResponse }>(lessonUrl, formatedLesson)
       .pipe(
         map(({ data }) => DataTransform.backendToAppData(data, null)),
         map((lessonFormated) => {
-          this.store.dispatch(addLecture({ lecture: lessonFormated }))
+          this.store.dispatch(addLesson({ lesson: lessonFormated }))
           return lessonFormated
         })
       )
   }
 
   addLessonQuiz(data: LessonQuiz) {
-    data.course_lesson.youtube_id = '0'
+    data.course_lesson.youtube_id = 'null'
     return this.http.post<any>('create_course_lesson_quiz', data).pipe(
       map(({ data: resp }) => {
-        const lessonFormated: Lecture = {
+        const lessonFormated: Lesson = {
           id: resp.id,
           title: resp.title,
           section_id: resp.section_id,
@@ -72,12 +72,12 @@ export class LessonService {
           is_quiz: true,
           type: 'Quiz'
         }
-        this.store.dispatch(addLecture({ lecture: lessonFormated }))
+        this.store.dispatch(addLesson({ lesson: lessonFormated }))
       })
     )
   }
 
-  updateLesson(lesson: Lecture) {
+  updateLesson(lesson: Lesson) {
     let updateQuizz$ = (data: LessonResponse) =>
       this.updateLessonQuizz(lesson.data as Quiz, data.id).pipe(
         map((quiz) => {
@@ -99,7 +99,7 @@ export class LessonService {
           lesson.type === 'Quiz' ? updateQuizz$(data) : onlyFormatQuizz$(data)
         ),
         map((lessonFormated) => {
-          this.store.dispatch(updateLecture({ lecture: lessonFormated }))
+          this.store.dispatch(updateLesson({ lesson: lessonFormated }))
           return lessonFormated
         })
       )
@@ -108,7 +108,7 @@ export class LessonService {
   deleteLesson(id: number) {
     return this.http.delete(`${lessonUrl}/${id}`).pipe(
       map((data) => {
-        this.store.dispatch(deleteLecture({ id }))
+        this.store.dispatch(deleteLesson({ id }))
         return data
       })
     )
@@ -121,7 +121,7 @@ export class LessonService {
       mergeMap((data) =>
         this.store.pipe(
           take(1),
-          select(selectLectures),
+          select(selectLessons),
           mergeMap((lessons) => {
             let actualLesson = lessons.find((item) => item.id === lesson_id)
 
@@ -149,7 +149,7 @@ export class LessonService {
                   )
                   .concat(newAnswers)
                   .sort((a, b) => a.id - b.id)
-                const lecture: Lecture = {
+                const lesson: Lesson = {
                   id: actualLesson.id,
                   title: actualLesson.title,
                   section_id: actualLesson.section_id,
@@ -158,7 +158,7 @@ export class LessonService {
                   data,
                   is_quiz: actualLesson.is_quiz
                 }
-                this.store.dispatch(updateLecture({ lecture }))
+                this.store.dispatch(updateLesson({ lesson }))
                 return data
               })
             )

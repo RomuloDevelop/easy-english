@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core'
+import { Component, Input } from '@angular/core'
 import { Article } from 'src/app/state/models'
 import { LessonToShow } from '../../student.service'
 
@@ -11,11 +11,7 @@ interface ArticleLesson extends LessonToShow {
   templateUrl: './article-lesson.component.html',
   styleUrls: ['./article-lesson.component.scss']
 })
-export class ArticleLessonComponent implements OnInit {
+export class ArticleLessonComponent {
   @Input() lesson: ArticleLesson = null
   constructor() {}
-
-  ngOnInit(): void {
-    console.log('article init')
-  }
 }

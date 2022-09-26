@@ -14,7 +14,7 @@ import { ConfirmationService, PrimeNGConfig, Message } from 'primeng/api'
 import { select, Store } from '@ngrx/store'
 import {
   Section,
-  Lecture,
+  Lesson,
   VideoLectue,
   Article,
   Quiz,
@@ -22,7 +22,7 @@ import {
 } from '../../../../../state/models'
 import {
   SectionData,
-  selectLectures
+  selectLessons
 } from '../../../../../state/admin/admin.selectores'
 import memoize from '../../../../../decorators/memoize'
 import { LessonService } from '../../../../../services/lesson.service'
@@ -48,8 +48,8 @@ export class SectionsComponent implements OnInit, OnChanges {
   edit = false
   title = ''
   description = ''
-  lectures: Lecture[] = []
-  lectureId: number = undefined
+  lessons: Lesson[] = []
+  lessonId: number = undefined
   resources: File[] = []
 
   // Modals
@@ -59,7 +59,7 @@ export class SectionsComponent implements OnInit, OnChanges {
   displayVideo = false
   displayQuiz = false
   msgs: Message[] = []
-  lectureTitle = ''
+  lessonTitle = ''
 
   // Video variables
   loadingVideo = false
@@ -77,8 +77,8 @@ export class SectionsComponent implements OnInit, OnChanges {
   correctAnswer: number = null
   questionId: number
 
-  //All lectures
-  allLectures: Lecture[]
+  //All lessons
+  allLessons: Lesson[]
 
   constructor(
     public adminService: AdminService,
@@ -91,8 +91,8 @@ export class SectionsComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.primengConfig.ripple = true
-    this.store.pipe(select(selectLectures)).subscribe((lectures) => {
-      this.allLectures = lectures
+    this.store.pipe(select(selectLessons)).subscribe((lessons) => {
+      this.allLessons = lessons
     })
   }
 
@@ -102,7 +102,7 @@ export class SectionsComponent implements OnInit, OnChanges {
         const section = changes[name].currentValue as SectionData
         this.title = section.title
         this.description = section.subtitle
-        this.lectures = section.lectures
+        this.lessons = section.lessons
       }
     }
   }
@@ -121,24 +121,24 @@ export class SectionsComponent implements OnInit, OnChanges {
     this.saveEvent.emit({ section, type })
   }
 
-  // Lectures methods
-  showResources($event, item: Lecture) {
+  // lessons methods
+  showResources($event, item: Lesson) {
     $event.stopPropagation()
     console.log(item)
-    this.lectureId = item.id
-    let lecture = this.lectures.find((item) => item.id === this.lectureId)
-    this.resources = lecture.resources
+    this.lessonId = item.id
+    let lesson = this.lessons.find((item) => item.id === this.lessonId)
+    this.resources = lesson.resources
     this.displayResource = true
   }
 
   createResource() {
     console.log(this.resources)
-    let lecture = this.lectures.find((item) => item.id === this.lectureId)
-    lecture = {
-      ...lecture,
+    let lesson = this.lessons.find((item) => item.id === this.lessonId)
+    lesson = {
+      ...lesson,
       resources: this.resources
     }
-    this.addLectureOrEdit(lecture).subscribe(() => this.clearResourceModal())
+    this.addLessonOrEdit(lesson).subscribe(() => this.clearResourceModal())
   }
 
   onUpload(event) {
@@ -153,7 +153,7 @@ export class SectionsComponent implements OnInit, OnChanges {
     this.clearCommonModalData()
   }
 
-  updateLecture($event, item: Lecture) {
+  updateLesson($event, item: Lesson) {
     $event.stopPropagation()
     if (item.type === 'Article') {
       const data = item.data as Article
@@ -174,15 +174,15 @@ export class SectionsComponent implements OnInit, OnChanges {
       this.videoUrl = data.url
       this.displayVideo = true
     }
-    this.lectureTitle = item.title
-    this.lectureId = item.id
+    this.lessonTitle = item.title
+    this.lessonId = item.id
     this.resources = item?.resources
   }
 
-  deleteLecture($event, lecture: Lecture) {
+  deleteLesson($event, lesson: Lesson) {
     $event.stopPropagation()
     this.deleteDialog(() => {
-      const { id } = this.lectures.find((item) => item.id === lecture.id)
+      const { id } = this.lessons.find((item) => item.id === lesson.id)
       return this.lessonService.deleteLesson(id)
     })
   }
@@ -190,7 +190,7 @@ export class SectionsComponent implements OnInit, OnChanges {
   newVideo() {
     this.loadingVideo = true
     const section_id = this.data.id
-    this.addLectureOrEdit({
+    this.addLessonOrEdit({
       id: null,
       title: 'Temporal title',
       section_id,
@@ -208,14 +208,14 @@ export class SectionsComponent implements OnInit, OnChanges {
 
   createVideo() {
     this.loadingVideo = true
-    const id = this.lectureId
+    const id = this.lessonId
     const section_id = this.data.id
     const video: VideoLectue = {
       url: this.videoUrl,
       detail: this.videoDetail
     }
-    this.addLectureOrEdit({
-      title: this.lectureTitle,
+    this.addLessonOrEdit({
+      title: this.lessonTitle,
       is_quiz: false,
       section_id,
       id,
@@ -240,7 +240,7 @@ export class SectionsComponent implements OnInit, OnChanges {
   newArticle() {
     this.loadingArticle = true
     const section_id = this.data.id
-    this.addLectureOrEdit({
+    this.addLessonOrEdit({
       title: 'Temporal title',
       section_id,
       is_quiz: false,
@@ -257,13 +257,13 @@ export class SectionsComponent implements OnInit, OnChanges {
 
   createArticle() {
     this.loadingArticle = true
-    const id = this.lectureId
+    const id = this.lessonId
     const section_id = this.data.id
     const data: Article = {
       detail: this.articleDetail
     }
-    this.addLectureOrEdit({
-      title: this.lectureTitle,
+    this.addLessonOrEdit({
+      title: this.lessonTitle,
       section_id,
       is_quiz: false,
       id,
@@ -297,14 +297,14 @@ export class SectionsComponent implements OnInit, OnChanges {
       .addLessonQuiz({
         quiz: {
           question: this.question,
-          title: this.lectureTitle
+          title: this.lessonTitle
         },
         quiz_options: this.options.map((answer) => ({
           description: answer.description,
           is_valid: this.correctAnswer === answer.id ? 1 : 0
         })),
         course_lesson: {
-          title: this.lectureTitle,
+          title: this.lessonTitle,
           description: 'Descripcion',
           section_id,
           is_quiz: true
@@ -318,10 +318,10 @@ export class SectionsComponent implements OnInit, OnChanges {
   }
   updateQuiz() {
     this.loadingQuiz = true
-    const id = this.lectureId
+    const id = this.lessonId
     const section_id = this.data.id
     const data: Quiz = {
-      title: this.lectureTitle,
+      title: this.lessonTitle,
       id: this.questionId,
       question: this.question,
       options: this.options.map((option) => ({
@@ -329,8 +329,8 @@ export class SectionsComponent implements OnInit, OnChanges {
         is_valid: this.correctAnswer === option.id ? 1 : 0
       }))
     }
-    this.addLectureOrEdit({
-      title: this.lectureTitle,
+    this.addLessonOrEdit({
+      title: this.lessonTitle,
       section_id,
       is_quiz: true,
       id,
@@ -389,18 +389,18 @@ export class SectionsComponent implements OnInit, OnChanges {
 
   // General methods
   clearCommonModalData() {
-    this.lectureTitle = ''
-    this.lectureId = undefined
+    this.lessonTitle = ''
+    this.lessonId = undefined
     this.resources = []
   }
 
-  addLectureOrEdit(lecture: Lecture) {
+  addLessonOrEdit(lesson: Lesson) {
     let request: Observable<any>
-    if (lecture.id != null) {
-      request = this.lessonService.updateLesson(lecture)
+    if (lesson.id != null) {
+      request = this.lessonService.updateLesson(lesson)
     } else {
-      delete lecture.id
-      request = this.lessonService.addLesson(lecture)
+      delete lesson.id
+      request = this.lessonService.addLesson(lesson)
     }
     return request
     //this.emitEvent()

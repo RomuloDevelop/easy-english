@@ -1,4 +1,4 @@
-import { Enrollment, User, UserQuiz } from '../../models'
+import { Enrollment, User, UserAnswer, UserFinalQuizAnswer } from '../../models'
 import { createAction, props } from '@ngrx/store'
 
 export const setActualUser = createAction(
@@ -10,25 +10,37 @@ export const updateActualUser = createAction(
   props<{ user: Partial<User> }>()
 )
 
-export const addUserNote = createAction(
-  '[UserNotes] Add User Notes',
-  props<{ userNote: UserQuiz }>()
-)
-export const setUserNotes = createAction(
-  '[UserNotes] Set User Notes',
-  props<{ userNotes: UserQuiz[] }>()
-)
-export const updateUserNote = createAction(
-  '[UserNotes] Update User Note',
-  props<{ userNote: Partial<UserQuiz> }>()
+export const addUserAnswer = createAction(
+  '[UserAnswers] Add User Answer',
+  props<{ userAnswer: UserAnswer }>()
 )
 
-export const updateUserNotes = createAction(
-  '[UserNotes] Update User Notes',
-  props<{ userNotes: UserQuiz[] }>()
+export const setUserAnswers = createAction(
+  '[UserAnswers] Set User Answers',
+  props<{ userAnswers: UserAnswer[] }>()
+)
+
+export const updateUserAnswer = createAction(
+  '[UserAnswers] Update User Answer',
+  props<{ userAnswer: Partial<UserAnswer> }>()
+)
+
+export const updateUserAnswers = createAction(
+  '[UserAnswers] Update User Answers',
+  props<{ userAnswers: UserAnswer[] }>()
 )
 
 export const setEnrollment = createAction(
   '[Enrollment] Set User Enrollment',
   props<{ enrollment: Enrollment }>()
+)
+
+export const setUserFinalQuizAnswers = createAction(
+  '[UserAnswers] Set User Final Quiz Answers',
+  props<{ userFinalQuizAnswers: UserFinalQuizAnswer[] }>()
+)
+
+export const updateUserFinalQuizAnswers = createAction(
+  '[UserFinalQuizAnswers] Update User Final Quiz Answers',
+  props<{ userFinalQuizAnswer: Partial<UserFinalQuizAnswer> }>()
 )

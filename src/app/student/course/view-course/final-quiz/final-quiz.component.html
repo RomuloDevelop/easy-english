@@ -2,8 +2,8 @@
   <h1 class="h3 mb-4">{{ title }}</h1>
   <app-question
     #questions
-    *ngFor="let question of quiz"
-    [question]="question"
+    *ngFor="let item of finalQuiz"
+    [question]="item.quiz"
   ></app-question>
   <div class="d-flex justify-content-end mt-3">
     <!-- <button class="default-btn" (click)="submit()">

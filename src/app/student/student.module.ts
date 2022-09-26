@@ -27,6 +27,7 @@ import { QuestionComponent } from './course/view-course/question/question.compon
 import { StudentService } from './course/student.service'
 import { MessageService } from 'primeng/api'
 import { TipComponent } from './tip/tip.component'
+import { StartFinalQuizModalComponent } from './course/view-course/startFinalQuizModal'
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { TipComponent } from './tip/tip.component'
     HeaderComponent,
     FinalQuizComponent,
     QuestionComponent,
-    TipComponent
+    TipComponent,
+    StartFinalQuizModalComponent
   ],
   imports: [
     SharedModule,

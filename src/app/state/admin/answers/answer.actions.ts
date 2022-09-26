@@ -2,7 +2,7 @@ import { Quiz } from '../../models'
 import { createAction, props } from '@ngrx/store'
 
 export const addQuizz = createAction(
-  '[Lecture] Add Quiz',
+  '[Lesson] Add Quiz',
   props<{ quiz: Quiz }>()
 )
 export const updateQuiz = createAction(
