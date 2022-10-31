@@ -31,7 +31,7 @@
             <ng-container *ngIf="row === 'sections'">
               <div class="section-expand">
                 <span style="vertical-align: center">
-                  {{ course[row].length }} Sect.
+                  {{ course.sections_count }} Sect.
                 </span>
                 <button
                   type="button"
@@ -64,9 +64,20 @@
                 pButton
                 pRipple
                 type="button"
+                icon="pi pi-book"
+                class="
+                  p-button-rounded p-button-secondary p-button-outlined
+                  btn-action
+                "
+                [routerLink]="['./quizzes/' + course.id]"
+              ></button>
+              <button
+                pButton
+                pRipple
+                type="button"
                 icon="pi pi-pencil"
                 class="p-button-rounded p-button-outlined btn-action"
-                (click)="editCourse(course)"
+                [routerLink]="['./create-course/' + course.id]"
               ></button>
               <button
                 pButton
@@ -85,18 +96,17 @@
       </ng-template>
       <ng-template pTemplate="rowexpansion" let-course>
         <tr>
-          <td colspan="8">
+          <td colspan="7">
             <div
               *ngIf="loadingSection === course.id"
               class="w-100 d-flex justify-content-center align-items-center"
             >
               <p-progressSpinner
-                styleClass="custom-spinner"
+                styleClass="custom-spinner blue"
                 strokeWidth="7"
                 [style]="{
                   width: '50px',
-                  height: '50px',
-                  color: '#fff !important'
+                  height: '50px'
                 }"
               ></p-progressSpinner>
             </div>
@@ -111,18 +121,15 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-section>
                   <tr>
-                    <td
-                      *ngFor="let row of sectionRows; let iCol = index"
-                      [class]="{ 'p-pl-5': row === 'lectures' }"
-                    >
+                    <td *ngFor="let row of sectionRows; let iCol = index">
                       <span class="p-column-title">{{
                         sectionCols[iCol]
                       }}</span>
-                      <ng-container *ngIf="row !== 'lectures'">
+                      <ng-container *ngIf="row !== 'lessons_count'">
                         {{ section[row] }}
                       </ng-container>
-                      <ng-container *ngIf="row === 'lectures'">
-                        {{ section[row].length }} Lect.
+                      <ng-container *ngIf="row === 'lessons_count'">
+                        {{ section[row] }} Lessons
                       </ng-container>
                     </td>
                   </tr>

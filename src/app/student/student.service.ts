@@ -17,6 +17,7 @@ import {
   selectFinalQuizReminder
 } from 'src/app/state/session/session.selectors'
 import { setEnrollment } from 'src/app/state/session/profile/session.actions'
+import { SessionService } from 'src/app/services/session.service'
 
 export type CourseToShow = ReturnType<StudentService['addLessonCount']>
 export type LessonToShow = CourseToShow['sections'][0]['lessons'][0]
@@ -28,6 +29,7 @@ export class StudentService {
 
   constructor(
     private store: Store,
+    private sessionService: SessionService,
     private userQuizService: UserQuizzService,
     private courseService: CourseService,
     private enrollmentService: EnrollmentService
@@ -50,7 +52,7 @@ export class StudentService {
             this.enrollmentService.getEnrollments(id),
             this.courseService.getCourse(id),
             this.userQuizService.getUserQuizzes(id, user.id),
-            this.userQuizService.getUserFinalQuizAnswer(id, user.id)
+            this.userQuizService.getAllUserFinalQuizAnswer(id, user.id)
           ).pipe(
             mergeMap(([enrollments, course]) => {
               const enrollment =

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
-import { StudentService } from '../student.service'
+import { StudentService } from '../../student.service'
 import { CoursesTableRow } from '../../../state/admin/admin.selectores'
 
 @Component({

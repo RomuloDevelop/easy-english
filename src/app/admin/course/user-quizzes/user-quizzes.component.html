@@ -1,0 +1,151 @@
+<div class="container-lg">
+  <div class="page-title-content p-mb-5">
+    <ul>
+      <li><a routerLink="../admin">Admin</a></li>
+      <li><a routerLink="../admin">Courses</a></li>
+      <li>Quizzes</li>
+    </ul>
+    <h2>Quizzes List</h2>
+  </div>
+  <ng-container *ngIf="usersEnrolled.length; else noData">
+    <p-table
+      [value]="usersEnrolled"
+      dataKey="id"
+      tableStyleClass="p-datatable-responsive"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 3rem"></th>
+          <th *ngFor="let col of userCols">{{ col }}</th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-user let-expanded="expanded">
+        <tr>
+          <td style="width: 3rem"></td>
+          <td *ngFor="let row of userRows; let iCol = index">
+            <span class="p-column-title">{{ userCols[iCol] }}</span>
+            <ng-container *ngIf="row !== 'quizzes'">
+              {{ user[row] || 'N/A' }}
+            </ng-container>
+          </td>
+          <td>
+            <div class="d-inline-flex justify-content-center flex-wrap">
+              <button
+                type="button"
+                pButton
+                pRipple
+                [pRowToggler]="user"
+                class="p-button-text p-button-rounded p-button-plain"
+                (click)="getQuizzesFromUser(user)"
+                [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+              ></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="rowexpansion" let-user>
+        <tr>
+          <td colspan="7">
+            <div
+              *ngIf="loadingSubtable === user.id"
+              class="w-100 d-flex justify-content-center align-items-center"
+            >
+              <p-progressSpinner
+                styleClass="custom-spinner blue"
+                strokeWidth="7"
+                [style]="{
+                  width: '50px',
+                  height: '50px'
+                }"
+              ></p-progressSpinner>
+            </div>
+            <ng-container
+              *ngTemplateOutlet="
+                subtable;
+                context: {
+                  $implicit: user.answers,
+                  id: user.id,
+                  title: 'Quiz Answers:',
+                  message: 'There are no quizzes for this user yet.'
+                }
+              "
+            >
+            </ng-container>
+            <ng-container
+              *ngTemplateOutlet="
+                subtable;
+                context: {
+                  $implicit: user.finalAnswers,
+                  id: user.id,
+                  title: 'Final Quiz:',
+                  message: 'User hasn\'t completed the final quiz yet.'
+                }
+              "
+            >
+            </ng-container>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </ng-container>
+
+  <ng-template
+    #subtable
+    let-data
+    let-id="id"
+    let-title="title"
+    let-message="message"
+  >
+    <div class="p-pt-5 p-px-1" *ngIf="loadingSubtable !== id">
+      <h2 class="h5 mb-3">{{ title }}</h2>
+      <p-table [value]="data" dataKey="id">
+        <ng-template pTemplate="header">
+          <tr>
+            <th *ngFor="let col of quizCols">{{ col }}</th>
+            <!-- <th style="width: 4rem"></th> -->
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-quiz>
+          <tr>
+            <td *ngFor="let row of quizRows; let iCol = index">
+              <span class="p-column-title">{{ quizCols[iCol] }}</span>
+              <span
+                [style.color]="
+                  row === 'result'
+                    ? !quiz.is_valid_option
+                      ? 'var(--mainColor)'
+                      : 'var(--green-500)'
+                    : null
+                "
+                >{{ quiz[row] }}</span
+              >
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="4">
+              {{ message }}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </ng-template>
+
+  <ng-template #noData>
+    <div
+      class="d-flex justify-content-center align-items-center w-100"
+      style="height: 200px"
+    >
+      <span class="h1">No data available</span>
+    </div>
+  </ng-template>
+</div>
+
+<!-- Delete Dialog -->
+<p-confirmDialog
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+></p-confirmDialog>

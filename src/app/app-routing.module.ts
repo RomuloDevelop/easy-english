@@ -55,6 +55,8 @@ import { Routes, RouterModule } from '@angular/router'
 import { ErrorPageComponent } from './components/pages/error-page/error-page.component'
 import { ContactPageComponent } from './components/pages/contact-page/contact-page.component'
 import { HomeComponent } from './pages/home/home.component'
+import { LoginGuard } from './guards/login.guard'
+import { LoginPageComponent } from './pages/login-page/login-page.component'
 
 const routes: Routes = [
   // { path: '', component: HomePageThreeComponent },
@@ -141,6 +143,7 @@ const routes: Routes = [
   // { path: 'cart', component: CartPageComponent },
   // { path: 'checkout', component: CheckoutPageComponent },
   { path: '', component: HomeComponent },
+  { path: 'login', component: LoginPageComponent },
   {
     path: 'contact',
     component: ContactPageComponent,
@@ -148,12 +151,14 @@ const routes: Routes = [
   },
   {
     path: 'admin',
+    canActivate: [LoginGuard],
     loadChildren: () =>
       import('./admin/admin.module').then((m) => m.AdminModule),
     data: { animation: 'Admin' }
   },
   {
     path: 'student',
+    canActivate: [LoginGuard],
     loadChildren: () =>
       import('./student/student.module').then((m) => m.StudentModule),
     data: { animation: 'Student' }

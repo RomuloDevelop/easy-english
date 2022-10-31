@@ -2,6 +2,7 @@ import {
   Component,
   Input,
   OnChanges,
+  OnInit,
   SimpleChanges,
   ViewChild
 } from '@angular/core'
@@ -9,6 +10,7 @@ import {
   ModalAction,
   ModalComponent
 } from 'src/app/components/common/modal/modal.component'
+import { TipsService } from '../services/tips.service'
 
 @Component({
   selector: 'app-tip',
@@ -19,9 +21,18 @@ import {
         Tip!
       </ng-container>
       <ng-container description>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Libero,
-        repellat rerum. Fugiat amet maiores corrupti aperiam! Quibusdam ad nulla
-        similique magni in cum, accusamus incidunt quae id ratione libero est!
+        <p-progressSpinner
+          *ngIf="loading"
+          styleClass="custom-spinner blue"
+          strokeWidth="7"
+          [style]="{
+            width: '50px',
+            height: '50px'
+          }"
+        ></p-progressSpinner>
+        <ng-container *ngIf="!loading">
+          {{ description }}
+        </ng-container>
       </ng-container>
     </app-modal>
   `,
@@ -33,17 +44,28 @@ import {
     `
   ]
 })
-export class TipComponent implements OnChanges {
+export class TipComponent implements OnInit, OnChanges {
   @Input() show = false
   @ViewChild(ModalComponent) modal = new ModalComponent()
 
-  constructor() {}
+  loading = true
+  description = ''
+
+  constructor(private tipsService: TipsService) {}
+
+  ngOnInit(): void {
+    this.getTip()
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.changeModalProp(changes, 'show')
   }
 
   getAction(value: ModalAction): void {
+    if (value === ModalAction.accept) {
+      this.getTip()
+      return
+    }
     this.modal.show = false
   }
 
@@ -51,5 +73,14 @@ export class TipComponent implements OnChanges {
     if (changes[prop].currentValue !== changes[prop].previousValue) {
       this.modal[prop] = changes[prop].currentValue
     }
+  }
+
+  getTip() {
+    this.loading = true
+    this.tipsService
+      .getRandomTip(() => (this.loading = false))
+      .subscribe((tip) => {
+        this.description = tip.description
+      })
   }
 }

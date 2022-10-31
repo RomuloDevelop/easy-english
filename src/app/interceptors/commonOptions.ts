@@ -9,6 +9,7 @@ import {
 import { Observable, throwError } from 'rxjs'
 import { catchError, retry } from 'rxjs/operators'
 import { HttpErrorResponse } from '@angular/common/http'
+import { TOKEN_KEY } from 'src/data/constants'
 
 export interface InterceptorError extends HttpErrorResponse {
   defaultMessage: string
@@ -25,7 +26,7 @@ export class CommonOptions implements HttpInterceptor {
 
     // Determina si requiere token
     if (req.url !== 'login' && req.url !== 'register') {
-      const token = `Bearer ${localStorage.getItem('token')}`
+      const token = `Bearer ${localStorage.getItem(TOKEN_KEY)}`
       headers = headers.set('Authorization', token)
     }
 

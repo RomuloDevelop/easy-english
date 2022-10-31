@@ -113,7 +113,6 @@ export class CreateUserComponent implements OnInit {
         new FormControl('', [Validators.required])
       )
     }
-    console.log('init')
   }
   updatePassword() {
     this.loadingPassword = true

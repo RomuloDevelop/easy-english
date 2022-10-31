@@ -24,7 +24,6 @@ export class QuestionComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log(this.answer)
     this.checkAnswerIfDefined(this.answer)
   }
 

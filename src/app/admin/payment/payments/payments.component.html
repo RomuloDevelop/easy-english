@@ -6,7 +6,29 @@
     </ul>
     <h2>Payments</h2>
   </div>
-  <ng-container *ngIf="loadingPayments">
+  <div class="p-pb-1 p-d-flex">
+    <div class="p-field">
+      <small class="p-d-block">Select user</small>
+      <p-dropdown
+        [options]="users"
+        [(ngModel)]="selectedUser"
+        placeholder="Select users"
+        optionLabel="name"
+        (onChange)="subUserFilter.next($event.value)"
+      ></p-dropdown>
+    </div>
+    <div class="p-field p-pl-2">
+      <small class="p-d-block">Select status</small>
+      <p-dropdown
+        [options]="statusList"
+        [(ngModel)]="selectedStatus"
+        placeholder="Select status"
+        optionLabel="description"
+        (onChange)="subStatusFilter.next($event.value)"
+      ></p-dropdown>
+    </div>
+  </div>
+  <ng-container *ngIf="loadingPayments && !payments?.length">
     <div class="d-flex justify-content-center align-items-center w-100">
       <p-progressSpinner
         styleClass="custom-spinner blue"
@@ -18,11 +40,17 @@
       ></p-progressSpinner>
     </div>
   </ng-container>
-  <ng-container *ngIf="payments?.length && !loadingPayments">
+  <ng-container *ngIf="payments?.length">
     <p-table
       [value]="payments"
       dataKey="id"
       tableStyleClass="p-datatable-responsive"
+      [paginator]="true"
+      [loading]="loadingPayments"
+      [rows]="20"
+      [lazy]="true"
+      (onLazyLoad)="subPaginatorFilter.next($event)"
+      [totalRecords]="totalRecords"
     >
       <ng-template pTemplate="header">
         <tr>

@@ -10,7 +10,7 @@ import {
 import { select, Store } from '@ngrx/store'
 import { Quiz, UserAnswer } from 'src/app/state/models'
 import { selectUserAnswers } from 'src/app/state/session/session.selectors'
-import { StudentService } from '../../student.service'
+import { StudentService } from '../../../student.service'
 import { QuestionComponent } from '../question/question.component'
 
 interface QuizLesson {

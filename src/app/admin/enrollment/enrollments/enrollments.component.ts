@@ -20,18 +20,8 @@ export class EnrollmentsComponent implements OnInit {
   loadingSection = null
   msgs: Message[] = []
 
-  courseCols = ['Id', 'Title', 'Subtitle', 'Sections', 'Students', 'Status']
-  courseRows = [
-    'id',
-    'title',
-    'subtitle',
-    'sections',
-    'students_count',
-    'status'
-  ]
-
-  sectionCols = ['Id', 'Title', 'Description', 'Lectures']
-  sectionRows = ['id', 'title', 'subtitle', 'lectures']
+  courseCols = ['Id', 'Title', 'Subtitle', 'Students', 'Status']
+  courseRows = ['id', 'title', 'subtitle', 'students_count', 'status']
 
   courses: CoursesTableRow[]
 

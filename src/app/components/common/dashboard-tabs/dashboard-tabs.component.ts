@@ -91,9 +91,7 @@ export class DashboardTabsComponent implements OnChanges, AfterContentInit {
 
   constructor() {}
 
-  ngOnChanges(...event) {
-    console.log('TabComponent', event)
-  }
+  ngOnChanges(...event) {}
 
   ngAfterContentInit() {
     this.tabsTemp.forEach((item, i) => {
@@ -112,9 +110,7 @@ export class DashboardTabsComponent implements OnChanges, AfterContentInit {
       }
     })
 
-    this.tabsTemp.changes.subscribe((event) => {
-      console.log('TabComponent', event)
-    })
+    this.tabsTemp.changes.subscribe()
   }
 
   getTabForChange(index: number) {
@@ -157,7 +153,6 @@ export class DashboardTabsComponent implements OnChanges, AfterContentInit {
     }
     this.timeOut = setTimeout(() => {
       this.tabHeight = null
-      console.log(this.tabHeight)
     }, 500)
   }
 }

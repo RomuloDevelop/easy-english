@@ -2,7 +2,7 @@ import { Component, ViewChildren, QueryList, OnInit } from '@angular/core'
 import { QuestionComponent } from '../question/question.component'
 import { UserFinalQuizAnswer } from 'src/app/state/models'
 import { MessageService } from 'primeng/api'
-import { StudentService } from '../../student.service'
+import { StudentService } from '../../../student.service'
 import { Store } from '@ngrx/store'
 import { selectCourses } from 'src/app/state/admin/admin.selectores'
 import { selectUserFinalQuizAnswers } from 'src/app/state/session/session.selectors'
@@ -29,7 +29,6 @@ export class FinalQuizComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log(this.title)
     combineLatest([
       this.store.select(selectCourses),
       this.store.select(selectUserFinalQuizAnswers)

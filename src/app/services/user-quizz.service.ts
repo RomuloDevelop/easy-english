@@ -18,7 +18,9 @@ export interface StoreUserFinalQuizAnswer {
 }
 
 const quizEndpoint = 'course_lesson_user'
+const lessonQuizEndpoint = 'get_lesson_quiz_results_by_course_id'
 const finalQuizEndpoint = 'course_quiz_user'
+const finalQuizEndpointWithFilters = 'get_final_quiz_answer_by_user_and_course'
 
 @Injectable({
   providedIn: 'root'
@@ -27,17 +29,25 @@ export class UserQuizzService {
   constructor(private http: HttpClient, private store: Store) {}
 
   getUserQuizzes(course_id?: number, user_id?: number) {
-    const params = new HttpParams()
+    let params = new HttpParams()
 
-    course_id && params.append('course_id', course_id)
-    user_id && params.append('lesson_id', user_id)
+    course_id != null && (params = params.append('course_id', course_id))
+    user_id != null && (params = params.append('lesson_id', user_id))
 
-    return this.http.get<{ data: UserAnswer[] }>(quizEndpoint, { params }).pipe(
-      map(({ data }) => {
-        this.store.dispatch(setUserAnswers({ userAnswers: data }))
-        return data
-      })
-    )
+    return this.http
+      .get<{ id: number; course_lesson_user: UserAnswer[] }[]>(
+        lessonQuizEndpoint,
+        {
+          params
+        }
+      )
+      .pipe(
+        map((data) => {
+          const userAnswers = data.map((item) => item.course_lesson_user[0])
+          this.store.dispatch(setUserAnswers({ userAnswers: userAnswers }))
+          return userAnswers
+        })
+      )
   }
 
   createUserAnswer(data: UserAnswer) {
@@ -49,8 +59,19 @@ export class UserQuizzService {
     )
   }
 
-  getUserFinalQuizAnswer(user_id?: number, course_quiz_id?: number) {
-    const params = new HttpParams()
+  getUserFinalQuizAnswer(course_id?: number, user_id?: number) {
+    let params = new HttpParams()
+
+    user_id != null && (params = params.append('user_id', user_id))
+    course_id != null && (params = params.append('course_id', course_id))
+
+    return this.http.get<UserFinalQuizAnswer[]>(finalQuizEndpointWithFilters, {
+      params
+    })
+  }
+
+  getAllUserFinalQuizAnswer(user_id?: number, course_quiz_id?: number) {
+    let params = new HttpParams()
 
     user_id && params.append('user_id', user_id)
     course_quiz_id && params.append('course_quiz_id', course_quiz_id)

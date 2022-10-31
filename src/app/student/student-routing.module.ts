@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
-import { LoginPageComponent } from '../components/pages/login-page/login-page.component'
+import { LoginPageComponent } from '../pages/login-page/login-page.component'
 import { DashboardComponent } from './dashboard/dashboard.component'
 import { CourseListComponent } from './dashboard/course-list/course-list.component'
 import { AddressComponent } from './address/address.component'
@@ -13,9 +13,9 @@ import { LoginGuard } from '../guards/login.guard'
 
 const routes: Routes = [
   {
-    canActivate: [LoginGuard],
     path: '',
-    component: DashboardComponent
+    component: DashboardComponent,
+    data: { animation: 'Courses' }
   },
   {
     path: 'course-detail/:id',
@@ -23,9 +23,9 @@ const routes: Routes = [
   },
   {
     path: 'view-course/:id',
-    component: ViewCourseComponent
-  },
-  { path: 'login', component: LoginPageComponent }
+    component: ViewCourseComponent,
+    data: { animation: 'ViewCourse' }
+  }
 ]
 
 @NgModule({

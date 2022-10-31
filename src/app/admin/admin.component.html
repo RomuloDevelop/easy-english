@@ -12,7 +12,7 @@
     <ul class="menu-list">
       <ng-container *ngFor="let item of items">
         <li
-          *ngIf="!item.admin || actualUser.role === 1"
+          *ngIf="!item.admin || actualUser.role === roles.admin"
           class="menu-item"
           [routerLink]="item.route"
         >

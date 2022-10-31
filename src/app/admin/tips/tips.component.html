@@ -94,7 +94,7 @@
 
 <!-- Create/Edit dialog -->
 <p-dialog
-  [header]="tip.id ? 'Update Tip' : 'New Tip'"
+  [header]="this.modalAction === modalActions.create ? 'New Tip' : 'Update Tip'"
   [modal]="true"
   [(visible)]="tipModal"
   [style]="{ width: '50vw' }"
@@ -113,7 +113,9 @@
       class="p-button--sm p-button-outlined"
       [disabled]="tip.description === '' || loadingTip"
     >
-      <ng-container *ngIf="!loadingTip"> Update </ng-container>
+      <ng-container *ngIf="!loadingTip">
+        {{ this.modalAction === modalActions.create ? 'Create' : 'Update' }}
+      </ng-container>
       <ng-container *ngIf="loadingTip">
         <p-progressSpinner
           styleClass="custom-spinner blue"

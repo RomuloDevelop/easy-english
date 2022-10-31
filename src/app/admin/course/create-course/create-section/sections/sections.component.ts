@@ -124,7 +124,6 @@ export class SectionsComponent implements OnInit, OnChanges {
   // lessons methods
   showResources($event, item: Lesson) {
     $event.stopPropagation()
-    console.log(item)
     this.lessonId = item.id
     let lesson = this.lessons.find((item) => item.id === this.lessonId)
     this.resources = lesson.resources
@@ -132,7 +131,6 @@ export class SectionsComponent implements OnInit, OnChanges {
   }
 
   createResource() {
-    console.log(this.resources)
     let lesson = this.lessons.find((item) => item.id === this.lessonId)
     lesson = {
       ...lesson,
@@ -142,7 +140,6 @@ export class SectionsComponent implements OnInit, OnChanges {
   }
 
   onUpload(event) {
-    console.log(event)
     this.resources = event.files
     this.createResource()
     //this.messageService.add({severity: 'info', summary: 'File Uploaded', detail: ''});

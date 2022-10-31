@@ -41,6 +41,7 @@ import { CreateEnrollmentComponent } from './enrollment/create-enrollment/create
 import { PaymentsComponent } from './payment/payments/payments.component'
 import { CreatePaymentComponent } from './payment/create-payment/create-payment.component'
 import { TipsComponent } from './tips/tips.component'
+import { UserQuizzesComponent } from './course/user-quizzes/user-quizzes.component'
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { TipsComponent } from './tips/tips.component'
     CreateEnrollmentComponent,
     PaymentsComponent,
     CreatePaymentComponent,
-    TipsComponent
+    TipsComponent,
+    UserQuizzesComponent
   ],
   imports: [
     SharedModule,

@@ -7,6 +7,7 @@ import { InterceptorError } from '../interceptors/commonOptions'
 import { of, throwError } from 'rxjs'
 import { UserService } from './user.service'
 import roles from '../../data/roles'
+import { TOKEN_KEY } from 'src/data/constants'
 
 const { loginUrl, logoutUrl } = Endpoints
 
@@ -30,7 +31,7 @@ export class SessionService {
       .post<{ access_token: string; token_type: string }>(loginUrl, data)
       .pipe(
         map(({ access_token }) => {
-          localStorage.setItem('token', access_token)
+          localStorage.setItem(TOKEN_KEY, access_token)
           return access_token
         }),
         mergeMap((access_token) =>
@@ -72,7 +73,7 @@ export class SessionService {
   logout(finalizeCb = () => {}, redirect = true) {
     return this.http.get(logoutUrl).pipe(
       map(() => {
-        localStorage.removeItem('token')
+        localStorage.removeItem(TOKEN_KEY)
         if (redirect) {
           this.router.navigate(['/'], {
             replaceUrl: true
@@ -80,7 +81,7 @@ export class SessionService {
         }
       }),
       catchError((error: InterceptorError) => {
-        let message = error.defaultMessage
+        const message = error.defaultMessage
         return throwError(message)
       }),
       finalize(finalizeCb)

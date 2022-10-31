@@ -53,7 +53,6 @@ export class HomePageComponent implements OnInit {
           { name: 'No asignado', id: null, inactive: true },
           ...teachers
         ]
-        console.log(this.teachers)
         this.course = courses.find((item) => item.id === this.courseId)
         this.title = this.course.title
         this.subtitle = this.course.subtitle

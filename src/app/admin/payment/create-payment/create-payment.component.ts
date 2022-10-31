@@ -1,12 +1,24 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core'
 import { FormBuilder, Validators } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
 import { MessageService } from 'primeng/api'
 import { NavigationService } from '../../../services/navigation.service'
-import { PaymentsService, Payment } from 'src/app/services/payments.service'
+import {
+  PaymentsService,
+  Payment,
+  STATUS_LIST,
+  PAYMENT_STATUS
+} from 'src/app/services/payments.service'
 import { UserService } from 'src/app/services/user.service'
 import { User } from 'src/app/state/models'
 import * as moment from 'moment'
+import { Subscription } from 'rxjs'
 
 @Component({
   selector: 'app-create-payment',
@@ -21,26 +33,18 @@ export class CreatePaymentComponent implements OnInit {
   willUpdate = false
   loading = false
   voucher: File = null
-  statusList = [
-    {
-      id: 1,
-      description: 'Pendiente'
-    },
-    {
-      id: 2,
-      description: 'Pago parcial'
-    },
-    {
-      id: 3,
-      description: 'Pagado'
-    }
-  ]
+  statusList = STATUS_LIST
+  PAYMENT_STATUS = PAYMENT_STATUS
 
   form = this.formBuilder.group({
     user_id: [null, Validators.required],
-    date: ['', Validators.required],
-    status: [1, Validators.required]
+    payment_date: ['', Validators.required],
+    payment_month: [0, Validators.required],
+    status: [PAYMENT_STATUS.PENDING, Validators.required],
+    description: ['', Validators.required]
   })
+
+  statusFieldSubscription: Subscription
 
   constructor(
     private route: ActivatedRoute,
@@ -61,19 +65,29 @@ export class CreatePaymentComponent implements OnInit {
         .subscribe((payment) => {
           this.form.controls.user_id.setValue(payment.user_id)
           this.form.controls.description.setValue(payment.description)
-          this.form.controls.date.setValue(moment(payment.date).toDate())
+          this.form.controls.date.setValue(
+            moment(payment.payment_date).toDate()
+          )
           this.form.controls.status.setValue(payment.status)
         })
     }
-    console.log('init')
   }
+
   async updatePayment() {
     const base64 = await this.convertBlobToBase64(this.voucher)
+    const status = this.form.get('status').value
+
     const payment: Payment = {
       user_id: this.form.get('user_id').value,
-      description: base64,
-      date: moment(this.form.get('date').value).format('YYYY-MM-DD'),
-      status: this.form.get('status').value
+      description: this.form.get('user_id').value,
+      payment_date: moment(this.form.get('payment_date').value).format(
+        'YYYY-MM-DD'
+      ),
+      payment_month: moment(this.form.get('payment_month').value).format(
+        'YYYY-MM-DD'
+      ),
+      status,
+      voucher: base64
     }
     this.loading = true
     if (this.willUpdate) {
@@ -129,13 +143,17 @@ export class CreatePaymentComponent implements OnInit {
     this.voucher = event.target.files[0]
   }
 
+  clearVoucher() {
+    this.voucher = null
+    this.file.nativeElement.value = null
+  }
+
   convertBlobToBase64(blob: Blob): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader()
       reader.onerror = reject
       reader.onload = () => {
         const base64data = reader.result as string
-        console.log('onload', base64data)
         resolve(base64data)
       }
       reader.readAsDataURL(blob)

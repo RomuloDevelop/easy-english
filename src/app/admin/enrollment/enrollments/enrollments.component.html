@@ -24,22 +24,8 @@
           <td style="width: 3rem"></td>
           <td *ngFor="let row of courseRows; let iCol = index">
             <span class="p-column-title">{{ courseCols[iCol] }}</span>
-            <ng-container *ngIf="row !== 'status' && row !== 'sections'">
+            <ng-container *ngIf="row !== 'status'">
               {{ course[row] }}
-            </ng-container>
-            <ng-container *ngIf="row === 'sections'">
-              <div class="section-expand">
-                <span style="vertical-align: center">
-                  {{ course[row].length }} Sect.
-                </span>
-                <button
-                  type="button"
-                  pButton
-                  pRipple
-                  [pRowToggler]="course"
-                  class="p-button-text p-button-rounded p-button-plain"
-                ></button>
-              </div>
             </ng-container>
             <ng-container *ngIf="row === 'status'">
               {{ course[row] ? 'Active' : 'Inactive' }}

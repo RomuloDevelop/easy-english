@@ -5,6 +5,7 @@ import { LoaderService } from '../components/common/loader/loader.service'
 import { selectActualUser } from '../state/session/session.selectors'
 import { RouterAnimations } from '../utils/Animations'
 import { User } from '../state/models'
+import { Roles } from 'src/data/roles'
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
@@ -13,6 +14,7 @@ import { User } from '../state/models'
 })
 export class AdminComponent implements OnInit {
   actualUser: User
+  roles = Roles
   viewMenu = true
   items: {
     label: string

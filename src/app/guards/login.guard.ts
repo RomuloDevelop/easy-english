@@ -12,6 +12,7 @@ import { Observable } from 'rxjs'
 import { selectActualUser } from '../state/session/session.selectors'
 import roles, { Roles } from '../../data/roles'
 import { map } from 'rxjs/operators'
+import { PATH_FROM_LOGIN_KEY, TOKEN_KEY } from 'src/data/constants'
 
 @Injectable({
   providedIn: 'root'
@@ -24,19 +25,20 @@ export class LoginGuard implements CanActivate {
   ) {}
 
   redirectToLogin(route: ActivatedRouteSnapshot) {
-    const actualUrl = route.parent.url.map((item) => item.path).join('/')
-    this.router.navigate([`${actualUrl}/login`], {
+    const actualUrl = route.url.map((item) => item.path).join('/')
+    localStorage.setItem(PATH_FROM_LOGIN_KEY, actualUrl)
+    this.router.navigate([`/login`], {
       relativeTo: this.route
     })
   }
 
   getRole(route: ActivatedRouteSnapshot) {
-    const url = route.parent.url
+    const { url } = route
     return roles[url[0].path]
   }
 
   getRoute(route: ActivatedRouteSnapshot) {
-    const url = route.parent.url
+    const { url } = route
     return url[0].path
   }
 
@@ -48,7 +50,7 @@ export class LoginGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem(TOKEN_KEY)
     if (token != null) {
       return this.store.pipe(
         select(selectActualUser),
@@ -60,7 +62,6 @@ export class LoginGuard implements CanActivate {
           if (!result) {
             this.redirectToLogin(route)
           }
-          console.log('guard', this.getRole(route))
           return result
         })
       )

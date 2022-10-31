@@ -6,7 +6,11 @@ import {
   ViewChild
 } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
-import { StudentService, CourseToShow, LessonToShow } from '../student.service'
+import {
+  StudentService,
+  CourseToShow,
+  LessonToShow
+} from '../../student.service'
 import { Enrollment, Lesson } from 'src/app/state/models'
 import { LoaderService } from '../../../components/common/loader/loader.service'
 import memoize from '../../../decorators/memoize'
@@ -68,7 +72,6 @@ export class ViewCourseComponent implements OnInit, OnDestroy, AfterViewInit {
         lessonList = lessonList.concat(section.lessons)
       })
       this.lessonList = lessonList
-      console.log('All lessons', this.lessonList)
       this.sectionTabs = new Array(data.sections.length).fill(true)
       const lastLessonToView = lessonList.find(
         (lesson) =>

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output, OnInit } from '@angular/core'
-import { StudentService } from '../student.service'
+import { StudentService } from '../../student.service'
 import { MenuItem } from 'primeng/api'
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-header',
@@ -12,7 +13,7 @@ export class HeaderComponent implements OnInit {
   items: MenuItem[]
   viewProfile = false
 
-  constructor(private studentService: StudentService) {}
+  constructor(private studentService: StudentService, private router: Router) {}
 
   classApplied = false
   toggleClass() {
@@ -31,6 +32,11 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.items = [
+      {
+        label: 'My courses',
+        icon: 'pi pi-fw pi-book',
+        command: () => this.router.navigate(['../student'])
+      },
       {
         label: 'Logout',
         icon: 'pi pi-fw pi-power-off',

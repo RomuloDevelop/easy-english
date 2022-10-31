@@ -15,7 +15,6 @@ export class SnowEditorDirective implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    console.log(this.element.nativeElement.childNodes[0].childNodes[1])
     this.element.nativeElement.childNodes[0].childNodes[1].classList.remove(
       'p-editor-toolbar'
     )

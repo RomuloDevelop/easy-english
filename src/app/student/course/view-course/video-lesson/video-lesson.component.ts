@@ -9,7 +9,7 @@ import {
 } from '@angular/core'
 import { Lesson, VideoLectue } from 'src/app/state/models'
 import { YoutubeComponent } from '../../../../components/common/youtube/youtube.component'
-import { StudentService, LessonToShow } from '../../student.service'
+import { StudentService, LessonToShow } from '../../../student.service'
 
 interface VideoLesson {
   title: string

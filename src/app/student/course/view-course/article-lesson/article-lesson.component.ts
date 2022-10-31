@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core'
 import { Article } from 'src/app/state/models'
-import { LessonToShow } from '../../student.service'
+import { LessonToShow } from '../../../student.service'
 
 interface ArticleLesson extends LessonToShow {
   data: Article

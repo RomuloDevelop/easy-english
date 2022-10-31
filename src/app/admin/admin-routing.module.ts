@@ -1,33 +1,42 @@
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
-import { LoginPageComponent } from '../components/pages/login-page/login-page.component'
+import { LoginPageComponent } from '../pages/login-page/login-page.component'
 import { AdminComponent } from './admin.component'
 import { CoursesComponent } from './course/courses/courses.component'
 import { CreateCourseComponent } from './course/create-course/create-course.component'
 import { CreateUserComponent } from './user/create-user/create-user.component'
 import { UsersComponent } from './user/users/users.component'
-import { LoginGuard } from '../guards/login.guard'
 import { EnrollmentsComponent } from './enrollment/enrollments/enrollments.component'
 import { CreateEnrollmentComponent } from './enrollment/create-enrollment/create-enrollment.component'
 import { PaymentsComponent } from './payment/payments/payments.component'
 import { CreatePaymentComponent } from './payment/create-payment/create-payment.component'
 import { TipsComponent } from './tips/tips.component'
+import { UserQuizzesComponent } from './course/user-quizzes/user-quizzes.component'
 
 const routes: Routes = [
   {
     path: '',
-    canActivate: [LoginGuard],
     component: AdminComponent,
     children: [
       {
         path: '',
-        component: CoursesComponent,
-        data: { animation: 'Courses' }
-      },
-      {
-        path: 'create-course/:id',
-        component: CreateCourseComponent,
-        data: { animation: 'Course' }
+        children: [
+          {
+            path: '',
+            component: CoursesComponent,
+            data: { animation: 'Courses' }
+          },
+          {
+            path: 'create-course/:id',
+            component: CreateCourseComponent,
+            data: { animation: 'Course' }
+          },
+          {
+            path: 'quizzes/:id',
+            component: UserQuizzesComponent,
+            data: { animation: 'Quizzes', role: 2 }
+          }
+        ]
       },
       {
         path: 'students',
@@ -114,8 +123,7 @@ const routes: Routes = [
         data: { animation: 'Tips' }
       }
     ]
-  },
-  { path: 'login', component: LoginPageComponent }
+  }
 ]
 
 @NgModule({

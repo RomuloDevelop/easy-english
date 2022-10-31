@@ -97,7 +97,6 @@ export class CreateEnrollmentComponent implements OnInit {
         },
         (err) => console.error(err)
       )
-    console.log(user)
   }
 
   confirmDeleteUser(user: User) {

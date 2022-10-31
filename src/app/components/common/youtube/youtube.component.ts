@@ -42,7 +42,6 @@ export class YoutubeComponent implements AfterViewInit, OnDestroy {
     ) as HTMLDivElement
     this.videoWidth = YTContainer.clientWidth
     this.videoHeight = this.videoWidth / 2
-    console.log(this.videoWidth, this.videoHeight)
   }
 
   triggerRezise() {

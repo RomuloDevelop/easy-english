@@ -24,9 +24,9 @@ import { HeaderComponent } from './course/header/header.component'
 import { FinalQuizComponent } from './course/view-course/final-quiz/final-quiz.component'
 import { QuestionComponent } from './course/view-course/question/question.component'
 
-import { StudentService } from './course/student.service'
+import { StudentService } from './student.service'
 import { MessageService } from 'primeng/api'
-import { TipComponent } from './tip/tip.component'
+import { TipComponent } from './tip.component'
 import { StartFinalQuizModalComponent } from './course/view-course/startFinalQuizModal'
 
 @NgModule({

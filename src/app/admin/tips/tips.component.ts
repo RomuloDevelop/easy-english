@@ -26,8 +26,9 @@ export class TipsComponent implements OnInit {
   loadingTip = false
   msgs: Message[] = []
   tips: Tip[]
-  tip: Tip
+  tip: Tip = { description: '' }
   tipModal = false
+  modalActions = ModalAction
   modalAction: ModalAction = ModalAction.create
 
   tipCols = ['Id', 'Description']
@@ -78,42 +79,45 @@ export class TipsComponent implements OnInit {
   submitTip() {
     this.loadingTip = true
     const actions = {
-      [ModalAction.create]: this.createTip,
-      [ModalAction.update]: this.updateTip
+      [ModalAction.create]: () => this.createTip(),
+      [ModalAction.update]: () => this.updateTip()
     }
 
     actions[this.modalAction]()
   }
 
   createTip() {
-    this.tipService
-      .insertTip(this.tip.description, () => (this.loadingTip = false))
-      .subscribe(
-        () => {
-          this.messageService.add({
-            severity: 'info',
-            summary: 'Success',
-            detail: 'The tip has been created'
-          })
-        },
-        (err) => {
-          console.error(err)
-          this.messageService.add({
-            severity: 'info',
-            summary: 'Success',
-            detail: 'An error ocurred when creating the tip'
-          })
-        }
-      )
+    const finalize = () => {
+      this.tipModal = false
+      this.loadingTip = false
+    }
+    this.tipService.createTip(this.tip.description, finalize).subscribe(
+      () => {
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Success',
+          detail: 'The tip has been created'
+        })
+        this.getTable()
+      },
+      (err) => {
+        console.error(err)
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'An error ocurred while creating the tip'
+        })
+      }
+    )
   }
 
   updateTip() {
+    const finalize = () => {
+      this.tipModal = false
+      this.loadingTip = false
+    }
     this.tipService
-      .updateTip(
-        this.tip.id,
-        this.tip.description,
-        () => (this.loadingTip = false)
-      )
+      .updateTip(this.tip.id, this.tip.description, finalize)
       .subscribe(
         () => {
           this.messageService.add({
@@ -121,13 +125,14 @@ export class TipsComponent implements OnInit {
             summary: 'Success',
             detail: 'The tip has been updated'
           })
+          this.getTable()
         },
         (err) => {
           console.error(err)
           this.messageService.add({
-            severity: 'info',
-            summary: 'Success',
-            detail: 'An error ocurred when updating the tip'
+            severity: 'error',
+            summary: 'Error',
+            detail: 'An error ocurred while updating the tip'
           })
         }
       )
@@ -139,25 +144,28 @@ export class TipsComponent implements OnInit {
       header: 'Delete Confirmation',
       icon: 'pi pi-info-circle',
       accept: () => {
-        this.msgs = [
-          { severity: 'info', summary: 'Confirmed', detail: 'Record deleted' }
-        ]
         this.deleteTip(tip)
-      },
-      reject: () => {
-        this.msgs = [
-          { severity: 'info', summary: 'Rejected', detail: 'You have rejected' }
-        ]
-        console.error(this.msgs)
       }
     })
   }
 
   deleteTip(tip: Tip) {
     this.tipService.deleteTip(tip.id).subscribe(
-      () => {},
+      () => {
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Success',
+          detail: 'The tip has been deleted'
+        })
+        this.getTable()
+      },
       (err) => {
         console.error(err)
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'An error ocurred while deleting the tip'
+        })
       }
     )
   }

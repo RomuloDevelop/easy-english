@@ -34,7 +34,7 @@ export class TipsService {
       finalize(finalizeCb)
     )
   }
-  insertTip(description: string, finalizeCb = () => {}) {
+  createTip(description: string, finalizeCb = () => {}) {
     return this.http.post<{ data: Tip }>(tipsUrl, { description }).pipe(
       map(({ data }) => data),
       finalize(finalizeCb)

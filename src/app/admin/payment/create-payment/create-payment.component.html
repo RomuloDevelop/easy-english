@@ -20,6 +20,23 @@
         ></p-dropdown>
       </div>
       <div class="p-field col-12 col-md-6">
+        <small id="title-help">Enter a date for payment.</small>
+        <p-calendar
+          placeholder="Date of payment"
+          class="p-inputtext-sm"
+          formControlName="payment_date"
+        ></p-calendar>
+      </div>
+      <div class="p-field col-12 col-md-6">
+        <small id="title-help">Enter a month for payment.</small>
+        <p-calendar
+          formControlName="payment_month"
+          placeholder="Month for payment"
+          view="month"
+          dateFormat="MM"
+        ></p-calendar>
+      </div>
+      <div class="p-field col-12 col-md-6">
         <small id="title-help">Select a status for actual payment.</small>
         <p-dropdown
           [options]="statusList"
@@ -29,15 +46,16 @@
         ></p-dropdown>
       </div>
       <div class="p-field col-12 col-md-6">
-        <small id="title-help">Enter a date for payment.</small>
-        <p-calendar
-          placeholder="Date of payment"
-          class="p-inputtext-sm"
-          formControlName="date"
-        ></p-calendar>
+        <small id="title-help">Enter the payment's detail.</small>
+        <textarea
+          pInputTextarea
+          placeholder="Description"
+          formControlName="description"
+        >
+        </textarea>
       </div>
       <div class="p-field col-12 col-md-6">
-        <small id="title-help">Enter the payment's detail.</small>
+        <small id="title-help">Add the payment's voucher.</small>
         <div class="voucher-control">
           <button
             pButton
@@ -50,7 +68,7 @@
           <span class="p-ml-2">{{ voucher?.name }}</span>
           <div
             class="close-button"
-            (click)="voucher = null"
+            (click)="clearVoucher()"
             *ngIf="voucher !== null"
           >
             <i class="pi pi-times" style="vertical-align: middle"></i>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { Router } from '@angular/router'
 import { select, Store } from '@ngrx/store'
+import { TipsService } from 'src/app/services/tips.service'
 import { User } from 'src/app/state/models'
 import { selectActualUser } from 'src/app/state/session/session.selectors'
 import { SessionService } from '../../services/session.service'
@@ -16,7 +17,7 @@ export class DashboardComponent implements OnInit {
   loadingLogOutPanel = null
   loadingLogOutButton = false
 
-  constructor(private sessionService: SessionService, private store: Store) {}
+  constructor(private store: Store, private sessionService: SessionService) {}
 
   ngOnInit(): void {
     this.store

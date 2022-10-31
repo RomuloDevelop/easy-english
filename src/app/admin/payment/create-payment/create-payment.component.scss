@@ -24,6 +24,12 @@
   margin-top: 3rem;
 }
 
+:host ::ng-deep .p-datepicker-monthpicker {
+  .p-datepicker-next, & .p-datepicker-prev {
+    display: none;
+  }
+}
+
 .voucher-control {
   display: flex;
   justify-content: flex-start;

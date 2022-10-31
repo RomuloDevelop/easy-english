@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, EventEmitter, Output } from '@angular/core'
 import ContactInfo from '../../../../data/networks'
 @Component({
   selector: 'app-header-style-two',
@@ -7,6 +7,8 @@ import ContactInfo from '../../../../data/networks'
 })
 export class HeaderStyleTwoComponent {
   constructor() {}
+
+  @Output() logout = new EventEmitter()
 
   phones = ContactInfo.getPhones()
   classApplied = false

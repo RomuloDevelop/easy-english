@@ -35,11 +35,11 @@ export class CoursesComponent implements OnInit {
   loadingSection = null
   msgs: Message[] = []
 
-  courseCols = ['Id', 'Title', 'Subtitle', 'Sections', 'Status']
-  courseRows = ['id', 'title', 'subtitle', 'sections', 'status']
+  courseCols = ['Id', 'Title', 'Subtitle', 'Sections']
+  courseRows = ['id', 'title', 'subtitle', 'sections']
 
-  sectionCols = ['Id', 'Title', 'Description', 'Lectures']
-  sectionRows = ['id', 'title', 'subtitle', 'lectures']
+  sectionCols = ['Id', 'Title', 'Description', 'Lessons']
+  sectionRows = ['id', 'title', 'subtitle', 'lessons_count']
 
   courses: CoursesTableRow[]
   actualUser: User
@@ -122,17 +122,9 @@ export class CoursesComponent implements OnInit {
     )
   }
 
-  editCourse(course: CoursesTableRow) {
-    this._router.navigate(['create-course', course.id], {
-      relativeTo: this.route
-    })
-  }
-
   changeStatus(e, course: CoursesTableRow) {
     const { id } = course
-    this.courseService
-      .updateCourse({ id, status: e.checked })
-      .subscribe((data) => console.log(data))
+    this.courseService.updateCourse({ id, status: e.checked }).subscribe()
   }
 
   confirmDeleteCourse(course: CoursesTableRow) {

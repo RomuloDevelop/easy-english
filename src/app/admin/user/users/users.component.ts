@@ -38,7 +38,6 @@ export class UsersComponent implements OnInit {
     this.primengConfig.ripple = true
     this.route.data.subscribe((data) => {
       this.role = parseInt(data.role)
-      console.log(data)
       this.getTable()
       combineLatest([
         this.store.pipe(select(selectUsers)),

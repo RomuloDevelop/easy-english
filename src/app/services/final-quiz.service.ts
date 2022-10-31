@@ -74,8 +74,8 @@ export class FinalQuizService {
             // Agrega, actualiza y elimina donde corresponda
             const { results, deletes, withoutChange } =
               this.quizService.addOrUpdateAnswer(
-                quiz.options,
-                actualQuiz.quiz.options,
+                quiz.options || [],
+                actualQuiz.quiz.options || [],
                 quiz.id
               )
             if (!results?.length && !deletes?.length) {
@@ -83,7 +83,6 @@ export class FinalQuizService {
             }
             return zip(...results, ...deletes).pipe(
               map((options) => {
-                console.log(options)
                 const newOptions = options.filter(
                   (item: QuizOption) => item?.id
                 ) as QuizOption[] //Obtiene solo respuestas de insertado y actualizado
