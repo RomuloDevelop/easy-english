@@ -1,6 +1,7 @@
 import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core'
 import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
+import * as moment from 'moment'
 
 @Component({
   selector: 'app-certificate',
@@ -12,10 +13,13 @@ export class CertificateComponent {
   title = ''
   id: string = ''
   name: string = ''
+  date: string = ''
 
   constructor(private renderer: Renderer2) {}
 
   getDocument(title: string, id: string | number, name: string) {
+    moment.locale('es')
+
     const parsedId = typeof id === 'number' ? id.toString() : id
 
     this.id =
@@ -25,6 +29,7 @@ export class CertificateComponent {
 
     this.title = title
     this.name = name
+    this.date = moment().format('LL')
 
     this.renderer.addClass(
       this.certificateRef.nativeElement,
