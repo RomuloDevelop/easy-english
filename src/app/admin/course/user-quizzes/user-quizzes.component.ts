@@ -1,35 +1,19 @@
-import { Component, OnInit } from '@angular/core'
-import { Router, ActivatedRoute } from '@angular/router'
+import { Component, OnInit, ViewChild } from '@angular/core'
+import { ActivatedRoute } from '@angular/router'
 import { Store, select } from '@ngrx/store'
 import { CourseService } from '../../../services/course.service'
-import { SectionService } from '../../../services/section.service'
-import { Course, Lesson, Quiz, User, UserAnswer } from '../../../state/models'
+import { Lesson, Quiz, User } from '../../../state/models'
 import {
-  selectCoursesTable,
   CoursesTableRow,
-  selectSections
+  selectCourses
 } from '../../../state/admin/admin.selectores'
-import {
-  deleteCourse,
-  setCourses
-} from '../../../state/admin/courses/course.actions'
-import { ConfirmationService, PrimeNGConfig, Message } from 'primeng/api'
-import {
-  addSection,
-  deleteCourseSection,
-  updateSection
-} from 'src/app/state/admin/sections/section.actions'
-import { deleteSectionLesson } from 'src/app/state/admin/lessons/lesson.actions'
+import { PrimeNGConfig, Message } from 'primeng/api'
 import { combineLatest, zip } from 'rxjs'
-import { take } from 'rxjs/operators'
 import { selectActualUser } from 'src/app/state/session/session.selectors'
-import memoize from 'src/app/decorators/memoize'
 import { UserQuizzService } from 'src/app/services/user-quizz.service'
 import { EnrollmentService } from 'src/app/services/enrollment.service'
-
-interface UserQuizzes extends User {
-  answers?: Lesson[]
-}
+import { CertificateComponent } from 'src/app/components/common/certificate/certificate.component'
+import { take } from 'rxjs/operators'
 
 @Component({
   selector: 'app-user-quizzes',
@@ -37,6 +21,7 @@ interface UserQuizzes extends User {
   styleUrls: ['./user-quizzes.component.scss']
 })
 export class UserQuizzesComponent implements OnInit {
+  @ViewChild(CertificateComponent) certificate: CertificateComponent
   courseId = parseInt(this.route.snapshot.paramMap.get('id'))
   loadingTable = false
   loadingSubtable = null
@@ -48,15 +33,16 @@ export class UserQuizzesComponent implements OnInit {
   quizCols = ['Id', 'Title', 'Answer', 'Result']
   quizRows = ['id', 'title', 'option', 'result']
 
+  finalQuizCols = [...this.quizCols, 'Required']
+  finalQuizRows = [...this.quizRows, 'required']
+
   lessons: Lesson[] = []
   usersEnrolled: User[] = []
 
   actualUser: User
 
   constructor(
-    private _router: Router,
     private route: ActivatedRoute,
-    private confirmationService: ConfirmationService,
     private primengConfig: PrimeNGConfig,
     private store: Store,
     private courseService: CourseService,
@@ -120,11 +106,20 @@ export class UserQuizzesComponent implements OnInit {
           id: course_quiz.quiz.id,
           title: course_quiz.quiz.title,
           option: option.description,
-          result: item.is_valid_option ? 'Correct' : 'Incorrect'
+          result: item.is_valid_option ? 'Correct' : 'Incorrect',
+          required: course_quiz.required ? 'Yes' : 'No'
         }
       })
 
       this.loadingSubtable = null
+    })
+  }
+
+  downloadCertificate(user: User) {
+    console.log(user)
+    this.store.pipe(take(1), select(selectCourses)).subscribe((courses) => {
+      const course = courses.find((item) => item.id === this.courseId)
+      this.certificate.getDocument(course.title, course.id, user.name)
     })
   }
 

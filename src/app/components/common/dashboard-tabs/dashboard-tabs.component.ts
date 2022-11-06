@@ -76,7 +76,7 @@ export interface Tab {
   templateUrl: './dashboard-tabs.component.html',
   styleUrls: ['./dashboard-tabs.component.scss']
 })
-export class DashboardTabsComponent implements OnChanges, AfterContentInit {
+export class DashboardTabsComponent implements AfterContentInit {
   @Input() tabLoading: number = null
   @ContentChildren(TabComponent) tabsTemp: QueryList<TabComponent>
   tabs: Tab[] = []
@@ -90,8 +90,6 @@ export class DashboardTabsComponent implements OnChanges, AfterContentInit {
   timeOut
 
   constructor() {}
-
-  ngOnChanges(...event) {}
 
   ngAfterContentInit() {
     this.tabsTemp.forEach((item, i) => {

@@ -5,7 +5,8 @@ import {
   ConfirmationService,
   PrimeNGConfig,
   Message,
-  LazyLoadEvent
+  LazyLoadEvent,
+  MessageService
 } from 'primeng/api'
 import {
   PaymentsService,
@@ -17,7 +18,7 @@ import { UserService } from 'src/app/services/user.service'
 import roles from 'src/data/roles'
 import { combineLatest, Subject } from 'rxjs'
 import { Subscription } from 'rxjs'
-import { skip, startWith } from 'rxjs/operators'
+import { startWith } from 'rxjs/operators'
 
 @Component({
   selector: 'app-payments',
@@ -52,6 +53,7 @@ export class PaymentsComponent implements OnInit, OnDestroy {
     private _router: Router,
     private route: ActivatedRoute,
     private confirmationService: ConfirmationService,
+    private messageService: MessageService,
     private primengConfig: PrimeNGConfig,
     private userService: UserService,
     private paymentService: PaymentsService
@@ -69,9 +71,7 @@ export class PaymentsComponent implements OnInit, OnDestroy {
       this.subPaginatorFilter.pipe(startWith({ first: 0 } as LazyLoadEvent))
     ]).subscribe(([user, status, lazyEvent]) => {
       const page =
-        lazyEvent &&
-        lazyEvent.first &&
-        lazyEvent.first >= this.currentPage * this.rows
+        lazyEvent?.first && lazyEvent.first >= this.currentPage * this.rows
           ? this.currentPage + 1
           : this.currentPage
 
@@ -118,24 +118,28 @@ export class PaymentsComponent implements OnInit, OnDestroy {
       header: 'Delete Confirmation',
       icon: 'pi pi-info-circle',
       accept: () => {
-        this.msgs = [
-          { severity: 'info', summary: 'Confirmed', detail: 'Record deleted' }
-        ]
         this.deletePayment(payment)
-      },
-      reject: () => {
-        this.msgs = [
-          { severity: 'info', summary: 'Rejected', detail: 'You have rejected' }
-        ]
-        console.error(this.msgs)
       }
     })
   }
 
   deletePayment(payment: Payment) {
     this.paymentService.deletePayment(payment.id).subscribe(
-      () => {},
+      () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'The payment has been deleted'
+        })
+
+        this.subStatusFilter.next(this.selectedStatus)
+      },
       (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'An error occurs while deleting the payment'
+        })
         console.error(err)
       }
     )

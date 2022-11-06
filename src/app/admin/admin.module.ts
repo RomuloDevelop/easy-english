@@ -42,6 +42,7 @@ import { PaymentsComponent } from './payment/payments/payments.component'
 import { CreatePaymentComponent } from './payment/create-payment/create-payment.component'
 import { TipsComponent } from './tips/tips.component'
 import { UserQuizzesComponent } from './course/user-quizzes/user-quizzes.component'
+import { CertificateComponent } from '../components/common/certificate/certificate.component'
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { UserQuizzesComponent } from './course/user-quizzes/user-quizzes.compone
     PaymentsComponent,
     CreatePaymentComponent,
     TipsComponent,
-    UserQuizzesComponent
+    UserQuizzesComponent,
+    CertificateComponent
   ],
   imports: [
     SharedModule,

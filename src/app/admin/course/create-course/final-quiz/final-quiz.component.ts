@@ -15,6 +15,8 @@ import { CourseService } from '../../../../services/course.service'
 import memoize from '../../../../decorators/memoize'
 import { FinalQuizService } from 'src/app/services/final-quiz.service'
 
+type EditedQuiz = Quiz & { required: boolean; course_quiz_id: number }
+
 @Component({
   selector: 'app-final-quiz',
   templateUrl: './final-quiz.component.html',
@@ -28,7 +30,7 @@ export class FinalQuizComponent implements OnInit {
   updatingQuiz = false
   finalQuiz: FinalQuiz = null
   title: string = ''
-  questions: Quiz[] = []
+  questions: EditedQuiz[] = []
   courseId = parseInt(this.route.snapshot.paramMap.get('id'))
   msgs: Message[] = []
   quillOptions = {
@@ -58,6 +60,7 @@ export class FinalQuizComponent implements OnInit {
       const { final_quiz, final_quizz_title } = courses.find(
         (course) => course.id === this.courseId
       )
+
       this.questions =
         final_quiz == null
           ? []
@@ -68,7 +71,9 @@ export class FinalQuizComponent implements OnInit {
               options: item.quiz.options
                 ? [...item.quiz.options.map((item) => ({ ...item }))]
                 : [],
-              course_id: item.course_id
+              course_id: item.course_id,
+              course_quiz_id: item.id,
+              required: item.required
             }))
       this.title = final_quizz_title == null ? '' : final_quizz_title
       this.cdr.markForCheck()
@@ -139,7 +144,9 @@ export class FinalQuizComponent implements OnInit {
     )
   }
 
-  updateQuiz(quiz: Quiz) {
+  updateQuiz(editedQuiz: EditedQuiz) {
+    const { required, course_quiz_id, ...quiz } = editedQuiz
+
     this.updatingQuiz = true
 
     if (quiz.correctAnswer != null) {
@@ -148,7 +155,7 @@ export class FinalQuizComponent implements OnInit {
       })
     }
 
-    this.finalQuizService.updateQuiz(quiz).subscribe(
+    this.finalQuizService.updateQuiz(quiz, course_quiz_id, required).subscribe(
       () => {
         this.updatingQuiz = false
         this.messageService.add({

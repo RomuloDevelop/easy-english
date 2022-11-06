@@ -57,13 +57,22 @@
   <div *ngIf="questions.length">
     <div
       class="question-container"
-      *ngFor="let questItem of questions; let indexOfelement = index"
+      *ngFor="let questItem of questions; let indexOfElement = index"
     >
       <div class="delete-btn" (click)="deleteQuizz(questItem)">
         <i class="pi pi-times"></i>
       </div>
       <div class="p-section-field">
-        <h2 class="h6 mt-1 mb-3">Question {{ indexOfelement + 1 }}</h2>
+        <div class="p-d-flex p-jc-between">
+          <h2 class="h6 mt-1 mb-3">Question {{ indexOfElement + 1 }}</h2>
+          <div>
+            <p-inputSwitch
+              class="p-mr-2"
+              [(ngModel)]="questItem.required"
+            ></p-inputSwitch>
+            <small style="vertical-align: top">Is required? </small>
+          </div>
+        </div>
         <p-editor
           #editor
           class="custom-editor"

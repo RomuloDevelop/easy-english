@@ -37,6 +37,21 @@
   }
 }
 
+:host ::ng-deep .p-inputswitch {
+  &.p-inputswitch-checked:not(.p-disabled) .p-inputswitch-slider {
+    background: var(--green-500);
+  }
+  .p-inputswitch-slider {
+    border-radius: 10px;
+    height: 25px;
+    &::before {
+      height: 1rem;
+      border-radius: 5px;
+      margin-top: -0.5rem;
+    }
+  }
+}
+
 :host ::ng-deep .answer-item {
   position: relative;
   display: flex;
@@ -109,4 +124,5 @@
 }
 .delete-btn i {
   font-size: 0.8rem;
+  line-height: 0;
 }

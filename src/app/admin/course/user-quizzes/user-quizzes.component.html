@@ -17,6 +17,7 @@
         <tr>
           <th style="width: 3rem"></th>
           <th *ngFor="let col of userCols">{{ col }}</th>
+          <th>Actions</th>
           <th></th>
         </tr>
       </ng-template>
@@ -28,6 +29,16 @@
             <ng-container *ngIf="row !== 'quizzes'">
               {{ user[row] || 'N/A' }}
             </ng-container>
+          </td>
+          <td>
+            <button
+              pButton
+              pRipple
+              type="button"
+              icon="pi pi-download"
+              class="p-button-rounded p-button-outlined btn-action"
+              (click)="downloadCertificate(user)"
+            ></button>
           </td>
           <td>
             <div class="d-inline-flex justify-content-center flex-wrap">
@@ -46,7 +57,7 @@
       </ng-template>
       <ng-template pTemplate="rowexpansion" let-user>
         <tr>
-          <td colspan="7">
+          <td colspan="8">
             <div
               *ngIf="loadingSubtable === user.id"
               class="w-100 d-flex justify-content-center align-items-center"
@@ -67,7 +78,9 @@
                   $implicit: user.answers,
                   id: user.id,
                   title: 'Quiz Answers:',
-                  message: 'There are no quizzes for this user yet.'
+                  message: 'There are no quizzes for this user yet.',
+                  cols: quizCols,
+                  rows: quizRows
                 }
               "
             >
@@ -79,7 +92,9 @@
                   $implicit: user.finalAnswers,
                   id: user.id,
                   title: 'Final Quiz:',
-                  message: 'User hasn\'t completed the final quiz yet.'
+                  message: 'User hasn\'t completed the final quiz yet.',
+                  cols: finalQuizCols,
+                  rows: finalQuizRows
                 }
               "
             >
@@ -96,20 +111,21 @@
     let-id="id"
     let-title="title"
     let-message="message"
+    let-cols="cols"
+    let-rows="rows"
   >
     <div class="p-pt-5 p-px-1" *ngIf="loadingSubtable !== id">
       <h2 class="h5 mb-3">{{ title }}</h2>
       <p-table [value]="data" dataKey="id">
         <ng-template pTemplate="header">
           <tr>
-            <th *ngFor="let col of quizCols">{{ col }}</th>
-            <!-- <th style="width: 4rem"></th> -->
+            <th *ngFor="let col of cols">{{ col }}</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-quiz>
           <tr>
-            <td *ngFor="let row of quizRows; let iCol = index">
-              <span class="p-column-title">{{ quizCols[iCol] }}</span>
+            <td *ngFor="let row of rows; let iCol = index">
+              <span class="p-column-title">{{ cols[iCol] }}</span>
               <span
                 [style.color]="
                   row === 'result'
@@ -149,3 +165,5 @@
   [style]="{ width: '50vw' }"
   [baseZIndex]="10000"
 ></p-confirmDialog>
+
+<app-certificate> </app-certificate>

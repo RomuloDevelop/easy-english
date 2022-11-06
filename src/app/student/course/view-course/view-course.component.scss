@@ -107,7 +107,7 @@ $menuItemPadX: 15px;
 .view-course {
   min-height: 100vh;
   display: flex;
-  background-color: #f8f9fa;
+  background-color: var(--bgGrey);
   .view-course__lesson {
     position: relative;
     overflow: hidden;

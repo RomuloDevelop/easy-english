@@ -29,14 +29,14 @@ export class FinalQuizService {
     private quizService: QuizzService
   ) {}
 
-  addQuiz(quiz: Quiz) {
+  addQuiz(quiz: Quiz, required = false) {
     const { course_id, options, correctAnswer, ...quizFields } = quiz
     return this.quizService.addQuiz(quizFields).pipe(
       mergeMap((quizResp) =>
         this.addCourseQuiz({
           course_id: quiz.course_id,
           quiz_id: quizResp.id,
-          required: true
+          required
         }).pipe(
           map((courseQuiz) => {
             courseQuiz.quiz = quizResp
@@ -60,10 +60,13 @@ export class FinalQuizService {
     )
   }
 
-  updateQuiz(quiz: Quiz) {
+  updateQuiz(quiz: Quiz, course_quiz_id: number, required = false) {
     const { course_id, options, correctAnswer, ...quizFields } = quiz
-    return this.quizService.updateQuiz(quizFields).pipe(
-      mergeMap((data) =>
+    return zip(
+      this.updateCourseQuiz({ id: course_quiz_id, required }),
+      this.quizService.updateQuiz(quizFields)
+    ).pipe(
+      mergeMap(([_, data]) =>
         this.store.pipe(
           take(1),
           select(selectCourses),
@@ -110,6 +113,12 @@ export class FinalQuizService {
   addCourseQuiz(data: CourseQuiz) {
     return this.http
       .post<{ data: any }>(courseQuizzesUrl, data)
+      .pipe(map(({ data }) => data))
+  }
+
+  updateCourseQuiz(data: Partial<CourseQuiz>) {
+    return this.http
+      .patch<{ data: any }>(`${courseQuizzesUrl}/${data.id}`, data)
       .pipe(map(({ data }) => data))
   }
 }

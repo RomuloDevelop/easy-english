@@ -1,5 +1,5 @@
 section {
-  background-color: #f8f9fa;
+  background-color: var(--bgGrey);
   padding-top: 70px;
   padding-bottom: 100px;
   position: relative;
@@ -132,7 +132,7 @@ $menuItemPadX: 15px;
     }
   }
   .admin-content {
-    background-color: #f8f9fa;
+    background-color: var(--bgGrey);
     width: 100%;
     transition: width $sideNavTransition;
     &.active {
