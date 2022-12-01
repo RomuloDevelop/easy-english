@@ -9,18 +9,14 @@
       <i class="pi pi-times"></i>
     </div>
     <img class="admin-side-nav__logo" src="assets/img/logoEN.png" alt="logo" />
-    <ul class="menu-list">
-      <ng-container *ngFor="let item of items">
-        <li
-          *ngIf="!item.admin || actualUser.role === roles.admin"
-          class="menu-item"
-          [routerLink]="item.route"
+    <div class="menu-list-container">
+      <ng-container *ngIf="items">
+        <ng-container
+          *ngTemplateOutlet="menu; context: { $implicit: items, lvl: 0 }"
         >
-          <i [class]="item.icon"></i>
-          <span>{{ item.label }}</span>
-        </li>
+        </ng-container>
       </ng-container>
-    </ul>
+    </div>
   </div>
   <div class="admin-content" [class]="{ active: viewMenu }">
     <app-admin-header
@@ -39,3 +35,38 @@
     </section>
   </div>
 </div>
+
+<ng-template #menu let-items let-lvl="lvl">
+  <ul class="menu-list">
+    <ng-container *ngFor="let item of items; let i = index">
+      <li
+        *ngIf="!item.admin || actualUser.role === roles.admin"
+        [routerLink]="item.route"
+        (click)="openMenu(i)"
+        class="menu-item-container"
+        [ngClass]="{ 'menu-item-container--open': item.open }"
+      >
+        <div class="menu-item" [style.paddingLeft]="44 * lvl + 'px'">
+          <i [ngClass]="[item.icon, 'menu-item__icon']"></i>
+          <span>
+            {{ item.label }}
+            <i
+              *ngIf="item.routes"
+              class="pi pi-angle-down menu-item__arrow"
+              [ngClass]="{ 'menu-item__arrow--open': item.open }"
+            ></i>
+          </span>
+        </div>
+        <div *ngIf="item.routes" class="menu-item__sublist">
+          <ng-container
+            *ngTemplateOutlet="
+              menu;
+              context: { $implicit: item.routes, lvl: lvl + 1 }
+            "
+          >
+          </ng-container>
+        </div>
+      </li>
+    </ng-container>
+  </ul>
+</ng-template>

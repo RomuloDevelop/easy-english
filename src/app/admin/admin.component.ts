@@ -6,6 +6,16 @@ import { selectActualUser } from '../state/session/session.selectors'
 import { RouterAnimations } from '../utils/Animations'
 import { User } from '../state/models'
 import { Roles } from 'src/data/roles'
+
+interface MenuItem {
+  label: string
+  icon?: string
+  route?: string
+  admin: boolean
+  routes?: MenuItem[]
+  open?: boolean
+}
+
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
@@ -16,18 +26,7 @@ export class AdminComponent implements OnInit {
   actualUser: User
   roles = Roles
   viewMenu = true
-  items: {
-    label: string
-    icon: string
-    route?: string
-    admin: boolean
-  }[] = [
-    // {
-    //   label: 'Dashboard',
-    //   icon: 'pi pi-pw pi-chart-bar',
-    //   route: '/admin',
-    //   admin: true
-    // },
+  items: MenuItem[] = [
     {
       label: 'Gestión de Cursos',
       icon: 'pi pi-pw pi-book',
@@ -49,11 +48,28 @@ export class AdminComponent implements OnInit {
     {
       label: 'Gestión de Pagos',
       icon: 'pi pi-fw pi-credit-card',
-      route: 'payments',
-      admin: true
+      admin: true,
+      open: false,
+      routes: [
+        {
+          label: 'Pagos',
+          route: 'payments',
+          admin: true
+        },
+        {
+          label: 'Pagos atrasados',
+          route: 'payments',
+          admin: true
+        },
+        {
+          label: 'Pagos al día',
+          route: 'payments',
+          admin: true
+        }
+      ]
     },
     {
-      label: 'Gestión de Inscripciónes',
+      label: 'Gestión de Inscripciones',
       icon: 'pi pi-fw pi-users',
       route: 'enrollments',
       admin: true
@@ -76,6 +92,14 @@ export class AdminComponent implements OnInit {
     this.store.pipe(select(selectActualUser)).subscribe((user) => {
       this.actualUser = user
     })
+  }
+
+  openMenu(index: number) {
+    const item = this.items[index]
+    if (item.open != null) {
+      item.open = !item.open
+    }
+    console.log(item)
   }
 
   logout() {
