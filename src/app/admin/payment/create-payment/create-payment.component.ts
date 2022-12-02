@@ -40,7 +40,7 @@ export class CreatePaymentComponent implements OnInit {
     user_id: [null, Validators.required],
     payment_date: ['', Validators.required],
     payment_month: [0, Validators.required],
-    status: [PAYMENT_STATUS.PENDING, Validators.required],
+    status: [PAYMENT_STATUS.ADMIN_PENDING, Validators.required],
     description: ['', Validators.required]
   })
 

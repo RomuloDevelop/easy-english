@@ -28,9 +28,9 @@ interface PaymentPaginator {
 }
 
 export enum PAYMENT_STATUS {
-  PENDING = 1,
-  PARTIAL,
-  COMPLETE
+  ADMIN_PENDING = 1,
+  APPROVED,
+  USER_PENDING
 }
 
 export interface IPaymentStatus {
@@ -40,16 +40,16 @@ export interface IPaymentStatus {
 
 export const STATUS_LIST = [
   {
-    id: PAYMENT_STATUS.PENDING,
-    description: 'Pendiente'
+    id: PAYMENT_STATUS.ADMIN_PENDING,
+    description: 'Por revisar'
   },
   {
-    id: PAYMENT_STATUS.PARTIAL,
-    description: 'Pago parcial'
+    id: PAYMENT_STATUS.APPROVED,
+    description: 'Aprobado'
   },
   {
-    id: PAYMENT_STATUS.COMPLETE,
-    description: 'Pagado'
+    id: PAYMENT_STATUS.USER_PENDING,
+    description: 'Por revisar usuario'
   }
 ]
 
