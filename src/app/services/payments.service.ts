@@ -152,16 +152,30 @@ export class PaymentsService {
   }
 
   getUsersWithoutBadPaymentCount() {
-    return this.http
-      .get<{ data: any }>(
-        'get_users_without_recent_payments_and_bad_status_count'
-      )
-      .pipe(map(({ data: users }) => users))
+    return this.http.get<{ count: number }>(
+      'get_users_without_recent_payments_and_bad_status_count'
+    )
   }
 
   getUsersWithBadPaymentCount() {
-    return this.http
-      .get<{ data: any }>('get_users_with_recent_payments_and_bad_status_count')
-      .pipe(map(({ data: users }) => users))
+    return this.http.get<{ count: number }>(
+      'get_users_with_recent_payments_and_bad_status_count'
+    )
+  }
+
+  getPaymentCounts() {
+    return zip(
+      this.getUsersWithoutBadPaymentCount(),
+      this.getUsersWithBadPaymentCount()
+    ).pipe(
+      map(([resp1, resp2]) => {
+        return {
+          total:
+            resp1.count + resp2.count > 99 ? '99' : resp1.count + resp2.count,
+          withoutPayments: resp1.count > 99 ? '99' : resp1.count,
+          withPayments: resp2.count > 99 ? '99' : resp2.count
+        }
+      })
+    )
   }
 }

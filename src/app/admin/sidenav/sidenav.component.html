@@ -1,38 +1,23 @@
-<div class="admin-container">
-  <div
-    class="overlay"
-    [class]="{ activeOverlay: viewMenu }"
-    (click)="viewMenu = false"
-  ></div>
-  <div class="admin-side-nav" [class]="{ active: viewMenu }">
-    <div pRipple class="admin-side-nav__close" (click)="viewMenu = false">
-      <i class="pi pi-times"></i>
-    </div>
-    <img class="admin-side-nav__logo" src="assets/img/logoEN.png" alt="logo" />
-    <div class="menu-list-container">
-      <ng-container *ngIf="items">
-        <ng-container
-          *ngTemplateOutlet="menu; context: { $implicit: items, lvl: 0 }"
-        >
-        </ng-container>
-      </ng-container>
-    </div>
+<div
+  class="overlay"
+  [class]="{ activeOverlay: (adminService.viewMenu$ | async) }"
+  (click)="adminService.toggleNav()"
+></div>
+<div
+  class="admin-side-nav"
+  [class]="{ active: (adminService.viewMenu$ | async) }"
+>
+  <div pRipple class="admin-side-nav__close" (click)="adminService.toggleNav()">
+    <i class="pi pi-times"></i>
   </div>
-  <div class="admin-content" [class]="{ active: viewMenu }">
-    <app-admin-header
-      (openNav)="viewMenu = !viewMenu"
-      (logout)="logout()"
-    ></app-admin-header>
-    <section>
-      <div
-        class="container-lg"
-        [@routeAnimations]="
-          o && o.activatedRouteData && o.activatedRouteData['animation']
-        "
+  <img class="admin-side-nav__logo" src="assets/img/logoEN.png" alt="logo" />
+  <div class="menu-list-container">
+    <ng-container *ngIf="items">
+      <ng-container
+        *ngTemplateOutlet="menu; context: { $implicit: items, lvl: 0 }"
       >
-        <router-outlet #o="outlet"></router-outlet>
-      </div>
-    </section>
+      </ng-container>
+    </ng-container>
   </div>
 </div>
 
@@ -47,12 +32,17 @@
       >
         <div
           class="menu-item"
-          [style.paddingLeft]="44 * lvl + 'px'"
+          [style.paddingLeft]="(44 * lvl || 15) + 'px'"
           (click)="openMenu(i)"
         >
           <i [ngClass]="[item.icon, 'menu-item__icon']"></i>
           <span>
             {{ item.label }}
+            <p-badge
+              *ngIf="item.badgeCount"
+              [value]="item.badgeCount"
+              severity="danger"
+            ></p-badge>
             <i
               *ngIf="item.routes"
               class="pi pi-angle-down menu-item__arrow"

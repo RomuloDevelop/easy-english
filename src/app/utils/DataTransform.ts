@@ -4,8 +4,7 @@ import {
   VideoLectue,
   Article,
   LessonResponse,
-  QuizOption,
-  FinalQuiz
+  QuizOption
 } from '../state/models'
 
 export class DataTransform {

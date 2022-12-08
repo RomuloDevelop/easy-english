@@ -28,6 +28,7 @@ import { PanelMenuModule } from 'primeng/panelmenu'
 import { DropdownModule } from 'primeng/dropdown'
 import { MultiSelectModule } from 'primeng/multiselect'
 import { InputNumberModule } from 'primeng/inputnumber'
+import { BadgeModule } from 'primeng/badge'
 
 import { ConfirmationService, MessageService } from 'primeng/api'
 import { AdminService } from './admin.service'
@@ -92,7 +93,8 @@ import { SidenavComponent } from '../admin/sidenav/sidenav.component'
     PanelMenuModule,
     DropdownModule,
     MultiSelectModule,
-    InputNumberModule
+    InputNumberModule,
+    BadgeModule
   ],
   providers: [AdminService, ConfirmationService, MessageService]
 })

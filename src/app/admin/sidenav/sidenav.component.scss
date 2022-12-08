@@ -1,0 +1,153 @@
+$sideNavTransition: 0.5s;
+$sideNavWidth: 290px;
+$menuItemPadX: 15px;
+
+.overlay {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #10236077;
+  width: 0px;
+  opacity: 0;
+  transition: opacity $sideNavTransition;
+  z-index: 1000;
+}
+:host ::ng-deep .admin-side-nav {
+  z-index: 999;
+  position: relative;
+  padding-top: 50px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: calc(55px + #{$menuItemPadX});
+  overflow: hidden;
+  background-color: var(--optionalColor2);
+  transition: width $sideNavTransition;
+  height: 100%;
+
+  &.active {
+      width: $sideNavWidth;
+      // min-width: $sideNavWidth;
+  }
+  .admin-side-nav__close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    font-size: 1.2rem;
+    color: white;
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+  }
+  .admin-side-nav__logo {
+    height: 70px;
+    min-width: 103px;
+    margin: auto;
+    display: none;
+    transition: opacity ($sideNavTransition - 0.3);
+    opacity: 0;
+  }
+  &.active .admin-side-nav__logo {
+    opacity: 1;
+  }
+  .menu-list-container {
+    padding: 20px 0;
+    width: 100%;
+  }
+  .menu-list {
+    padding: 0;
+    width: 100%;
+    list-style: none;
+  }
+  .menu-item-container {
+    max-height: 41.5px;
+    transition: all 0.4s;
+    overflow: hidden;
+    &--open {
+      max-height: 400px;
+    }
+  }
+  .menu-list .menu-item {
+    position: relative;
+    color: white;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 10px $menuItemPadX;
+    width: $sideNavWidth;
+    cursor: pointer;
+    background-color: transparent;
+    transition: all 0.2s;
+    &__sublist {
+      background-color: mix(#1f3353, white, 94%);
+    }
+    &__icon {
+      margin-left: 10px;
+      margin-right: 15px;
+      font-size: 1.2rem;
+      width: 25px;
+    }
+    &__arrow {
+      margin-left: 1rem;
+      transition: transform 0.1s ease-in;
+      &--open {
+        transform: rotate(180deg);
+      }
+    }
+    span {
+      margin-left: 8px;
+      transition: transform 0.2s;
+    }
+    &.clicked {
+      background-color: mix(#af3a2b, white, 80%);
+    }
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 7px;
+      background-color: #af3a2b;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    &:hover {
+      background-color: mix(#af3a2b, white, 65%);
+      span {
+        transform: translateX(10px);
+      }
+      &::after {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .admin-side-nav {
+    position: fixed;
+    z-index: 1000;
+    width: 0px;
+    &.active {
+      width: $sideNavWidth;
+    }
+    .admin-side-nav__logo {
+      display: block;
+    }
+    .admin-side-nav__close {
+      display: flex;
+    }
+  }
+  .overlay.activeOverlay {
+    position: fixed;
+    width: 100vw;
+    opacity: 1;
+  }
+}
