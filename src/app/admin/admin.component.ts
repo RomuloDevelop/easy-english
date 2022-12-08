@@ -58,12 +58,12 @@ export class AdminComponent implements OnInit {
         },
         {
           label: 'Pagos atrasados',
-          route: 'payments',
+          route: 'payments/users-without-payment',
           admin: true
         },
         {
           label: 'Pagos al día',
-          route: 'payments',
+          route: 'payments/users-with-payment',
           admin: true
         }
       ]

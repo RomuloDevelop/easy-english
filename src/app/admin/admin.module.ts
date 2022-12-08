@@ -43,6 +43,9 @@ import { CreatePaymentComponent } from './payment/create-payment/create-payment.
 import { TipsComponent } from './tips/tips.component'
 import { UserQuizzesComponent } from './course/user-quizzes/user-quizzes.component'
 import { CertificateComponent } from '../components/common/certificate/certificate.component'
+import { UserNoPaymentComponent } from './payment/user-no-payment/user-no-payment.component'
+import { UserPaymentComponent } from './payment/user-payment/user-payment.component'
+import { SidenavComponent } from '../admin/sidenav/sidenav.component'
 
 @NgModule({
   declarations: [
@@ -62,7 +65,10 @@ import { CertificateComponent } from '../components/common/certificate/certifica
     CreatePaymentComponent,
     TipsComponent,
     UserQuizzesComponent,
-    CertificateComponent
+    CertificateComponent,
+    UserNoPaymentComponent,
+    UserPaymentComponent,
+    SidenavComponent
   ],
   imports: [
     SharedModule,

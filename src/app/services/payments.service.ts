@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core'
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { catchError, finalize, map, mergeMap } from 'rxjs/operators'
-import { Store } from '@ngrx/store'
 import { InterceptorError } from '../interceptors/commonOptions'
 import Endpoints from '../../data/endpoints'
 import { User } from '../state/models'
@@ -138,5 +137,31 @@ export class PaymentsService {
         dateFormated: moment(item.payment_date).format('DD/MM/YYYY')
       }
     })
+  }
+
+  getUsersWithoutPayment() {
+    return this.http
+      .get<{ data: User[] }>('get_users_without_recent_payments')
+      .pipe(map(({ data: users }) => users))
+  }
+
+  getUsersWithPayment() {
+    return this.http
+      .get<{ data: User[] }>('get_users_with_recent_payments')
+      .pipe(map(({ data: users }) => users))
+  }
+
+  getUsersWithoutBadPaymentCount() {
+    return this.http
+      .get<{ data: any }>(
+        'get_users_without_recent_payments_and_bad_status_count'
+      )
+      .pipe(map(({ data: users }) => users))
+  }
+
+  getUsersWithBadPaymentCount() {
+    return this.http
+      .get<{ data: any }>('get_users_with_recent_payments_and_bad_status_count')
+      .pipe(map(({ data: users }) => users))
   }
 }

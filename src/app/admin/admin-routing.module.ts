@@ -12,6 +12,8 @@ import { PaymentsComponent } from './payment/payments/payments.component'
 import { CreatePaymentComponent } from './payment/create-payment/create-payment.component'
 import { TipsComponent } from './tips/tips.component'
 import { UserQuizzesComponent } from './course/user-quizzes/user-quizzes.component'
+import { UserNoPaymentComponent } from './payment/user-no-payment/user-no-payment.component'
+import { UserPaymentComponent } from './payment/user-payment/user-payment.component'
 
 const routes: Routes = [
   {
@@ -98,6 +100,16 @@ const routes: Routes = [
             path: 'edit/:id',
             component: CreatePaymentComponent,
             data: { animation: 'EditPayment' }
+          },
+          {
+            path: 'users-without-payment',
+            component: UserNoPaymentComponent,
+            data: { animation: 'UsersWithoutPayment' }
+          },
+          {
+            path: 'users-with-payment',
+            component: UserPaymentComponent,
+            data: { animation: 'UsersWithPayment' }
           }
         ]
       },

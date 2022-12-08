@@ -42,11 +42,14 @@
       <li
         *ngIf="!item.admin || actualUser.role === roles.admin"
         [routerLink]="item.route"
-        (click)="openMenu(i)"
         class="menu-item-container"
         [ngClass]="{ 'menu-item-container--open': item.open }"
       >
-        <div class="menu-item" [style.paddingLeft]="44 * lvl + 'px'">
+        <div
+          class="menu-item"
+          [style.paddingLeft]="44 * lvl + 'px'"
+          (click)="openMenu(i)"
+        >
           <i [ngClass]="[item.icon, 'menu-item__icon']"></i>
           <span>
             {{ item.label }}
