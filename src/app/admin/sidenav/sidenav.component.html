@@ -39,9 +39,10 @@
           <span>
             {{ item.label }}
             <p-badge
-              *ngIf="item.badgeCount"
-              [value]="item.badgeCount"
+              *ngIf="item.badgeInfo"
+              [value]="item.badgeInfo.count"
               severity="danger"
+              [pTooltip]="item.badgeInfo.message"
             ></p-badge>
             <i
               *ngIf="item.routes"

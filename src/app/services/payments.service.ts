@@ -166,8 +166,6 @@ export class PaymentsService {
     ).pipe(
       map(([resp1, resp2]) => {
         return {
-          total:
-            resp1.count + resp2.count > 99 ? '99' : resp1.count + resp2.count,
           withoutPayments: resp1.count > 99 ? '99' : resp1.count,
           withPayments: resp2.count > 99 ? '99' : resp2.count
         }

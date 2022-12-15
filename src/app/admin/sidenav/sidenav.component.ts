@@ -14,8 +14,14 @@ interface MenuItem {
   admin: boolean
   routes?: MenuItem[]
   open?: boolean
-  badgeCount?: number | string
+  badgeInfo?: {
+    count: number | string
+    message: string
+  }
 }
+
+const WITHOUT_PAYMENT_MESSAGE = 'Usuarios con pagos atrasados'
+const WITH_PAYMENT_MESSAGE = 'Usuarios con pagos al día e inactivos'
 
 @Component({
   selector: 'app-sidenav',
@@ -96,10 +102,18 @@ export class SidenavComponent implements OnInit {
     })
 
     this.paymentsService.getPaymentCounts().subscribe((response) => {
-      const { total, withoutPayments, withPayments } = response
-      this.items[3].badgeCount = total
-      this.paymentRoutes[1].badgeCount = withoutPayments
-      this.paymentRoutes[2].badgeCount = withPayments
+      const { withoutPayments, withPayments } = response
+      if (withoutPayments != null)
+        this.paymentRoutes[1].badgeInfo = {
+          count: withoutPayments,
+          message: WITHOUT_PAYMENT_MESSAGE
+        }
+
+      if (withPayments != null)
+        this.paymentRoutes[2].badgeInfo = {
+          count: withPayments,
+          message: WITH_PAYMENT_MESSAGE
+        }
     })
   }
 
