@@ -25,7 +25,7 @@
   <ul class="menu-list">
     <ng-container *ngFor="let item of items; let i = index">
       <li
-        *ngIf="!item.admin || actualUser.role === roles.admin"
+        *ngIf="!item.admin || actualUser.role === roles.ADMIN"
         [routerLink]="item.route"
         class="menu-item-container"
         [ngClass]="{ 'menu-item-container--open': item.open }"

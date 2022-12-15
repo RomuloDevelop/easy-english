@@ -1,3 +1,5 @@
+import { USER_STATUS } from 'src/data/constants'
+
 export interface QuizOption {
   id?: number
   is_valid: 0 | 1
@@ -94,6 +96,9 @@ export interface User {
   phone: string
   is_supervised: boolean
   dob: string
+  status: USER_STATUS
+  start_sub: string
+  end_sub: string
   role_name?: string
   parent_name?: string
   parent_phone?: string

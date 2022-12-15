@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 import { FormBuilder, Validators } from '@angular/forms'
 import { Login, SessionService } from '../../services/session.service'
-import roles from '../../../data/roles'
+import { ROLES } from '../../../data/roles'
 import { PATH_FROM_LOGIN_KEY } from 'src/data/constants'
 
 @Component({
@@ -33,8 +33,7 @@ export class LoginPageComponent implements OnInit {
   }
 
   getRole() {
-    this.requiredRole =
-      this.toUrl === 'student' ? roles['student'] : roles['teacher']
+    this.requiredRole = this.toUrl === 'student' ? ROLES.STUDENT : ROLES.TEACHER
   }
 
   submit() {

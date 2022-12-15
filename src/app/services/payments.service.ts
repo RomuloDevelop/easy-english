@@ -140,15 +140,11 @@ export class PaymentsService {
   }
 
   getUsersWithoutPayment() {
-    return this.http
-      .get<{ data: User[] }>('get_users_without_recent_payments')
-      .pipe(map(({ data: users }) => users))
+    return this.http.get<User[]>('get_users_without_recent_payments')
   }
 
   getUsersWithPayment() {
-    return this.http
-      .get<{ data: User[] }>('get_users_with_recent_payments')
-      .pipe(map(({ data: users }) => users))
+    return this.http.get<User[]>('get_users_with_recent_payments')
   }
 
   getUsersWithoutBadPaymentCount() {

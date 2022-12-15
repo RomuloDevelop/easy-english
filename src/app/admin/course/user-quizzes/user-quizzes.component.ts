@@ -116,7 +116,6 @@ export class UserQuizzesComponent implements OnInit {
   }
 
   downloadCertificate(user: User) {
-    console.log(user)
     this.store.pipe(take(1), select(selectCourses)).subscribe((courses) => {
       const course = courses.find((item) => item.id === this.courseId)
       this.certificate.getDocument(course.title, course.id, user.name)

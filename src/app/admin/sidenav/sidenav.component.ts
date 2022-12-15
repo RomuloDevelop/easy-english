@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { select, Store } from '@ngrx/store'
 import { selectActualUser } from '../../state/session/session.selectors'
 import { User } from '../../state/models'
-import { Roles } from 'src/data/roles'
+import { ROLES } from 'src/data/roles'
 import { AdminService } from '../admin.service'
 import { PaymentsService } from 'src/app/services/payments.service'
 import { take } from 'rxjs/operators'
@@ -24,7 +24,7 @@ interface MenuItem {
 })
 export class SidenavComponent implements OnInit {
   actualUser: User
-  roles = Roles
+  roles = ROLES
 
   paymentRoutes: MenuItem[] = [
     {

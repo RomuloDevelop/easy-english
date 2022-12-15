@@ -15,7 +15,7 @@ import {
   IPaymentStatus
 } from 'src/app/services/payments.service'
 import { UserService } from 'src/app/services/user.service'
-import roles from 'src/data/roles'
+import { ROLES } from 'src/data/roles'
 import { combineLatest, Subject } from 'rxjs'
 import { Subscription } from 'rxjs'
 import { startWith } from 'rxjs/operators'
@@ -62,7 +62,7 @@ export class PaymentsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.primengConfig.ripple = true
     this.userService
-      .getUsers(roles.student)
+      .getUsers(ROLES.STUDENT)
       .subscribe((users) => (this.users = users))
 
     this.paymentSubscription = combineLatest([

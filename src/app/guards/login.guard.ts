@@ -10,7 +10,7 @@ import {
 import { select, Store } from '@ngrx/store'
 import { Observable } from 'rxjs'
 import { selectActualUser } from '../state/session/session.selectors'
-import roles, { Roles } from '../../data/roles'
+import roles from '../../data/roles'
 import { map } from 'rxjs/operators'
 import { PATH_FROM_LOGIN_KEY, TOKEN_KEY } from 'src/data/constants'
 
@@ -34,7 +34,7 @@ export class LoginGuard implements CanActivate {
 
   getRole(route: ActivatedRouteSnapshot) {
     const { url } = route
-    return roles[url[0].path]
+    return roles[url[0].path.toUpperCase()]
   }
 
   getRoute(route: ActivatedRouteSnapshot) {

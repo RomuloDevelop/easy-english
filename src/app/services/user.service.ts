@@ -13,8 +13,44 @@ import {
 } from '../state/admin/users/user.actions'
 import { throwError } from 'rxjs'
 import { setActualUser } from '../state/session/profile/session.actions'
+import { USER_STATUS } from 'src/data/constants'
+import { ROLES } from 'src/data/roles'
 
 const { usersUrl } = Endpoints
+
+export const STATUS_LIST = [
+  {
+    id: USER_STATUS.ACTIVE,
+    description: 'Activo'
+  },
+  {
+    id: USER_STATUS.INACTIVE_ADMIN,
+    description: 'Inactivo administrativo'
+  },
+  {
+    id: USER_STATUS.INACTIVE_PAYMENT,
+    description: 'Inactivo pago'
+  },
+  {
+    id: USER_STATUS.INACTIVE_PROSPECT,
+    description: 'Inactivo prospecto'
+  }
+]
+
+export const ROLE_LIST = [
+  {
+    id: ROLES.ADMIN,
+    description: 'Administrador'
+  },
+  {
+    id: ROLES.STUDENT,
+    description: 'Estudiante'
+  },
+  {
+    id: ROLES.TEACHER,
+    description: 'Profesor'
+  }
+]
 
 @Injectable({
   providedIn: 'root'

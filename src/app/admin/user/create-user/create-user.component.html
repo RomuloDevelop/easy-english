@@ -14,7 +14,7 @@
         <p-dropdown
           [options]="roles"
           formControlName="role"
-          optionLabel="name"
+          optionLabel="description"
           optionValue="id"
         ></p-dropdown>
       </div>
@@ -41,11 +41,20 @@
         />
       </div>
       <div class="p-field col-12 col-md-6">
+        <small id="title-help">Status</small>
+        <p-dropdown
+          [options]="statuses"
+          formControlName="status"
+          optionLabel="description"
+          optionValue="id"
+        ></p-dropdown>
+      </div>
+      <div class="p-field col-12 col-md-6">
         <small id="title-help">Enter a date birth of the user.</small>
         <p-calendar
           [monthNavigator]="true"
           [yearNavigator]="true"
-          yearRange="1900:2021"
+          [yearRange]="'1900:' + actualYear"
           placeholder="Date of birth"
           class="p-inputtext-sm"
           formControlName="dob"
@@ -62,9 +71,27 @@
           formControlName="phone"
         />
       </div>
-      <div class="switch-field col-12 col-md-6">
-        <p-inputSwitch formControlName="is_active"></p-inputSwitch>
-        <small id="title-supervided">Is active</small>
+      <div class="p-field col-12 col-md-6">
+        <small id="title-help">Subscription start date.</small>
+        <p-calendar
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          [yearRange]="'1900:' + actualYear"
+          placeholder="Start date"
+          class="p-inputtext-sm"
+          formControlName="start_sub"
+        ></p-calendar>
+      </div>
+      <div class="p-field col-12 col-md-6">
+        <small id="title-help">Subscription end date.</small>
+        <p-calendar
+          [monthNavigator]="true"
+          [yearNavigator]="true"
+          [yearRange]="'1900:' + actualYear"
+          placeholder="End date"
+          class="p-inputtext-sm"
+          formControlName="end_sub"
+        ></p-calendar>
       </div>
       <div class="p-field col-12 col-md-6">
         <small id="title-help">Enter the users's detail.</small>
@@ -75,6 +102,10 @@
           placeholder="Description"
           formControlName="description"
         ></textarea>
+      </div>
+      <div class="switch-field col-12 col-md-6">
+        <p-inputSwitch formControlName="is_active"></p-inputSwitch>
+        <small id="title-supervided">Is active</small>
       </div>
       <div class="col-12 col-md-6"></div>
       <ng-container *ngIf="role === 2">
