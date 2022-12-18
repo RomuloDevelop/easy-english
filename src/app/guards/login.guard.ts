@@ -10,7 +10,7 @@ import {
 import { select, Store } from '@ngrx/store'
 import { Observable } from 'rxjs'
 import { selectActualUser } from '../state/session/session.selectors'
-import roles from '../../data/roles'
+import roles, { ROLES } from '../../data/roles'
 import { map } from 'rxjs/operators'
 import { PATH_FROM_LOGIN_KEY, TOKEN_KEY } from 'src/data/constants'
 
@@ -56,9 +56,12 @@ export class LoginGuard implements CanActivate {
         select(selectActualUser),
         map((user) => {
           const result =
-            user.role === 1 ||
-            (this.getRoute(route) === 'admin' && user.role === 3) ||
-            (this.getRoute(route) === 'student' && user.role === 2)
+            user.role === ROLES.ADMIN ||
+            (this.getRoute(route) === 'admin' && user.role === ROLES.TEACHER) ||
+            (this.getRoute(route) === 'student' &&
+              user.role === ROLES.STUDENT) ||
+            (this.getRoute(route) === 'student' && user.role === ROLES.PROSPECT)
+
           if (!result) {
             this.redirectToLogin(route)
           }
