@@ -1,21 +1,16 @@
-import { Component, OnInit } from '@angular/core'
-import { User } from '../../../state/models'
+import { Component } from '@angular/core'
 import { PaymentsService } from 'src/app/services/payments.service'
 
 @Component({
   selector: 'app-user-payment',
   template: `
-    <app-user-payment-status [users]="users"></app-user-payment-status>
+    <app-user-payment-status [getData]="getData()"></app-user-payment-status>
   `
 })
-export class UserPaymentComponent implements OnInit {
-  users: User[]
-
+export class UserPaymentComponent {
   constructor(private paymentService: PaymentsService) {}
 
-  ngOnInit() {
-    this.paymentService.getUsersWithPayment().subscribe((data) => {
-      this.users = data
-    })
+  getData() {
+    return this.paymentService.getUsersWithPayment.bind(this.paymentService)
   }
 }

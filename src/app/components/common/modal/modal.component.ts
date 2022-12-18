@@ -26,9 +26,6 @@ export class ModalComponent {
 
   modalAction = ModalAction
 
-  ngOnChanges(event) {
-    console.log(event)
-  }
   constructor() {}
 
   emitAction(value: ModalAction) {

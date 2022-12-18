@@ -42,10 +42,7 @@
           <td>
             <span class="p-column-title">Actions</span>
             <div class="d-inline-flex justify-content-center flex-wrap">
-              <a
-                routerLink="../"
-                [queryParams]="{ user: user.id, status: user.status }"
-              >
+              <a routerLink="../" [queryParams]="{ user: user.id }">
                 <button
                   pButton
                   pRipple
@@ -81,4 +78,5 @@
 <app-user-status
   [user]="selectedUser"
   [(show)]="showStatusModal"
+  (modified)="modified()"
 ></app-user-status>
