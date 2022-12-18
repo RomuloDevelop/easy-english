@@ -17,6 +17,21 @@ import {
 } from 'src/app/services/user.service'
 import { User } from 'src/app/state/models'
 import * as moment from 'moment'
+import { ROLES } from 'src/data/roles'
+
+const studentValidator: ValidatorFn = (
+  control: AbstractControl
+): ValidationErrors | null => {
+  const role = control.get('role')
+  const status = control.get('status')
+  const endSub = control.get('end_sub')
+  const startSub = control.get('start_sub')
+
+  return role.value === ROLES.STUDENT &&
+    (!status.value || !endSub.value || !startSub.value)
+    ? { notEqual: true }
+    : null
+}
 
 const passwordValidator: ValidatorFn = (
   control: AbstractControl
@@ -54,8 +69,8 @@ export class CreateUserComponent implements OnInit {
       email: ['', Validators.required],
       phone: [''],
       dob: ['', Validators.required],
-      start_sub: ['', Validators.required],
-      end_sub: ['', Validators.required],
+      start_sub: [''],
+      end_sub: [''],
       is_active: [false],
       is_supervised: [false],
       parent_name: [null],
@@ -65,7 +80,7 @@ export class CreateUserComponent implements OnInit {
       description: [null],
       status: [null]
     },
-    { validators: passwordValidator }
+    { validators: studentValidator }
   )
 
   form2 = this.formBuilder.group(
@@ -109,8 +124,12 @@ export class CreateUserComponent implements OnInit {
           this.form.controls.parent_phone_two.setValue(user.parent_phone_two)
           this.form.controls.description.setValue(user.description)
           this.form.controls.status.setValue(user.status)
-          this.form.controls.start_sub.setValue(moment(user.start_sub).toDate())
-          this.form.controls.end_sub.setValue(moment(user.end_sub).toDate())
+          user.start_sub &&
+            this.form.controls.start_sub.setValue(
+              moment(user.start_sub).toDate()
+            )
+          user.end_sub &&
+            this.form.controls.end_sub.setValue(moment(user.end_sub).toDate())
         })
     } else {
       this.form.addControl(

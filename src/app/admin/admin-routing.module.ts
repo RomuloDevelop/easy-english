@@ -62,6 +62,27 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'prospects',
+        data: { animation: 'Prospect', role: 4 },
+        children: [
+          {
+            path: '',
+            component: UsersComponent,
+            data: { animation: 'Prospects', role: 4 }
+          },
+          {
+            path: 'create',
+            component: CreateUserComponent,
+            data: { animation: 'CreateProspect', role: 4 }
+          },
+          {
+            path: 'edit/:id',
+            component: CreateUserComponent,
+            data: { animation: 'EditProspect', role: 4 }
+          }
+        ]
+      },
+      {
         path: 'teachers',
         data: { animation: 'Teacher', role: 3 },
         children: [

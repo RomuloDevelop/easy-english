@@ -72,6 +72,12 @@ export class SidenavComponent implements OnInit, OnDestroy {
       admin: true
     },
     {
+      label: 'Gestión de Prospectos',
+      icon: 'pi pi-fw pi-user-plus',
+      route: 'prospects',
+      admin: true
+    },
+    {
       label: 'Gestión de Pagos',
       icon: 'pi pi-fw pi-credit-card',
       admin: true,

@@ -4,7 +4,9 @@
       <li><a routerLink="../../">Admin</a></li>
       <li>Users</li>
     </ul>
-    <h2>{{ role === 2 ? 'Students' : 'Teachers' }}</h2>
+    <h2>
+      {{ role === 2 ? 'Students' : role === 4 ? 'Prospects' : 'Teachers' }}
+    </h2>
   </div>
   <ng-container *ngIf="loadingUsers">
     <div class="d-flex justify-content-center align-items-center w-100">

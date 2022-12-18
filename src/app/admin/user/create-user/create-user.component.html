@@ -40,7 +40,10 @@
           formControlName="email"
         />
       </div>
-      <div class="p-field col-12 col-md-6">
+      <div
+        class="p-field col-12 col-md-6"
+        *ngIf="form.controls['role'].value === 2"
+      >
         <small id="title-help">Status</small>
         <p-dropdown
           [options]="statuses"
@@ -71,7 +74,10 @@
           formControlName="phone"
         />
       </div>
-      <div class="p-field col-12 col-md-6">
+      <div
+        class="p-field col-12 col-md-6"
+        *ngIf="form.controls['role'].value === 2"
+      >
         <small id="title-help">Subscription start date.</small>
         <p-calendar
           [monthNavigator]="true"
@@ -82,7 +88,10 @@
           formControlName="start_sub"
         ></p-calendar>
       </div>
-      <div class="p-field col-12 col-md-6">
+      <div
+        class="p-field col-12 col-md-6"
+        *ngIf="form.controls['role'].value === 2"
+      >
         <small id="title-help">Subscription end date.</small>
         <p-calendar
           [monthNavigator]="true"
