@@ -19,11 +19,16 @@ export class ModalComponent {
   @Input() acceptText = 'Ok'
   @Input() cancelText = 'Cancel'
   @Input() footer = true
+  @Input() loading = false
+  @Input() disableAccept = false
   @Output() showChange = new EventEmitter<boolean>()
   @Output() action = new EventEmitter<ModalAction>()
 
   modalAction = ModalAction
 
+  ngOnChanges(event) {
+    console.log(event)
+  }
   constructor() {}
 
   emitAction(value: ModalAction) {

@@ -152,7 +152,7 @@ export class CreateUserComponent implements OnInit {
   updateUser() {
     this.loading = true
 
-    const user: User = {
+    const user: User & { id: number } = {
       id: this.userId,
       role: this.form.get('role').value,
       name: this.form.get('name').value,

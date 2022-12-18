@@ -20,6 +20,8 @@
     box-sizing: content-box;
     .app-modal-close {
       float: right;
+      border: none;
+      background: transparent;
     }
     .app-modal-footer {
       display: flex;

@@ -47,6 +47,8 @@ import { CertificateComponent } from '../components/common/certificate/certifica
 import { UserNoPaymentComponent } from './payment/user-no-payment/user-no-payment.component'
 import { UserPaymentComponent } from './payment/user-payment/user-payment.component'
 import { SidenavComponent } from '../admin/sidenav/sidenav.component'
+import { UserPaymentStatusComponent } from './payment/user-payment-status/user-payment-status.component'
+import { UserStatusComponent } from './payment/user-payment-status/user-status'
 
 @NgModule({
   declarations: [
@@ -69,7 +71,9 @@ import { SidenavComponent } from '../admin/sidenav/sidenav.component'
     CertificateComponent,
     UserNoPaymentComponent,
     UserPaymentComponent,
-    SidenavComponent
+    SidenavComponent,
+    UserPaymentStatusComponent,
+    UserStatusComponent
   ],
   imports: [
     SharedModule,

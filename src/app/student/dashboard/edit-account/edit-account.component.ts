@@ -75,7 +75,7 @@ export class EditAccountComponent implements OnInit {
   updateUser() {
     this.loading = true
     const password = this.form.get('password').value
-    const user: Partial<User> = {
+    const user: Partial<User> & { id: number } = {
       id: this.user.id,
       name: this.form.get('name').value,
       email: this.form.get('email').value,

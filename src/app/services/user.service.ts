@@ -106,10 +106,9 @@ export class UserService {
     )
   }
 
-  updateUser(user: Partial<User>, finalizeCb = () => {}) {
-    const { id } = user
-    delete user.id
-    return this.http.patch<{ data: User }>(`${usersUrl}/${id}`, user).pipe(
+  updateUser(user: Partial<User> & { id: number }, finalizeCb = () => {}) {
+    const { id, ...data } = user
+    return this.http.patch<{ data: User }>(`${usersUrl}/${id}`, data).pipe(
       map(({ data: user }) => {
         this.store.dispatch(updateUser({ user }))
         return user

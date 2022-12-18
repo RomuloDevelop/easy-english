@@ -1,12 +1,13 @@
 <div class="app-modal-container" *ngIf="show" [@listFade]>
   <div>
-    <div
+    <button
       class="app-modal-close close-button"
       (click)="emitAction(modalAction.close)"
       *ngIf="showClose"
+      [disabled]="loading"
     >
       <i class="pi pi-times"></i>
-    </div>
+    </button>
     <h3>
       <ng-content select="[title]"></ng-content>
     </h3>
@@ -21,6 +22,7 @@
         [label]="acceptText"
         class="p-button-raised p-button-danger"
         (click)="emitAction(modalAction.accept)"
+        [disabled]="disableAccept || loading"
       ></button>
       <button
         pButton
@@ -29,6 +31,7 @@
         [label]="cancelText"
         class="p-button-outlined p-button-secondary"
         (click)="emitAction(modalAction.cancel)"
+        [disabled]="loading"
       ></button>
     </div>
   </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnDestroy, OnInit } from '@angular/core'
 import { select, Store } from '@ngrx/store'
 import { selectActualUser } from '../../state/session/session.selectors'
 import { User } from '../../state/models'
@@ -6,6 +6,7 @@ import { ROLES } from 'src/data/roles'
 import { AdminService } from '../admin.service'
 import { PaymentsService } from 'src/app/services/payments.service'
 import { take } from 'rxjs/operators'
+import { Subscription } from 'rxjs'
 
 interface MenuItem {
   label: string
@@ -28,9 +29,10 @@ const WITH_PAYMENT_MESSAGE = 'Usuarios con pagos al día e inactivos'
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss']
 })
-export class SidenavComponent implements OnInit {
+export class SidenavComponent implements OnInit, OnDestroy {
   actualUser: User
   roles = ROLES
+  viewMenuSubscription: Subscription
 
   paymentRoutes: MenuItem[] = [
     {
@@ -115,6 +117,20 @@ export class SidenavComponent implements OnInit {
           message: WITH_PAYMENT_MESSAGE
         }
     })
+
+    this.viewMenuSubscription = this.adminService.viewMenu$.subscribe(
+      (opened) => {
+        if (!opened) {
+          this.items.forEach((item) => {
+            if (item.routes) item.open = false
+          })
+        }
+      }
+    )
+  }
+
+  ngOnDestroy(): void {
+    this.viewMenuSubscription.unsubscribe()
   }
 
   openMenu(index: number) {

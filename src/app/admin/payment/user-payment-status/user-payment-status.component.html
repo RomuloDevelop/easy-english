@@ -3,7 +3,7 @@
     <ul>
       <li><a routerLink="../../">Admin</a></li>
       <li><a routerLink="../">Payments</a></li>
-      <li>Users with payments</li>
+      <li>Users without payments</li>
     </ul>
     <h2>Users</h2>
   </div>
@@ -37,29 +37,30 @@
           <td style="width: 3rem"></td>
           <td *ngFor="let row of userRows; let iCol = index">
             <span class="p-column-title">{{ userCols[iCol] }}</span>
-            {{ user[row] }}
+            {{ row === 'status' ? statuses[user[row]].description : user[row] }}
           </td>
           <td>
             <span class="p-column-title">Actions</span>
             <div class="d-inline-flex justify-content-center flex-wrap">
+              <a
+                routerLink="../"
+                [queryParams]="{ user: user.id, status: user.status }"
+              >
+                <button
+                  pButton
+                  pRipple
+                  type="button"
+                  icon="pi pi-eye"
+                  class="p-button-rounded p-button-outlined btn-action"
+                ></button>
+              </a>
               <button
                 pButton
                 pRipple
                 type="button"
                 icon="pi pi-pencil"
                 class="p-button-rounded p-button-outlined btn-action"
-                (click)="editUser(user)"
-              ></button>
-              <button
-                pButton
-                pRipple
-                type="button"
-                icon="pi pi-trash"
-                class="
-                  p-button-rounded p-button-danger p-button-outlined
-                  btn-action
-                "
-                (click)="confirmDeleteUser(user)"
+                (click)="editStatus(user)"
               ></button>
             </div>
           </td>
@@ -77,8 +78,7 @@
   </ng-container>
 </div>
 
-<!-- Delete Dialog -->
-<p-confirmDialog
-  [style]="{ width: '50vw' }"
-  [baseZIndex]="10000"
-></p-confirmDialog>
+<app-user-status
+  [user]="selectedUser"
+  [(show)]="showStatusModal"
+></app-user-status>

@@ -59,23 +59,41 @@ export class PaymentsComponent implements OnInit, OnDestroy {
     private paymentService: PaymentsService
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.primengConfig.ripple = true
-    this.userService
-      .getUsers(ROLES.STUDENT)
-      .subscribe((users) => (this.users = users))
+    this.loadingPayments = true
+    this.users = await this.userService.getUsers(ROLES.STUDENT).toPromise()
 
     this.paymentSubscription = combineLatest([
       this.subUserFilter.pipe(startWith({} as User)),
       this.subStatusFilter.pipe(startWith({} as IPaymentStatus)),
-      this.subPaginatorFilter.pipe(startWith({ first: 0 } as LazyLoadEvent))
-    ]).subscribe(([user, status, lazyEvent]) => {
+      this.subPaginatorFilter.pipe(startWith({ first: 0 } as LazyLoadEvent)),
+      this.route.queryParams
+    ]).subscribe(([user, status, lazyEvent, params]) => {
       const page =
         lazyEvent?.first && lazyEvent.first >= this.currentPage * this.rows
           ? this.currentPage + 1
           : this.currentPage
 
-      this.getPayments(page, user?.id, status?.id)
+      let userId = user?.id
+      let statusId = status?.id
+
+      if (params['user']) {
+        this.selectedUser = this.users.find(
+          (user) => user.id === parseInt(params['user'])
+        )
+
+        userId = params['user'] || userId
+      }
+
+      if (params['status']) {
+        this.selectedStatus = STATUS_LIST.find(
+          (status) => status.id == parseInt(params['status'])
+        )
+        statusId = params['status']
+      }
+
+      this.getPayments(page, userId, statusId)
     })
   }
 
