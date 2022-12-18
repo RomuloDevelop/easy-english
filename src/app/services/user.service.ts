@@ -49,6 +49,10 @@ export const ROLE_LIST = [
   {
     id: ROLES.TEACHER,
     description: 'Profesor'
+  },
+  {
+    id: ROLES.PROSPECT,
+    description: 'Prospecto'
   }
 ]
 

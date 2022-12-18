@@ -10,11 +10,14 @@ import { PATH_FROM_LOGIN_KEY } from 'src/data/constants'
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.scss']
 })
-export class LoginPageComponent implements OnInit {
+export class LoginPageComponent {
   errorMessage: string = null
   loading = false
-  requiredRole = null
   toUrl = localStorage.getItem(PATH_FROM_LOGIN_KEY)
+  requiredRole =
+    this.toUrl === 'student'
+      ? [ROLES.STUDENT, ROLES.PROSPECT, ROLES.ADMIN]
+      : [ROLES.TEACHER, ROLES.ADMIN]
 
   form = this.formBuilder.group({
     email: ['', [Validators.required, Validators.pattern(/^.+@.+\..+$/)]],
@@ -27,14 +30,6 @@ export class LoginPageComponent implements OnInit {
     private formBuilder: FormBuilder,
     private sessionService: SessionService
   ) {}
-
-  ngOnInit() {
-    this.getRole()
-  }
-
-  getRole() {
-    this.requiredRole = this.toUrl === 'student' ? ROLES.STUDENT : ROLES.TEACHER
-  }
 
   submit() {
     this.loading = true

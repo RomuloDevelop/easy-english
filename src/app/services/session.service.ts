@@ -6,7 +6,7 @@ import { catchError, finalize, map, mergeMap } from 'rxjs/operators'
 import { InterceptorError } from '../interceptors/commonOptions'
 import { of, throwError } from 'rxjs'
 import { UserService } from './user.service'
-import roles from '../../data/roles'
+import roles, { ROLES } from '../../data/roles'
 import { TOKEN_KEY } from 'src/data/constants'
 
 const { loginUrl, logoutUrl } = Endpoints
@@ -26,7 +26,7 @@ export class SessionService {
     private userService: UserService
   ) {}
 
-  login(data: Login, requiredRole: number, finalizeCb = () => {}) {
+  login(data: Login, requiredRole: ROLES[], finalizeCb = () => {}) {
     return this.http
       .post<{ access_token: string; token_type: string }>(loginUrl, data)
       .pipe(
@@ -37,12 +37,12 @@ export class SessionService {
         mergeMap((access_token) =>
           this.userService.getActualUser().pipe(
             mergeMap((user) => {
-              if (user.role !== requiredRole && user.role !== 1) {
+              if (!requiredRole.some((value) => value === user.role)) {
                 return this.logout(() => {}, false).pipe(
                   map(() => {
                     let roleName = ''
                     for (let role in roles) {
-                      if (roles[role] === requiredRole) {
+                      if (requiredRole.some((value) => value === roles[role])) {
                         roleName = role.toLowerCase()
                         break
                       }
