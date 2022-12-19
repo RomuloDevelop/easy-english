@@ -52,7 +52,6 @@
       <ng-container *ngFor="let lesson of lessonList; let iLesson = index">
         <div
           @fadeInOut
-          (@fadeInOut.done)="animationDone()"
           *ngIf="actualLesson?.id === lesson.id"
           style="width: 100%"
         >
@@ -116,12 +115,12 @@
               class="list-group-item list-group-item-action"
               [class]="{
                 'lesson-selected': actualLesson?.id === lesson.id,
-                disabled: lesson.count > lastLesson.count
+                disabled: lesson.count > lastLesson.count || lesson.blocked
               }"
               *ngFor="let lesson of section.lessons; let i = index"
               (click)="selectLesson(lesson)"
             >
-              <strong>{{ lesson.countToShow }}.</strong>
+              <strong *ngIf="!lesson.is_quiz">{{ lesson.countToShow }}.</strong>
               {{ lesson.title }}
               <span
                 *ngIf="lesson.answered"

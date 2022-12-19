@@ -17,7 +17,7 @@ import {
   selectFinalQuizReminder
 } from 'src/app/state/session/session.selectors'
 import { setEnrollment } from 'src/app/state/session/profile/session.actions'
-import { SessionService } from 'src/app/services/session.service'
+import { ROLES } from 'src/data/roles'
 
 export type CourseToShow = ReturnType<StudentService['addLessonCount']>
 export type LessonToShow = CourseToShow['sections'][0]['lessons'][0]
@@ -29,7 +29,6 @@ export class StudentService {
 
   constructor(
     private store: Store,
-    private sessionService: SessionService,
     private userQuizService: UserQuizzService,
     private courseService: CourseService,
     private enrollmentService: EnrollmentService
@@ -72,14 +71,24 @@ export class StudentService {
     }
   }
 
-  addLessonCount(data: any, userAnswers: UserAnswer[]) {
+  addLessonCount(data: any, userAnswers: UserAnswer[], isProspect: boolean) {
     let lastSectionCount = 1
+    let lessonsNonBlocked = 0
+
     const sections = data.sections.map((section) => {
       let lastCount = 0
       const lessons = section.lessons.map((lesson, iLesson) => {
+        let blocked = false
         let testOk = false
         let answered = false
-        if (lesson.type !== 'Quiz') {
+        if (isProspect) {
+          if (!lesson.is_quiz) lessonsNonBlocked += 1
+          else blocked = true
+        }
+
+        if (lessonsNonBlocked >= 3) blocked = true
+
+        if (!lesson.is_quiz) {
           lastCount++
         } else {
           const userAnswer = userAnswers.find(
@@ -88,12 +97,14 @@ export class StudentService {
           answered = !!userAnswer
           testOk = userAnswer ? !!userAnswer.is_valid_option : false
         }
+
         return {
           ...lesson,
           count: lastSectionCount + iLesson,
           countToShow: lastCount,
           testOk,
-          answered
+          answered,
+          blocked
         }
       })
       if (lessons.length) lastSectionCount = lessons[lessons.length - 1].count
@@ -135,8 +146,10 @@ export class StudentService {
   }
 
   private getStoredCourse(course: any) {
-    return this.getUserQuizzes().pipe(
-      map((userAnswers) => this.addLessonCount(course, userAnswers))
+    return zip(this.getUserQuizzes(), this.getStoredUser()).pipe(
+      map(([userAnswers, user]) =>
+        this.addLessonCount(course, userAnswers, user.role === ROLES.PROSPECT)
+      )
     )
   }
 

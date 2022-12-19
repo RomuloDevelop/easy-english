@@ -41,6 +41,7 @@ export class ViewCourseComponent implements OnInit, OnDestroy, AfterViewInit {
   askForFinalQuiz = false
   navPosition = 'calc(50vh - 16px)'
   scrollListener: (this: Window, ev: Event) => any
+
   constructor(
     private loader: LoaderService,
     private sessionService: SessionService,
@@ -142,7 +143,7 @@ export class ViewCourseComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   selectLesson(lesson: LessonToShow) {
-    if (lesson.count <= this.lastLesson.count) {
+    if (lesson.count <= this.lastLesson.count && !lesson.blocked) {
       this.actualLesson = lesson
       this.showFinalQuiz = false
     }
@@ -150,12 +151,6 @@ export class ViewCourseComponent implements OnInit, OnDestroy, AfterViewInit {
 
   toggleSectionPanel() {
     this.studentService.hideMenuMesage(!this.sectionPanel)
-  }
-
-  animationDone() {
-    if (this.actualLesson?.type === 'Video') {
-      this.video.resize()
-    }
   }
 
   canShowFinalQuiz() {
@@ -174,9 +169,9 @@ export class ViewCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       const nextIndex = forward ? index + 1 : index - 1
       if (nextIndex > -1) {
         const nextLesson = this.lessonList[nextIndex]
-        return `${
-          nextLesson.type !== 'Quiz' ? nextLesson.countToShow + '. ' : ''
-        }${nextLesson.title}`
+        return `${!nextLesson?.is_quiz ? nextLesson?.countToShow + '. ' : ''}${
+          nextLesson?.title
+        }`
       }
     }
     return ''
@@ -198,10 +193,10 @@ export class ViewCourseComponent implements OnInit, OnDestroy, AfterViewInit {
   })
   hasNextButton(actualLesson: LessonToShow, lessonList: LessonToShow[]) {
     return (
-      (actualLesson !== null &&
-        actualLesson?.count < lessonList[lessonList.length - 1].count &&
-        !actualLesson?.is_quiz) ||
-      (actualLesson?.is_quiz && actualLesson?.answered)
+      actualLesson !== null &&
+      actualLesson?.count < lessonList[lessonList.length - 1].count &&
+      (!actualLesson?.is_quiz ||
+        (actualLesson?.is_quiz && actualLesson?.answered))
     )
   }
 
