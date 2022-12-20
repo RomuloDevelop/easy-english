@@ -7,7 +7,27 @@
     </ul>
     <h2>Quizzes List</h2>
   </div>
-  <ng-container *ngIf="usersEnrolled.length; else noData">
+  <ng-container *ngIf="loadingTable">
+    <div class="d-flex justify-content-center align-items-center w-100">
+      <p-progressSpinner
+        styleClass="custom-spinner blue"
+        strokeWidth="5"
+        [style]="{
+          width: '100px',
+          height: '100px'
+        }"
+      ></p-progressSpinner>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!usersEnrolled.length && !loadingTable">
+    <div
+      class="d-flex justify-content-center align-items-center w-100"
+      style="height: 200px"
+    >
+      <span class="h1">No data available</span>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="usersEnrolled.length && !loadingTable">
     <p-table
       [value]="usersEnrolled"
       dataKey="id"
@@ -147,15 +167,6 @@
           </tr>
         </ng-template>
       </p-table>
-    </div>
-  </ng-template>
-
-  <ng-template #noData>
-    <div
-      class="d-flex justify-content-center align-items-center w-100"
-      style="height: 200px"
-    >
-      <span class="h1">No data available</span>
     </div>
   </ng-template>
 </div>

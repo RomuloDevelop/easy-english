@@ -38,7 +38,7 @@
           <td style="width: 3rem"></td>
           <td *ngFor="let row of userRows; let iCol = index">
             <span class="p-column-title">{{ userCols[iCol] }}</span>
-            {{ user[row] }}
+            {{ user[row] || 'N/A' }}
           </td>
           <td>
             <span class="p-column-title">Actions</span>
