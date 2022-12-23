@@ -73,7 +73,7 @@ export class StudentService {
 
   addLessonCount(data: any, userAnswers: UserAnswer[], isProspect: boolean) {
     let lastSectionCount = 1
-    let lessonsNonBlocked = 0
+    let lessonsNotBlocked = 0
 
     const sections = data.sections.map((section) => {
       let lastCount = 0
@@ -81,12 +81,12 @@ export class StudentService {
         let blocked = false
         let testOk = false
         let answered = false
-        if (isProspect) {
-          if (!lesson.is_quiz) lessonsNonBlocked += 1
+
+        if (lessonsNotBlocked >= 3) blocked = true
+        else if (isProspect) {
+          if (!lesson.is_quiz) lessonsNotBlocked += 1
           else blocked = true
         }
-
-        if (lessonsNonBlocked >= 3) blocked = true
 
         if (!lesson.is_quiz) {
           lastCount++

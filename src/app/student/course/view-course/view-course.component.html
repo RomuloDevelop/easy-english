@@ -21,9 +21,7 @@
       *ngIf="hasPrevButton(actualLesson)"
       class="nav-course-button prev-button"
       (click)="prevLesson(actualLesson)"
-      [style]="{
-        top: navPosition
-      }"
+      [style]="{ top: navPosition }"
       pRipple
     >
       <i class="pi pi-chevron-left"></i>
@@ -35,9 +33,7 @@
       *ngIf="hasNextButton(actualLesson, lessonList)"
       class="nav-course-button next-button"
       (click)="nextLesson(actualLesson)"
-      [style]="{
-        top: navPosition
-      }"
+      [style]="{ top: navPosition }"
       pRipple
     >
       <i class="pi pi-chevron-right"></i>

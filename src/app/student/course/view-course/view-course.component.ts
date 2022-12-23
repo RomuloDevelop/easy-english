@@ -59,6 +59,7 @@ export class ViewCourseComponent implements OnInit, OnDestroy, AfterViewInit {
     this.studentService.hideMenu$.subscribe((hideMenu) => {
       this.sectionPanel = hideMenu
     })
+
     combineLatest([
       this.studentService.getCourseData(this.route, true),
       this.studentService.getEnrollment()
@@ -67,17 +68,23 @@ export class ViewCourseComponent implements OnInit, OnDestroy, AfterViewInit {
         this.loader.show(false)
         this.firstLoad = true
       }
+
       this.course = data
+
       let lessonList: LessonToShow[] = []
+
       data.sections.forEach((section) => {
         lessonList = lessonList.concat(section.lessons)
       })
+
       this.lessonList = lessonList
       this.sectionTabs = new Array(data.sections.length).fill(true)
+
       const lastLessonToView = lessonList.find(
         (lesson) =>
           enrollment != null && lesson.id === enrollment.last_lesson_id
       )
+
       this.actualLesson = lastLessonToView || lessonList[0]
       this.lastLesson = lastLessonToView || lessonList[0]
 
@@ -119,6 +126,10 @@ export class ViewCourseComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if (!this.lessonList[i + 1]) {
       this.checkFinalQuizReminder()
+    }
+
+    if (this.lessonList[i + 1].blocked) {
+      return
     }
 
     if (this.lessonList[i + 1].count > this.lastLesson.count) {
