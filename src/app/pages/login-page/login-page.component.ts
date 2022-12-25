@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
-import { FormBuilder, Validators } from '@angular/forms'
+import { UntypedFormBuilder, Validators } from '@angular/forms'
 import { Login, SessionService } from '../../services/session.service'
 import { ROLES } from '../../../data/roles'
 import { PATH_FROM_LOGIN_KEY } from 'src/data/constants'
@@ -27,7 +27,7 @@ export class LoginPageComponent {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private sessionService: SessionService
   ) {}
 

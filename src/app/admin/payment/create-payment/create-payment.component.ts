@@ -5,7 +5,7 @@ import {
   OnInit,
   ViewChild
 } from '@angular/core'
-import { FormBuilder, Validators } from '@angular/forms'
+import { UntypedFormBuilder, Validators } from '@angular/forms'
 import { ActivatedRoute } from '@angular/router'
 import { MessageService } from 'primeng/api'
 import { NavigationService } from '../../../services/navigation.service'
@@ -48,7 +48,7 @@ export class CreatePaymentComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private messageService: MessageService,
     private navigationService: NavigationService,
     private userService: UserService,

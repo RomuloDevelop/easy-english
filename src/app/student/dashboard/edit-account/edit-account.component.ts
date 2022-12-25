@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import {
-  FormBuilder,
+  UntypedFormBuilder,
   ValidatorFn,
   AbstractControl,
   Validators,
@@ -50,7 +50,7 @@ export class EditAccountComponent implements OnInit {
   )
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private messageService: MessageService,
     private userService: UserService,
     private store: Store

@@ -141,8 +141,9 @@
       }
     }
   },
-  "defaultProject": "ednuv-ng",
   "cli": {
-    "defaultCollection": "@angular-eslint/schematics"
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }

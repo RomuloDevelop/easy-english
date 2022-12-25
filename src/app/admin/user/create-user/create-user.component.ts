@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import {
-  FormBuilder,
-  FormControl,
+  UntypedFormBuilder,
+  UntypedFormControl,
   ValidatorFn,
   AbstractControl,
   Validators,
@@ -93,7 +93,7 @@ export class CreateUserComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private messageService: MessageService,
     private navigationService: NavigationService,
     private userService: UserService
@@ -134,11 +134,11 @@ export class CreateUserComponent implements OnInit {
     } else {
       this.form.addControl(
         'password',
-        new FormControl('', [Validators.required, Validators.minLength(8)])
+        new UntypedFormControl('', [Validators.required, Validators.minLength(8)])
       )
       this.form.addControl(
         'repeat_password',
-        new FormControl('', [Validators.required])
+        new UntypedFormControl('', [Validators.required])
       )
     }
   }
