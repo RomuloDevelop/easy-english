@@ -31,6 +31,8 @@ export class TipsComponent implements OnInit {
   modalActions = ModalAction
   modalAction: ModalAction = ModalAction.create
 
+  itemsPerPage = 10
+  showPagination = false
   tipCols = ['Id', 'Description']
   tipRows = ['id', 'description']
 
@@ -55,7 +57,10 @@ export class TipsComponent implements OnInit {
     this.tipService
       .getTips(() => (this.loadingTips = false))
       .subscribe(
-        (tips) => (this.tips = tips),
+        (tips) => {
+          this.tips = tips
+          this.showPagination = this.tips.length > this.itemsPerPage
+        },
         (err) => {
           console.error(err)
         }

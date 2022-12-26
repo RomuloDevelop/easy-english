@@ -25,6 +25,9 @@
       [value]="users"
       dataKey="id"
       tableStyleClass="p-datatable-responsive"
+      [paginator]="showPagination"
+      [rows]="itemsPerPage"
+      [showCurrentPageReport]="true"
     >
       <ng-template pTemplate="header">
         <tr>

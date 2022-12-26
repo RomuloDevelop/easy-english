@@ -11,6 +11,8 @@ import { Observable } from 'rxjs'
 })
 export class UserPaymentStatusComponent implements OnInit {
   @Input() getData: () => Observable<User[]>
+  itemsPerPage = 10
+  showPagination = false
   users: User[]
   loadingUsers = false
 
@@ -34,6 +36,7 @@ export class UserPaymentStatusComponent implements OnInit {
     this.getData().subscribe(
       (users) => {
         this.users = users
+        this.showPagination = users.length > this.itemsPerPage
       },
       () => {},
       () => (this.loadingUsers = false)

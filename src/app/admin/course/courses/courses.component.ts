@@ -41,6 +41,9 @@ export class CoursesComponent implements OnInit {
   sectionCols = ['Id', 'Title', 'Description', 'Lessons']
   sectionRows = ['id', 'title', 'subtitle', 'lessons_count']
 
+  itemsPerPage = 10
+  showPagination = false
+
   courses: CoursesTableRow[]
   actualUser: User
 
@@ -62,6 +65,7 @@ export class CoursesComponent implements OnInit {
     })
     this.store.pipe(select(selectCoursesTable)).subscribe((courses) => {
       this.courses = courses
+      this.showPagination = this.courses.length > this.itemsPerPage
     })
   }
 

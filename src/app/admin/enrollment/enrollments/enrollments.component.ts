@@ -20,6 +20,8 @@ export class EnrollmentsComponent implements OnInit {
   loadingSection = null
   msgs: Message[] = []
 
+  itemsPerPage = 10
+  showPagination = false
   courseCols = ['Id', 'Title', 'Subtitle', 'Students', 'Status']
   courseRows = ['id', 'title', 'subtitle', 'students_count', 'status']
 
@@ -38,6 +40,7 @@ export class EnrollmentsComponent implements OnInit {
     this.getTable()
     this.store.pipe(select(selectCoursesTable)).subscribe((data) => {
       this.courses = data
+      this.showPagination = this.courses.length > this.itemsPerPage
     })
   }
 

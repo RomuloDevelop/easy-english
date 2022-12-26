@@ -18,6 +18,9 @@ export class UsersComponent implements OnInit {
   loadingUsers = false
   msgs: Message[] = []
 
+  itemsPerPage = 10
+  showPagination = false
+
   userCols = ['Id', 'Name', 'Email', 'Phone', 'Day of Birth']
   userRows = ['id', 'name', 'email', 'phone', 'dob']
 
@@ -47,6 +50,8 @@ export class UsersComponent implements OnInit {
         this.users = data.filter((user) =>
           actualUser.role === 3 ? user.id === actualUser.id : true
         )
+
+        this.showPagination = this.users.length > this.itemsPerPage
       })
     })
   }
