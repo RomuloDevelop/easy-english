@@ -25,7 +25,7 @@ export class RouterAnimations {
               style({ transform: 'translateX(100%)' }),
               animate(
                 '0.5s ease-in-out',
-                style({ transform: 'translateX(0%)' })
+                style({ position: 'static', transform: 'translateX(0%)' })
               )
             ],
             { optional: true }

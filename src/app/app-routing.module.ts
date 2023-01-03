@@ -143,7 +143,11 @@ const routes: Routes = [
   // { path: 'cart', component: CartPageComponent },
   // { path: 'checkout', component: CheckoutPageComponent },
   { path: '', component: HomeComponent },
-  { path: 'login', component: LoginPageComponent },
+  {
+    path: 'login',
+    component: LoginPageComponent,
+    data: { animation: 'Login' }
+  },
   {
     path: 'contact',
     component: ContactPageComponent,
@@ -167,7 +171,7 @@ const routes: Routes = [
 ]
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
+  imports: [RouterModule.forRoot(routes, {})],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}

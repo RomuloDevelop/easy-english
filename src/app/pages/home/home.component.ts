@@ -9,12 +9,11 @@ import { Component } from '@angular/core'
     <div class="instructor-area pt-100 pb-70">
       <div class="container">
         <div class="section-title">
-          <span class="sub-title">Make Connections</span>
-          <h2>Team of Instructors</h2>
+          <h2>Equipo de Instructores</h2>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut nisi
-            ut aliquip ex ea.
+            Caracterizados por su paciencia, amabilidad y dedicación nuestros
+            teachers harán todo lo posible para que alcances la fluidez y
+            balance en el idioma que tanto anhelas.
           </p>
         </div>
         <app-instructors-style-one></app-instructors-style-one>
