@@ -44,4 +44,5 @@ testem.log
 
 # System Files
 .DS_Store
+.htaccess
 Thumbs.db
