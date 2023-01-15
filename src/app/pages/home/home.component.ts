@@ -9,6 +9,14 @@ import { Component } from '@angular/core'
     <div class="instructor-area pt-100 pb-70">
       <div class="container">
         <div class="section-title">
+          <h2>Así funciona nuestro curso</h2>
+        </div>
+        <app-categories-style-one></app-categories-style-one>
+      </div>
+    </div>
+    <div class="instructor-area pt-100 pb-70">
+      <div class="container">
+        <div class="section-title">
           <h2>Equipo de Instructores</h2>
           <p>
             Caracterizados por su paciencia, amabilidad y dedicación nuestros
