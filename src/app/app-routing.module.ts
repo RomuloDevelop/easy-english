@@ -17,7 +17,7 @@ import { Routes, RouterModule } from '@angular/router'
 // import { EventsDetailsPageComponent } from './components/pages/events-details-page/events-details-page.component'
 // import { GalleryPageComponent } from './components/pages/gallery-page/gallery-page.component'
 // import { PricingPageComponent } from './components/pages/pricing-page/pricing-page.component'
-// import { FeedbackPageComponent } from './components/pages/feedback-page/feedback-page.component'
+import { FeedbackPageComponent } from './components/pages/feedback-page/feedback-page.component'
 // import { PartnerPageComponent } from './components/pages/partner-page/partner-page.component'
 // import { RegisterPageComponent } from './components/pages/register-page/register-page.component'
 // import { FaqPageComponent } from './components/pages/faq-page/faq-page.component'
@@ -76,7 +76,7 @@ const routes: Routes = [
   // { path: 'events', component: EventsPageComponent },
   // { path: 'single-events', component: EventsDetailsPageComponent },
   // { path: 'pricing', component: PricingPageComponent },
-  // { path: 'feedback', component: FeedbackPageComponent },
+  { path: 'feedback', component: FeedbackPageComponent },
   // { path: 'partner', component: PartnerPageComponent },
   // { path: 'register', component: RegisterPageComponent },
   // { path: 'faqs', component: FaqPageComponent },
