@@ -3,13 +3,12 @@ import {
   HttpInterceptor,
   HttpRequest,
   HttpHandler,
-  HttpEvent,
-  HttpHeaders
+  HttpEvent
 } from '@angular/common/http'
 import { Observable, throwError } from 'rxjs'
 import { catchError, retry } from 'rxjs/operators'
 import { HttpErrorResponse } from '@angular/common/http'
-import { TOKEN_KEY } from 'src/data/constants'
+import { TOKEN_KEY, DEFAULT_HTTP_ERROR_MESSAGE } from 'src/data/constants'
 
 export interface InterceptorError extends HttpErrorResponse {
   defaultMessage: string
@@ -54,8 +53,7 @@ export class CommonOptions implements HttpInterceptor {
     // Return an observable with a user-facing error message.
     const customError: InterceptorError = {
       ...error,
-      defaultMessage:
-        'Ocurrió un error al procesar su solicitud, intente de nuevo mas tarde'
+      defaultMessage: DEFAULT_HTTP_ERROR_MESSAGE
     }
     return throwError(customError)
   }

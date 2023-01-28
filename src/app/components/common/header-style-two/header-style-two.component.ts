@@ -6,22 +6,23 @@ import ContactInfo from '../../../../data/networks'
   styleUrls: ['./header-style-two.component.scss']
 })
 export class HeaderStyleTwoComponent {
-  constructor() {}
-
   @Output() logout = new EventEmitter()
-
+  loading = false
   phones = ContactInfo.getPhones()
   classApplied = false
+  classApplied2 = false
+  classApplied3 = false
+
+  constructor() {}
+
   toggleClass() {
     this.classApplied = !this.classApplied
   }
 
-  classApplied2 = false
   toggleClass2() {
     this.classApplied2 = !this.classApplied2
   }
 
-  classApplied3 = false
   toggleClass3() {
     this.classApplied3 = !this.classApplied3
   }

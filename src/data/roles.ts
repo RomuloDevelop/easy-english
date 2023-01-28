@@ -11,4 +11,8 @@ const roles: { [key in keyof typeof ROLES]: ROLES } = {
   TEACHER: 3,
   PROSPECT: 4
 }
+
+export const DASHBOARD_ROLES = [ROLES.TEACHER, ROLES.ADMIN]
+export const VIEW_COURSE_ROLES = [ROLES.STUDENT, ROLES.PROSPECT]
+
 export default roles

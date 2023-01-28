@@ -6,8 +6,8 @@ import { catchError, finalize, map, mergeMap } from 'rxjs/operators'
 import { InterceptorError } from '../interceptors/commonOptions'
 import { of, throwError } from 'rxjs'
 import { UserService } from './user.service'
-import roles, { ROLES } from '../../data/roles'
 import { TOKEN_KEY } from 'src/data/constants'
+import { getScreenPathFromRole } from '../utils/GetScreenPathFromRole'
 
 const { loginUrl, logoutUrl } = Endpoints
 
@@ -26,7 +26,7 @@ export class SessionService {
     private userService: UserService
   ) {}
 
-  login(data: Login, requiredRole: ROLES[], finalizeCb = () => {}) {
+  login(data: Login, finalizeCb = () => {}) {
     return this.http
       .post<{ access_token: string; token_type: string }>(loginUrl, data)
       .pipe(
@@ -34,31 +34,7 @@ export class SessionService {
           localStorage.setItem(TOKEN_KEY, access_token)
           return access_token
         }),
-        mergeMap((access_token) =>
-          this.userService.getActualUser().pipe(
-            mergeMap((user) => {
-              if (!requiredRole.some((value) => value === user.role)) {
-                return this.logout(() => {}, false).pipe(
-                  map(() => {
-                    let roleName = ''
-                    for (let role in roles) {
-                      if (requiredRole.some((value) => value === roles[role])) {
-                        roleName = role.toLowerCase()
-                        break
-                      }
-                    }
-                    throw {
-                      defaultMessage: `The user is not a${
-                        roleName[0] === 'a' ? 'n' : ''
-                      } ${roleName}`
-                    }
-                  })
-                )
-              }
-              return of({ user, access_token })
-            })
-          )
-        ),
+        mergeMap((access_token) => this.getActualUser(access_token)),
         catchError((error: InterceptorError) => {
           let message = error.defaultMessage
           if (error.status === 401) {
@@ -85,6 +61,18 @@ export class SessionService {
         return throwError(message)
       }),
       finalize(finalizeCb)
+    )
+  }
+
+  private getActualUser(access_token: string) {
+    return this.userService.getActualUser().pipe(
+      mergeMap((user) => {
+        return of({
+          roleScreen: getScreenPathFromRole(user),
+          user,
+          access_token
+        })
+      })
     )
   }
 }

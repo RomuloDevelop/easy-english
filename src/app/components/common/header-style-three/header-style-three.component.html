@@ -36,7 +36,9 @@
             <li>
               <i class="bx bx-envelope"></i>
               <span>Email de contacto</span>
-              <a href="mailto:aeasyenglish27@gmail.com">aeasyenglish27@gmail.com</a>
+              <a href="mailto:aeasyenglish27@gmail.com">
+                aeasyenglish27@gmail.com
+              </a>
             </li>
           </ul>
         </div>
@@ -514,21 +516,13 @@
             </li> -->
             <li class="nav-item">
               <a
-                routerLink="/student"
+                [routerLink]="isLogged ? '/' + screenPathFromRole : '/login'"
                 class="nav-link"
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{ exact: true }"
-                >Student</a
               >
-            </li>
-            <li class="nav-item">
-              <a
-                routerLink="/admin"
-                class="nav-link"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{ exact: true }"
-                >Admin</a
-              >
+                {{ isLogged ? 'My Dashboard' : 'Login' }}
+              </a>
             </li>
           </ul>
         </div>

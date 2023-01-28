@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core'
+import { Component } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 import { UntypedFormBuilder, Validators } from '@angular/forms'
 import { Login, SessionService } from '../../services/session.service'
-import { ROLES } from '../../../data/roles'
 import { PATH_FROM_LOGIN_KEY } from 'src/data/constants'
 
 @Component({
@@ -14,10 +13,6 @@ export class LoginPageComponent {
   errorMessage: string = null
   loading = false
   toUrl = localStorage.getItem(PATH_FROM_LOGIN_KEY)
-  requiredRole =
-    this.toUrl === 'student'
-      ? [ROLES.STUDENT, ROLES.PROSPECT, ROLES.ADMIN]
-      : [ROLES.TEACHER, ROLES.ADMIN]
 
   form = this.formBuilder.group({
     email: ['', [Validators.required, Validators.pattern(/^.+@.+\..+$/)]],
@@ -38,10 +33,10 @@ export class LoginPageComponent {
       password: this.form.get('password').value
     }
     this.sessionService
-      .login(data, this.requiredRole, () => (this.loading = false))
+      .login(data, () => (this.loading = false))
       .subscribe(
-        () => {
-          this.router.navigate([`../${this.toUrl}`], {
+        ({ roleScreen }) => {
+          this.router.navigate([`../${roleScreen}`], {
             relativeTo: this.route
           })
         },
