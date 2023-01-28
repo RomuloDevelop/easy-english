@@ -179,15 +179,13 @@
     }
 }
 
+@media only screen and (max-width: 991px) {
+  .login-image {
+    display: none;
+  }
+}
+
 @media only screen and (max-width: 767px) {
-
-    .login-image {
-        background-image: unset !important;
-
-        img {
-            display: inline-block;
-        }
-    }
     .login-content {
         height: 100%;
         padding: 60px 15px;
@@ -215,14 +213,6 @@
 
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-
-    .login-image {
-        background-image: none !important;
-
-        img {
-            display: inline-block;
-        }
-    }
     .login-content {
         height: 100%;
         padding: {
