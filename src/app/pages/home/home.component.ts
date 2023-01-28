@@ -2,7 +2,8 @@ import { Component } from '@angular/core'
 
 @Component({
   selector: 'app-home',
-  template: ` <app-header-style-three></app-header-style-three>
+  template: `
+    <app-header-style-three></app-header-style-three>
     <app-homethree-main-banner></app-homethree-main-banner>
     <app-homethree-about></app-homethree-about>
     <app-offer></app-offer>
@@ -26,7 +27,18 @@ import { Component } from '@angular/core'
         </div>
         <app-instructors-style-one></app-instructors-style-one>
       </div>
-    </div>`
+    </div>
+    <div class="testimonials-area ptb-100">
+      <div class="container">
+        <div class="section-title">
+          <span class="sub-title">Testimonials</span>
+          <h2>What Students Says</h2>
+        </div>
+        <app-feedback-style-two></app-feedback-style-two>
+      </div>
+    </div>
+    <app-our-mission></app-our-mission>
+  `
 })
 export class HomeComponent {
   constructor() {}
