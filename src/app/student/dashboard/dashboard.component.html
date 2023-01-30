@@ -1,47 +1,48 @@
-<app-header-style-two (logout)="logout()"></app-header-style-two>
+<app-page-layout>
+  <app-header-style-two (logout)="logout()"></app-header-style-two>
 
-<div class="page-title-area item-bg1">
-  <div class="container">
-    <div class="page-title-content">
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li>My Dashboard</li>
-      </ul>
-      <h2>My Dashboard</h2>
+  <div class="page-title-area item-bg1">
+    <div class="container">
+      <div class="page-title-content">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li>My Dashboard</li>
+        </ul>
+        <h2>My Dashboard</h2>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="my-dashboard-area ptb-100">
-  <div class="container">
-    <div class="myDashboard-profile">
-      <div class="row align-items-center">
-        <!-- <div class="col-lg-4 col-md-5">
+  <div class="my-dashboard-area ptb-100">
+    <div class="container">
+      <div class="myDashboard-profile">
+        <div class="row align-items-center">
+          <!-- <div class="col-lg-4 col-md-5">
           <div class="profile-image">
             <img src="assets/img/instructor/instructor1.jpg" alt="image" />
           </div>
         </div> -->
-        <div class="col-lg-8 col-md-7">
-          <div class="profile-content">
-            <h3>{{ user.name }}</h3>
-            <p>
-              {{ user.description }}
-            </p>
-            <ul class="contact-info">
-              <li>
-                <i class="bx bx-envelope"></i>
-                <a href="mailto:hello@jamesanderson.com">{{ user.email }}</a>
-              </li>
-              <li *ngIf="user.phone">
-                <i class="bx bx-phone"></i>
-                <a [href]="user.phone">{{ user.phone }}</a>
-              </li>
-              <!-- <li>
+          <div class="col-lg-8 col-md-7">
+            <div class="profile-content">
+              <h3>{{ user.name }}</h3>
+              <p>
+                {{ user.description }}
+              </p>
+              <ul class="contact-info">
+                <li>
+                  <i class="bx bx-envelope"></i>
+                  <a href="mailto:hello@jamesanderson.com">{{ user.email }}</a>
+                </li>
+                <li *ngIf="user.phone">
+                  <i class="bx bx-phone"></i>
+                  <a [href]="user.phone">{{ user.phone }}</a>
+                </li>
+                <!-- <li>
                 <i class="bx bx-world"></i>
                 <a href="#" target="_blank">www.jamesanderson.com</a>
               </li> -->
-            </ul>
-            <!-- <ul class="social">
+              </ul>
+              <!-- <ul class="social">
               <li>
                 <a href="#" class="d-block" target="_blank"
                   ><i class="bx bxl-facebook"></i
@@ -68,7 +69,7 @@
                 ></a>
               </li>
             </ul> -->
-            <!-- <a (click)="logoutButton()" class="myDashboard-logout">
+              <!-- <a (click)="logoutButton()" class="myDashboard-logout">
               Logout
               <p-progressSpinner
                 *ngIf="loadingLogOutButton"
@@ -80,40 +81,41 @@
                 }"
               ></p-progressSpinner>
             </a> -->
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <app-dashboard-tabs
-      class="myDashboard-content"
-      [tabLoading]="loadingLogOutPanel"
-    >
-      <ng-container description>
-        <p>
-          Hello <strong>{{ user.name }}</strong>
-        </p>
-        <p>
-          From your account dashboard you can view your
-          <strong>courses</strong>, <strong>edit your password</strong> and
-          <strong>account details</strong>.
-        </p>
-      </ng-container>
-      <tab icon="bx bxs-dashboard" label="Courses">
-        <app-course-list></app-course-list>
-      </tab>
-      <tab icon="bx bx-edit" label="Your profile">
-        <app-edit-account></app-edit-account>
-      </tab>
-      <!-- <tab icon="bx bx-edit" label="Billing Details">
+      <app-dashboard-tabs
+        class="myDashboard-content"
+        [tabLoading]="loadingLogOutPanel"
+      >
+        <ng-container description>
+          <p>
+            Hello <strong>{{ user.name }}</strong>
+          </p>
+          <p>
+            From your account dashboard you can view your
+            <strong>courses</strong>, <strong>edit your password</strong> and
+            <strong>account details</strong>.
+          </p>
+        </ng-container>
+        <tab icon="bx bxs-dashboard" label="Courses">
+          <app-course-list></app-course-list>
+        </tab>
+        <tab icon="bx bx-edit" label="Your profile">
+          <app-edit-account></app-edit-account>
+        </tab>
+        <!-- <tab icon="bx bx-edit" label="Billing Details">
         <app-edit-billing></app-edit-billing>
       </tab> -->
-      <tab
-        icon="bx bx-log-out"
-        label="Logout"
-        [notDisplay]="true"
-        (tabClick)="logoutPanel(4)"
-      ></tab>
-    </app-dashboard-tabs>
+        <tab
+          icon="bx bx-log-out"
+          label="Logout"
+          [notDisplay]="true"
+          (tabClick)="logoutPanel(4)"
+        ></tab>
+      </app-dashboard-tabs>
+    </div>
   </div>
-</div>
-<app-tip [(show)]="showTip"></app-tip>
+  <app-tip [(show)]="showTip"></app-tip>
+</app-page-layout>

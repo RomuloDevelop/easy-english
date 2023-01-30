@@ -1,18 +1,9 @@
 <!-- <app-preloader></app-preloader> -->
 <div
-  style="min-height: 100vh"
   [@routeAnimations]="
     o && o.activatedRouteData && o.activatedRouteData['animation']
   "
 >
   <router-outlet #o="outlet"></router-outlet>
 </div>
-<!-- *ngIf="
-  !(
-    location == '/login' ||
-    location == '/register' ||
-    location == '/coming-soon'
-  )
-" -->
-<app-footer style="z-index: 0"></app-footer>
 <app-loader></app-loader>

@@ -28,6 +28,7 @@ import { LoaderModule } from './components/common/loader/loader.module'
 import { ModalComponent } from './components/common/modal/modal.component'
 
 import { SnowEditorDirective } from './directives/snow-editor.directive'
+import { PageComponent } from './layouts/page.component'
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { SnowEditorDirective } from './directives/snow-editor.directive'
     YouTubePlayerModule,
     ProgressSpinnerModule,
     LoaderModule,
-    ButtonModule
+    ButtonModule,
+    PageComponent
   ],
   exports: [
     FormsModule,
@@ -73,7 +75,8 @@ import { SnowEditorDirective } from './directives/snow-editor.directive'
     SnowEditorDirective,
     CalendarModule,
     InputTextareaModule,
-    ModalComponent
+    ModalComponent,
+    PageComponent
   ],
   providers: [httpInterceptorProviders]
 })

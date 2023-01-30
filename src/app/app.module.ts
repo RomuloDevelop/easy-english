@@ -12,7 +12,6 @@ import { CarouselModule } from 'ngx-owl-carousel-o'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { CountUpModule } from 'ngx-countup'
 import { TabsModule } from 'ngx-tabset'
-import { NgxScrollTopModule } from 'ngx-scrolltop'
 import { LightboxModule } from 'ngx-lightbox'
 import { FormsModule } from '@angular/forms'
 import { HttpClientModule } from '@angular/common/http'
@@ -21,7 +20,6 @@ import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
 import { HomePageOneComponent } from './components/pages/home-page-one/home-page-one.component'
 import { HomePageTwoComponent } from './components/pages/home-page-two/home-page-two.component'
-import { FooterComponent } from './components/common/footer/footer.component'
 import { PreloaderComponent } from './components/common/preloader/preloader.component'
 import { HomeoneAboutComponent } from './components/pages/home-page-one/homeone-about/homeone-about.component'
 import { HomeoneMainBannerComponent } from './components/pages/home-page-one/homeone-main-banner/homeone-main-banner.component'
@@ -133,7 +131,6 @@ const store = {
     AppComponent,
     HomePageOneComponent,
     HomePageTwoComponent,
-    FooterComponent,
     PreloaderComponent,
     HomeoneAboutComponent,
     HomeoneMainBannerComponent,
@@ -237,7 +234,6 @@ const store = {
     CarouselModule,
     CountUpModule,
     TabsModule,
-    NgxScrollTopModule,
     LightboxModule,
     FormsModule,
     HttpClientModule,

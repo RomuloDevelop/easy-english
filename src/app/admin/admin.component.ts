@@ -7,28 +7,30 @@ import { AdminService } from './admin.service'
 @Component({
   selector: 'app-admin',
   template: `
-    <div class="admin-container">
-      <app-sidenav></app-sidenav>
-      <div
-        class="admin-content"
-        [class]="{ active: (adminService.viewMenu$ | async) }"
-      >
-        <app-admin-header
-          (openNav)="adminService.toggleNav()"
-          (logout)="logout()"
-        ></app-admin-header>
-        <section>
-          <div
-            class="container-lg"
-            [@routeAnimations]="
-              o && o.activatedRouteData && o.activatedRouteData['animation']
-            "
-          >
-            <router-outlet #o="outlet"></router-outlet>
-          </div>
-        </section>
+    <app-page-layout>
+      <div class="admin-container">
+        <app-sidenav></app-sidenav>
+        <div
+          class="admin-content"
+          [class]="{ active: (adminService.viewMenu$ | async) }"
+        >
+          <app-admin-header
+            (openNav)="adminService.toggleNav()"
+            (logout)="logout()"
+          ></app-admin-header>
+          <section>
+            <div
+              class="container-lg"
+              [@routeAnimations]="
+                o && o.activatedRouteData && o.activatedRouteData['animation']
+              "
+            >
+              <router-outlet #o="outlet"></router-outlet>
+            </div>
+          </section>
+        </div>
       </div>
-    </div>
+    </app-page-layout>
   `,
   styleUrls: ['./admin.component.scss'],
   animations: [RouterAnimations.routerForwardAnimation()]

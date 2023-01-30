@@ -1,1 +1,8 @@
 @import "../header-style-one/header-style-one.component.scss";
+
+.top-header-contact-info {
+  li {
+    flex: 1 0 auto !important;
+    max-width: 100% !important;
+  }
+}
