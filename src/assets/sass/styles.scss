@@ -1772,7 +1772,11 @@ textarea.form-control {
   }
   &.item-bg2 {
       background: {
-          image: url(../img/page-title/page-title2.jpg);
+          image: linear-gradient(
+            rgba(0, 0, 0, 0.42) 10%,
+            rgba(0, 0, 0, 0.35) 50%,
+            rgba(0, 0, 0, 0) 100%),
+            url(../img/page-title/page-title2.jpg);
       };
   }
   &.item-bg3 {

@@ -195,9 +195,6 @@
         top: 30px;
         bottom: 30px;
     };
-    .logo {
-        margin-bottom: 18px;
-    }
     p {
         color: #cccccc;
         font-size: 14px;
@@ -257,6 +254,13 @@
     }
 }
 
+.logo {
+  margin-bottom: 1rem;
+  img {
+    height: 50px;
+  }
+}
+
 @media only screen and (max-width: 767px) {
 
     .footer-area {
@@ -302,4 +306,10 @@
         margin-top: 50px;
     }
 
+}
+
+@media only screen and (min-width: 576px) {
+  .logo img {
+    height: 100px !important;
+  }
 }

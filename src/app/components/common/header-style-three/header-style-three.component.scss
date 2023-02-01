@@ -1,11 +1,21 @@
 @import "../header-style-one/header-style-one.component.scss";
 
+.navbar img {
+  height: 50px
+}
+
 .navbar-nav {
   margin-left: auto !important;
 }
 
 .top-header-style-two {
   display: none
+}
+
+@media only screen and (min-width: 768px) {
+  .navbar img {
+    height: 70px
+  }
 }
 
 @media only screen and (min-width: 991px) {
