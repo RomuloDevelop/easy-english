@@ -33,7 +33,7 @@ import { Component } from '@angular/core'
         <div class="container">
           <div class="section-title">
             <span class="sub-title">Testimonials</span>
-            <h2>What Students Says</h2>
+            <h2>Lo que dicen los estudiantes</h2>
           </div>
           <app-feedback-style-two></app-feedback-style-two>
         </div>

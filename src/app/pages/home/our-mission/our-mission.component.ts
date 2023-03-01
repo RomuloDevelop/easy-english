@@ -7,22 +7,27 @@ import { Component } from '@angular/core'
       <div class="container">
         <div class="mission-content">
           <div class="section-title text-start">
-            <span class="sub-title">Discover Mission</span>
-            <h2>Why our platform in better</h2>
+            <h2>Escucha a nuestros estudiantes</h2>
           </div>
           <div class="mission-slides">
-            <h3>Quality can be better than quantity in this platform</h3>
+            <h3>Comprueba por ti mismo nuestro trabajo.</h3>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              nisi ut aliquip ex ea commodo consequat.
+              Que mejor manera de dar a conocer nuestros servicios que a través
+              de los mismos estudiantes que han hecho vida en la academia. Ellos
+              representan todo el esfuerzo que hacemos día a día para ayudarte a
+              alcanzar ese nivel de ingles que tanto anhelas.
             </p>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              nisi ut aliquip ex ea commodo consequat.
+              Recuerda que no hay limite de edad, lo mas importante es la
+              voluntad que tengas para incluir el inglés en tu vida diaria. No
+              solo verlo como una asignatura sino como una nueva manera de
+              experimentar la cotidianidad. Siempre con un propósito que nos
+              permita mantener el foco.
             </p>
-            <a routerLink="/" class="default-btn"
+            <a
+              href="https://www.youtube.com/watch?v=6zIqkxd2lc0"
+              target="_blank"
+              class="default-btn"
               ><i class="bx bx-book-reader icon-arrow before"></i
               ><span class="label">Ver testimonio</span
               ><i class="bx bx-book-reader icon-arrow after"></i
