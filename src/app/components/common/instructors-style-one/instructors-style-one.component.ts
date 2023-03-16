@@ -12,7 +12,7 @@ export class InstructorsStyleOneComponent implements OnInit {
   ngOnInit(): void {}
 
   instructorSlides: OwlOptions = {
-    loop: false,
+    loop: true,
     nav: true,
     dots: false,
     autoplayHoverPause: true,
