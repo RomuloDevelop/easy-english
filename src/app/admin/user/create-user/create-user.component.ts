@@ -29,7 +29,7 @@ const studentValidator: ValidatorFn = (
 
   return role.value === ROLES.STUDENT &&
     (!status.value || !endSub.value || !startSub.value)
-    ? { notEqual: true }
+    ? { notValid: true }
     : null
 }
 
@@ -64,7 +64,7 @@ export class CreateUserComponent implements OnInit {
 
   form = this.formBuilder.group(
     {
-      role: [this.roles, Validators.required],
+      role: [this.role, Validators.required],
       name: ['', Validators.required],
       email: ['', Validators.required],
       phone: [''],
@@ -78,9 +78,9 @@ export class CreateUserComponent implements OnInit {
       parent_phone: [null],
       parent_phone_two: [null],
       description: [null],
-      status: [null]
+      status: [this.statuses[0]]
     },
-    { validators: studentValidator }
+    { validators: [studentValidator, passwordValidator] }
   )
 
   form2 = this.formBuilder.group(
@@ -134,7 +134,10 @@ export class CreateUserComponent implements OnInit {
     } else {
       this.form.addControl(
         'password',
-        new UntypedFormControl('', [Validators.required, Validators.minLength(8)])
+        new UntypedFormControl('', [
+          Validators.required,
+          Validators.minLength(8)
+        ])
       )
       this.form.addControl(
         'repeat_password',
